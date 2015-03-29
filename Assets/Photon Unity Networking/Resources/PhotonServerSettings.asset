@@ -19,33 +19,22 @@ MonoBehaviour:
   AppID: 9966d279-b483-42ec-87c1-ed991f4a5364
   PingCloudServersOnAwake: 0
   RpcList:
+  - AddMessage_RPC
   - Chat
   - DestroyRpc
+  - GetShot
   - InstantiateRpc
   - OnAwakeRPC
+  - OutOfAmmo
   - PickupItemInit
-  - PunPickup
-  - PunPickupSimple
-  - PunRespawn
-  - RequestForPickupTimes
-  - GetShot
-  - AddMessage_RPC
-  - ShootingSound
+  - PlayFlyByShots
   - PlayFootStepAudio
   - PlayJumpSound
   - PlayLandingSound
-  - Score_RPC
-  - RemoveOnDeath
-  - killed
-  - Killed
-  - TargetHealthCheck
-  - GetHealth
+  - PunPickup
+  - PunPickupSimple
+  - PunRespawn
   - ReloadingSound
-  - OutOfAmmo
-  - ColorRpc
-  - DoJump
-  - Marco
-  - Polo
-  - TaggedPlayer
-  - PlayFlyByShots
+  - RequestForPickupTimes
+  - ShootingSound
   DisableAutoOpenWizard: 0
