@@ -145,6 +145,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			animEthan.SetBool("OnGround",onGround);
 			animEthan.SetFloat("Forward",Forward);
 			animEthan.SetFloat("Turn",turn);
+			//Be sure to set the values here for all crouching aspects
 			animEthan.SetBool ("Crouch",crouch);
 			animMainCam.SetBool("Crouch",crouch);
 			animHitBoxes.SetBool("Crouch",crouch);
@@ -167,8 +168,6 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			stream.SendNext(animEthan.GetFloat("Forward"));
 			stream.SendNext(animEthan.GetFloat("Turn"));
 			stream.SendNext(animEthan.GetBool("Crouch"));
-			//stream.SendNext(animMainCam.GetBool("Crouch"));
-			//stream.SendNext(animHitBoxes.GetBool("Crouch"));
 			//
 			stream.SendNext(alive);
 		
@@ -241,7 +240,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 				enemy.SetCustomProperties(setPlayerKills);
 
 				//Spawn ammo on death
-				PhotonNetwork.Instantiate("Ammo_AK47",transform.position - new Vector3 (0,1,0), Quaternion.Euler(1.5f,149f,95f),0);
+				PhotonNetwork.Instantiate("Ammo_AK47",transform.position - new Vector3 (0,0.9f,0), Quaternion.Euler(1.5f,149f,95f),0);
 				//Finally destroy the game Object.
 				PhotonNetwork.Destroy(gameObject);
 					

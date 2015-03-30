@@ -120,7 +120,7 @@ public class PlayerShooting: MonoBehaviour {
 							
 							damage = 16f;
 						}
-
+						//Damage Through Walls
 						if(decalHitCount >= 1 && hits[i].collider.name != "Head"){
 
 							damage = 10f;

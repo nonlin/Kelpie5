@@ -34,6 +34,10 @@ public class Ammo : MonoBehaviour {
 			PhotonNetwork.Destroy (gameObject);
 	}
 
+	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){
+	
+	}
+
 	void OnDestroy() {
 
 	}
