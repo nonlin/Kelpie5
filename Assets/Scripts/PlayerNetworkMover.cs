@@ -9,8 +9,9 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	public delegate void SendMessage(string message);
 	public event SendMessage SendNetworkMessage;
 
-	Vector3 position;
-	Quaternion rotation;
+	Vector3 realPosition;
+	Quaternion realRotation;
+
 	float smoothing = 10f;
 	float health = 100f;
 	public string playerName; 
@@ -57,7 +58,10 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	//AudioSource audio;
 	// Use this for initialization
 	void Start () {
-	
+
+		PhotonNetwork.sendRate = 30;
+		PhotonNetwork.sendRateOnSerialize = 15;
+
 		alive = true; 
 		photonView = GetComponent<PhotonView> ();
 		//Disables my Character Controller interstingly enough. That way I can only enable it for the clien'ts player.  
@@ -132,13 +136,14 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		if (initialLoad) {
 			//jiiter correction incomplete, could check position if accurate to .0001 don't move them 
 			initialLoad = false; 
-			transform.position = position; 
-			transform.rotation = rotation; 
+			transform.position = realPosition; 
+			transform.rotation = realRotation; 
 		}
 		while (true) {
 			//smooths every frame for the dummy players from where they are to where they should be, prevents jitter lose some accuracy I suppose
-			transform.position = Vector3.Lerp(transform.position, position, Time.deltaTime * smoothing);
-			transform.rotation = Quaternion.Lerp(transform.rotation, rotation, Time.deltaTime * smoothing);
+			//Ideally we want the movement to be equal to the amount of time since the last update
+			transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);// + _characterController.velocity * Time.deltaTime;
+			transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);//Time.deltaTime * smoothing
 			//Sync Animation States
 			anim.SetBool ("Aim", aim); 
 			anim.SetBool ("Sprint", sprint); 
@@ -176,8 +181,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			//Get from clients where they are
 			//Write in teh same order we read, if not writing we are reading. 
 			playerName = (string)stream.ReceiveNext();
-			position = (Vector3)stream.ReceiveNext();
-			rotation = (Quaternion)stream.ReceiveNext();
+			realPosition = (Vector3)stream.ReceiveNext();
+			realRotation = (Quaternion)stream.ReceiveNext();
 			health = (float)stream.ReceiveNext();
 			//Sync Animation States
 			aim = (bool)stream.ReceiveNext();
