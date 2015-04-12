@@ -1,6 +1,6 @@
 using ExitGames.Client.Photon;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 /// <summary>
 /// Simple script that uses a property to sync a start time for a multiplayer game.
@@ -23,7 +23,15 @@ public class InRoomRoundTimer : MonoBehaviour
 
     private bool startRoundWhenTimeIsSynced;        // used in an edge-case when we wanted to set a start time but don't know it yet.
     private const string StartTimeKey = "st";       // the name of our "start time" custom property.
+	[SerializeField] GameObject gameTimerText;
+	public Text gameTimeMinText;
+	public Text gameTimeSecText;
+	public float minutes;
+	public double seconds;
 
+	void Start(){
+		gameTimerText.SetActive (false);
+	}
 
     private void StartRoundNow()
     {
@@ -48,6 +56,7 @@ public class InRoomRoundTimer : MonoBehaviour
     /// <summary>Called by PUN when this client entered a room (no matter if joined or created).</summary>
     public void OnJoinedRoom()
     {
+		gameTimerText.SetActive (true);
         if (PhotonNetwork.isMasterClient)
         {
             this.StartRoundNow();
@@ -85,10 +94,13 @@ public class InRoomRoundTimer : MonoBehaviour
 
     void Update()
     {
+
+
         if (startRoundWhenTimeIsSynced)
         {
             this.StartRoundNow();   // the "time is known" check is done inside the method.
         }
+		DisplayTimer();
     }
 
     public void OnGUI()
@@ -101,7 +113,7 @@ public class InRoomRoundTimer : MonoBehaviour
 
 
         // simple gui for output
-        GUILayout.BeginArea(TextPos);
+       /* GUILayout.BeginArea(TextPos);
         GUILayout.Label(string.Format("elapsed: {0:0.000}", elapsedTime));
         GUILayout.Label(string.Format("remaining: {0:0.000}", remainingTime));
         GUILayout.Label(string.Format("turn: {0:0}", turn));
@@ -109,6 +121,23 @@ public class InRoomRoundTimer : MonoBehaviour
         {
             this.StartRoundNow();
         }
-        GUILayout.EndArea();
+        GUILayout.EndArea();*/
     }
+
+	public void DisplayTimer(){
+
+		double elapsedTime = (PhotonNetwork.time - StartTime);
+
+		minutes = (Mathf.Floor((float)elapsedTime / 60));
+		seconds = (elapsedTime % 60);
+		//If we've enabled the timer then we can set the time to the GUI
+		if(gameTimerText.activeSelf){
+
+			gameTimeMinText = GameObject.FindGameObjectWithTag("GameTimer").GetComponent < Text > ();
+			gameTimeSecText = GameObject.FindGameObjectWithTag("GameSec").GetComponent < Text > ();
+			gameTimeMinText.text = minutes.ToString("00");
+			gameTimeSecText.text = seconds.ToString("00");
+		}
+
+	}
 }

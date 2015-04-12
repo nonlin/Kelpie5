@@ -37,4 +37,5 @@ MonoBehaviour:
   - ReloadingSound
   - RequestForPickupTimes
   - ShootingSound
+  - RoundTimer
   DisableAutoOpenWizard: 0

@@ -244,6 +244,9 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 				Debug.Log ("<color=red>KillCounter Called at </color>" + totalKIlls);
 				enemy.SetCustomProperties(setPlayerKills);
 
+				//Write Kills and Deaths to File On Death 
+				System.IO.File.AppendAllText (@"C:\Users\Public\PlayerStats.txt", "\n" + "KDR on Death: " + totalKIlls.ToString() + ":" + totalDeaths.ToString());
+
 				//Spawn ammo on death
 				PhotonNetwork.Instantiate("Ammo_AK47",transform.position - new Vector3 (0,0.9f,0), Quaternion.Euler(1.5f,149f,95f),0);
 				//Finally destroy the game Object.

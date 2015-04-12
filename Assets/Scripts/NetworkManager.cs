@@ -30,10 +30,12 @@ public class NetworkManager : MonoBehaviour {
 	PhotonView photonView;
 	public bool spawning = false; 
 	bool paused = false;
+	public bool joinedRoom = false;
 
 	ExitGames.Client.Photon.Hashtable setPlayerKills = new ExitGames.Client.Photon.Hashtable() {{"K", 0}};
 	ExitGames.Client.Photon.Hashtable setPlayerDeaths = new ExitGames.Client.Photon.Hashtable() {{"D", 0}};
 	ExitGames.Client.Photon.Hashtable setPlayerPing = new ExitGames.Client.Photon.Hashtable() {{"P", 0}};
+
 	//ExitGames.Client.Photon.Hashtable setPlayerHealth= new ExitGames.Client.Photon.Hashtable() {{"H", 100}};
 	// Use this for initialization
 	void Start () {
@@ -48,7 +50,6 @@ public class NetworkManager : MonoBehaviour {
 		StartCoroutine("UpdateConnectionString");
 		PhotonNetwork.player.SetCustomProperties(setPlayerKills);
 		PhotonNetwork.player.SetCustomProperties(setPlayerDeaths);
-		//PhotonNetwork.player.SetCustomProperties(setPlayerHealth);
 		//Game Managing Stuff
 		ammoText.SetActive (false);
 		pausePanel.SetActive(false);
@@ -63,35 +64,36 @@ public class NetworkManager : MonoBehaviour {
 
 		//if(player != null && photonView.isMine){
 
-			if (Input.GetKeyDown (KeyCode.Escape)) {
+		if (Input.GetKeyDown (KeyCode.Escape)) {
 
-				Debug.Log ("Esc hit");
-					if(!paused){
+			Debug.Log ("Esc hit");
+				if(!paused){
 
-					//Time.timeScale = 0;
-					Cursor.lockState = CursorLockMode.None;
-					Cursor.visible = true;
-					//Disable Shooting and movement
-					player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
-					player.GetComponentInChildren<PlayerShooting>().enabled = false;
-					pausePanel.SetActive(true);
-					//mainCanvas.enabled = false;
-					paused = !paused;
-				}
-				else{
-
-					//Time.timeScale = 1;
-					Cursor.lockState = CursorLockMode.Locked;
-					Cursor.visible = false;
-					//Re-Enable
-					player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
-					player.GetComponentInChildren<PlayerShooting>().enabled = true;
-					pausePanel.SetActive(false);
-					//mainCanvas.enabled = true;
-					paused = !paused;
-				}
+				//Time.timeScale = 0;//To freeze time
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+				//Disable Shooting and movement
+				player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
+				player.GetComponentInChildren<PlayerShooting>().enabled = false;
+				pausePanel.SetActive(true);
+				//mainCanvas.enabled = false;
+				paused = !paused;
 			}
+			else{
+
+				//Time.timeScale = 1;
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+				//Re-Enable
+				player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
+				player.GetComponentInChildren<PlayerShooting>().enabled = true;
+				pausePanel.SetActive(false);
+				//mainCanvas.enabled = true;
+				paused = !paused;
+			}
+		}
 		//}
+		//RoundTimer();
 
 	}
 
@@ -141,6 +143,8 @@ public class NetworkManager : MonoBehaviour {
 	}
 
 	void OnJoinedRoom(){
+
+		joinedRoom = true;
 
 		//Toggle On/Off Lobby GUI and InGame GUI
 		lobbyWindow.SetActive (false);

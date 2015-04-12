@@ -35,6 +35,7 @@ public class PlayerShooting: MonoBehaviour {
 	public Text ammoText;
 	public Transform target;
 	bool enumDeclared = false;
+	int bulletsFired = 0;
 	// Use this for initialization
 	void Start() {
 		
@@ -57,6 +58,7 @@ public class PlayerShooting: MonoBehaviour {
 			
 			muzzleFlash.Emit(1);
 			clipSize--;
+			bulletsFired++;//For Stats Purposes 
 			ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
 			anim.SetBool("Fire", true);
 			shooting = true;
@@ -73,6 +75,8 @@ public class PlayerShooting: MonoBehaviour {
 			anim.SetBool("Reloading", true);
 			NM.player.GetComponent < PhotonView > ().RPC("ReloadingSound", PhotonTargets.All);
 			StartCoroutine(Reload());
+			//Write Kills and Deaths to File On Death 
+			System.IO.File.AppendAllText (@"C:\Users\Public\PlayerSootingStats.txt", "\n" + "Bullets Fired: " + (bulletsFired).ToString() + " On Reload");
 		}
 		if (clipSize <= 0 && Input.GetButtonDown("Fire1")) {
 			//StartCoroutine(EmptyGun());

@@ -12,6 +12,7 @@ GameObject:
   - 114: {fileID: 11481896}
   - 114: {fileID: 11481894}
   - 82: {fileID: 8281898}
+  - 114: {fileID: 11483726}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: NetworkManager
@@ -38,7 +39,8 @@ AudioSource:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 181898}
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 7d629ae13f62dd9479ae4c9c3fe6e554, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -73,13 +75,23 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
   spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
     - time: 0
@@ -218,6 +230,31 @@ MonoBehaviour:
   mainCanvas: {fileID: 0}
   player: {fileID: 0}
   spawning: 0
+  joinedRoom: 0
+--- !u!114 &11483726
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 181898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffcc1d657cd6ad9409b44f15d3deb78c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SecondsPerTurn: 600
+  StartTime: 0
+  TextPos:
+    serializedVersion: 2
+    x: 0
+    y: 80
+    width: 150
+    height: 300
+  gameTimerText: {fileID: 0}
+  gameTimeMinText: {fileID: 0}
+  gameTimeSecText: {fileID: 0}
+  minutes: 0
+  seconds: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -229,4 +266,3 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 181898}
   m_IsPrefabParent: 1
-  m_IsExploded: 1
