@@ -30,6 +30,7 @@ public class InRoomRoundTimer : MonoBehaviour
 	public double seconds;
 
 	void Start(){
+
 		gameTimerText.SetActive (false);
 	}
 

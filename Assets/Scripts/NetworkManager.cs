@@ -23,6 +23,8 @@ public class NetworkManager : MonoBehaviour {
 
 	[SerializeField] GameObject pausePanel;
 	[SerializeField] Canvas mainCanvas;
+	public GameObject WinPrompt;
+	public Text WinPromptText;
 
 	public GameObject player;
 	Queue<string> messages;
@@ -53,6 +55,7 @@ public class NetworkManager : MonoBehaviour {
 		//Game Managing Stuff
 		ammoText.SetActive (false);
 		pausePanel.SetActive(false);
+		WinPrompt.SetActive(false);
 		Cursor.lockState = CursorLockMode.None;
 		versionText.SetActive (true);
 		optionsMenu.SetActive (false);
@@ -117,7 +120,6 @@ public class NetworkManager : MonoBehaviour {
 		}
 
 	}
-
 
 	void OnJoinedLobby(){
 
@@ -209,6 +211,20 @@ public class NetworkManager : MonoBehaviour {
 		Debug.Log ("<color=red>Messages Count</color>" +messages.Count);
 		foreach(string m in messages)
 			messageWindow.text += m + "\n";
+	}
+
+	public void DisplayWinPrompt(string playerName){
+
+		photonView.RPC ("DisplayWinPrompt_RPC", PhotonTargets.All, playerName);
+	}
+
+	[RPC]
+	void DisplayWinPrompt_RPC(string playerName){
+
+		//Display Win Screen
+		WinPrompt.SetActive(true);
+		WinPromptText.text = "Score Limit Reached! \n" + playerName + " Won";
+		
 	}
 
 	void pingUpdate(){

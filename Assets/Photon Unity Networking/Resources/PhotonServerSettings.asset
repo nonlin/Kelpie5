@@ -38,4 +38,5 @@ MonoBehaviour:
   - RequestForPickupTimes
   - ShootingSound
   - RoundTimer
+  - DisplayWinPrompt_RPC
   DisableAutoOpenWizard: 0

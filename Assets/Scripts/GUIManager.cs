@@ -28,23 +28,17 @@ public class GUIManager : MonoBehaviour {
 			GUILayout.BeginVertical(GUILayout.Width(150));
 			GUILayout.Label (p.name, GUILayout.Width (150));
 			GUILayout.EndVertical();
-			//Player Score
-			//GUILayout.BeginVertical(GUILayout.Width(75));
-			//GUILayout.Label (p.playerName, GUILayout.Width (75));
-			//GUILayout.EndVertical();
+
 			//Player Kills
 			GUILayout.BeginVertical(GUILayout.Width(75));
-			//kills = p.customProperties["K"].ToString();
 			GUILayout.Label (p.customProperties["K"].ToString(), GUILayout.Width (75));
 			GUILayout.EndVertical();
 			//Player Deaths
 			GUILayout.BeginVertical(GUILayout.Width(75));
-
 			GUILayout.Label (p.customProperties["D"].ToString(), GUILayout.Width (75));
 			GUILayout.EndVertical();
 			//Player Ping
 			GUILayout.BeginVertical(GUILayout.Width(75));
-	
 			GUILayout.Label (p.customProperties["P"].ToString(), GUILayout.Width (75));
 			GUILayout.EndVertical();
 

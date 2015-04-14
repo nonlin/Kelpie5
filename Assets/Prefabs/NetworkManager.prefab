@@ -228,6 +228,8 @@ MonoBehaviour:
   messageWindow: {fileID: 0}
   pausePanel: {fileID: 0}
   mainCanvas: {fileID: 0}
+  WinPrompt: {fileID: 0}
+  WinPromptText: {fileID: 0}
   player: {fileID: 0}
   spawning: 0
   joinedRoom: 0
