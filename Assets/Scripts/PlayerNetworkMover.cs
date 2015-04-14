@@ -247,7 +247,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 				//If we reach the kill limit 
 				if(totalKIlls == killLimit){
 					//Display Win Screen
-					NM.DisplayWinPrompt(PhotonNetwork.player.name);
+					NM.DisplayWinPrompt(enemy.name);
 				}
 
 				//Write Kills and Deaths to File On Death 
