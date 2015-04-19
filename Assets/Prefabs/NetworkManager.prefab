@@ -225,6 +225,7 @@ MonoBehaviour:
   userName: {fileID: 0}
   roomName: {fileID: 0}
   roomList: {fileID: 0}
+  roomButtonPrefab: {fileID: 118198, guid: b237dd972f0b7534c80b441d04c30f94, type: 2}
   messageWindow: {fileID: 0}
   pausePanel: {fileID: 0}
   mainCanvas: {fileID: 0}

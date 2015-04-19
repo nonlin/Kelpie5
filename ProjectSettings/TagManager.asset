@@ -26,6 +26,7 @@ TagManager:
   - PickUp
   - GameTimer
   - GameSec
+  - RoomList
   layers:
   - Default
   - TransparentFX

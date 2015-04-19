@@ -19,6 +19,8 @@ public class NetworkManager : MonoBehaviour {
 	[SerializeField] InputField userName;
 	[SerializeField] InputField roomName;
 	[SerializeField] InputField roomList;
+	[SerializeField] GameObject roomButtonPrefab;
+	List < GameObject > roomButtonList = new List < GameObject > ();
 	[SerializeField] InputField messageWindow;
 
 	[SerializeField] GameObject pausePanel;
@@ -129,12 +131,30 @@ public class NetworkManager : MonoBehaviour {
 
 	void OnReceivedRoomListUpdate(){
 
-		roomList.text = "";
+		RoomInfo[] rooms = PhotonNetwork.GetRoomList ();
+		GameObject[] roomButtonsGO = new GameObject[rooms.Length];
+	
+		int i = 0;
+		foreach(RoomInfo room in rooms){
+			//Instantiate Game Object then Move it to proper location for display then set the name and text component of button to room name
+			roomButtonsGO[i] = (GameObject)Instantiate (roomButtonPrefab, new Vector3(-105, 25 + (i * -30),0), new Quaternion(0,0,0,0));
+			roomButtonsGO[i].transform.SetParent(GameObject.FindGameObjectWithTag("RoomList").transform,false);
+			roomButtonsGO[i].name = room.name;
+			roomButtonsGO[i].GetComponentInChildren<Text>().text = room.name;
+			roomButtonsGO[i].GetComponent<Button>().onClick.AddListener(delegate { RoomButtonOnClick(room.name); });
+			i++;
+		}
+
+		//Original Test Based Listing of Servers
+		/*roomList.text = "";
 		RoomInfo[] rooms = PhotonNetwork.GetRoomList ();
 		foreach(RoomInfo room in rooms)
-			roomList.text += room.name + "\n";
+			roomList.text += room.name + "\n";*/
 	}
 
+	public void RoomButtonOnClick(string roomToJoin){
+		roomName.text = roomToJoin;
+	}
 	public void JoinRoom(){
 
 		PhotonNetwork.player.name = userName.text;
