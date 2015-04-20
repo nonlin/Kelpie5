@@ -1,27 +1,27 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &198752
+--- !u!1 &136436
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 224: {fileID: 22498752}
-  - 114: {fileID: 11498752}
+  - 224: {fileID: 22471576}
+  - 114: {fileID: 11445202}
   m_Layer: 0
-  m_Name: GameManager
-  m_TagString: GameManager
+  m_Name: GameManager 1
+  m_TagString: GameManger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &11498752
+--- !u!114 &11445202
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 198752}
+  m_GameObject: {fileID: 136436}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a1d04bdb200337f4eb9bd7538b119c43, type: 3}
@@ -33,12 +33,12 @@ MonoBehaviour:
   vSync: {fileID: 0}
   killLimit: 10
   killLimitInput: {fileID: 0}
---- !u!224 &22498752
+--- !u!224 &22471576
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 198752}
+  m_GameObject: {fileID: 136436}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -59,5 +59,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 198752}
+  m_RootGameObject: {fileID: 136436}
   m_IsPrefabParent: 1

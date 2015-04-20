@@ -353,17 +353,28 @@ namespace UnitySampleAssets.Characters.FirstPerson
 
 			//Walking Animation Logic Forward //If we aren't walking we want to set it to 0 to stop animations from continuing to play
 			//Here we have to hard code values for .5 because 1 would mean we are running// .5 is for walking 1 is for running for all movements
-			if((_isWalking || _isCrouching) && vertical > 0 )
+			if((_isWalking || _isCrouching) && vertical > 0 ){
+				animHitBoxes.SetBool("Moving",true);
 				animEthan.SetFloat("Forward", 0.5f);
-			else if(!_isWalking && vertical > 0 )
+			}
+			else if(!_isWalking && vertical > 0 ){
+				animHitBoxes.SetBool("Moving",true);
 				animEthan.SetFloat("Forward", vertical);
-			else
+			}
+			else{
 				animEthan.SetFloat("Forward", vertical);
+				animHitBoxes.SetBool("Moving",false);
+			}
 			//Backwards
-			if(_isWalking && vertical < 0 )
+			if(_isWalking && vertical < 0 ){
+				animHitBoxes.SetBool("Moving",true);
 				animEthan.SetFloat("Forward", -0.5f);
-			else if(!_isWalking && vertical < 0 )
+			}
+			else if(!_isWalking && vertical < 0 ){
+				animHitBoxes.SetBool("Moving",true);
 				animEthan.SetFloat("Forward", vertical);
+			}
+			//else{animHitBoxes.SetBool("Moving",false);}
 
 			//Turning Right
 			if(_isWalking && horizontal > 0 )

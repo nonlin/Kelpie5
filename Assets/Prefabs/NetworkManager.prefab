@@ -222,6 +222,7 @@ MonoBehaviour:
   ammoText: {fileID: 0}
   versionText: {fileID: 0}
   optionsMenu: {fileID: 0}
+  serverOptionsMenu: {fileID: 0}
   userName: {fileID: 0}
   roomName: {fileID: 0}
   roomList: {fileID: 0}
@@ -258,6 +259,8 @@ MonoBehaviour:
   gameTimeSecText: {fileID: 0}
   minutes: 0
   seconds: 0
+  timeLimit: 10
+  timeLimitInput: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

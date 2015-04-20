@@ -1,6 +1,8 @@
 using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// Simple script that uses a property to sync a start time for a multiplayer game.
@@ -28,10 +30,14 @@ public class InRoomRoundTimer : MonoBehaviour
 	public Text gameTimeSecText;
 	public float minutes;
 	public double seconds;
-
+	[SerializeField] float timeLimit;
+	NetworkManager NM; 
+	[SerializeField] InputField timeLimitInput;
 	void Start(){
 
 		gameTimerText.SetActive (false);
+		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager>();
+		timeLimit = 10;
 	}
 
     private void StartRoundNow()
@@ -138,7 +144,29 @@ public class InRoomRoundTimer : MonoBehaviour
 			gameTimeSecText = GameObject.FindGameObjectWithTag("GameSec").GetComponent < Text > ();
 			gameTimeMinText.text = minutes.ToString("00");
 			gameTimeSecText.text = seconds.ToString("00");
+			if(minutes == timeLimit){
+
+				SortedDictionary<string, int> playerKills = new SortedDictionary<string, int>();
+				foreach (PhotonPlayer p in PhotonNetwork.playerList) {
+
+					playerKills.Add (p.name, (int)p.customProperties["K"]);
+				}
+				//Order Dictionary by value with highest value first, then get the first and display the key (AKA Player Name)
+				NM.DisplayWinPrompt(playerKills.OrderByDescending(d => d.Value).First().Key);
+			}
 		}
 
+	}
+
+	public void SetTimeLimit(){
+
+		bool result = float.TryParse(timeLimitInput.text, out timeLimit);
+		if(result){
+			Debug.Log ("TimeLimit Accepted: " + timeLimit);
+		}
+		else{
+			Debug.Log ("Error TimeLimit Can't be parsed");
+			timeLimit = 10;
+		}
 	}
 }

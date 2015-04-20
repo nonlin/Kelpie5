@@ -19,7 +19,7 @@ TagManager:
   - WeaponCam
   - OptionsPanel
   - LobbyCam
-  - GameManger
+  - GameManager
   - InjuryEffect
   - Head
   - FlyByRange

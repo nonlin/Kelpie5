@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class PlayerNetworkMover : Photon.MonoBehaviour {
 	//use events and delegates to know when someone has died, Secure with events
@@ -51,9 +52,10 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[SerializeField] Animator animHitBoxes;
 	PhotonView photonView;
 	PlayerShooting playerShooting;
-	[SerializeField] int killLimit;
+
 	//ColliderControl colidcon;
 	[SerializeField] bool alive;
+	GameManager GMan;
 	NetworkManager NM;
 	//AudioSource audio;
 	// Use this for initialization
@@ -71,11 +73,11 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		audio0 = aSources [0];
 		audio1 = aSources [1];
 		audio2 = aSources [2];
-		killLimit = 10;
+
 		//anim = GetComponentInChildren<Animator> ();
 		//animEthan = transform.Find("char_ethan").GetComponent<Animator> ();
 		injuryAnim = GameObject.FindGameObjectWithTag ("InjuryEffect").GetComponent<Animator>();
-
+		GMan = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager>();
 		playerShooting = GetComponentInChildren<PlayerShooting> ();
 		//If its my player, not anothers
@@ -245,7 +247,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 				enemy.SetCustomProperties(setPlayerKills);
 
 				//If we reach the kill limit 
-				if(totalKIlls == killLimit){
+				if(totalKIlls == GMan.killLimit){
 					//Display Win Screen
 					NM.DisplayWinPrompt(enemy.name);
 				}

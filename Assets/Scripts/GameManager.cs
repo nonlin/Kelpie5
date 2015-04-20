@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour {
 	NetworkManager NM;
 	float xAx;
 	float yAx;
+	public int killLimit;
+	[SerializeField] InputField killLimitInput;
 	// Use this for initialization
 	void Start () {
 
@@ -28,6 +30,7 @@ public class GameManager : MonoBehaviour {
 		smoothToggle.isOn = (PlayerPrefs.GetInt("smooth") != 0);
 		vSync.isOn = (PlayerPrefs.GetInt("vSync") != 0);
 		optionsAnim = GameObject.FindGameObjectWithTag ("OptionsPanel").GetComponent<Animator> ();
+		killLimit = 10;
 
 	}
 	
@@ -37,6 +40,17 @@ public class GameManager : MonoBehaviour {
 
 	}
 
+	public void SetKillLimit(){
+		
+		bool result = int.TryParse(killLimitInput.text, out killLimit);
+		if(result){
+			Debug.Log ("KillLimit Accepted: " + killLimit);
+		}
+		else{
+			Debug.Log ("Error KillLimit Can't be parsed");
+			killLimit = 10;
+		}
+	}
 
 	public void SetMouseX(float xAxis){
 		
@@ -65,6 +79,17 @@ public class GameManager : MonoBehaviour {
 
 		optionsAnim.SetBool ("Show", false);
 		NM.optionsMenu.SetActive (false);
+	}
+
+	public void ShowServerOptions(){
+		NM.serverOptionsMenu.SetActive (true);
+		//serverOptionsAnim.SetBool ("Show", true);
+	}
+	
+	public void HideServerOptions(){
+		
+		//serverOptionsAnim.SetBool ("Show", false);
+		NM.serverOptionsMenu.SetActive (false);
 	}
 
 	public void VsyncToggle(bool on){

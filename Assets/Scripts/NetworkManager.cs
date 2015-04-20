@@ -15,6 +15,7 @@ public class NetworkManager : MonoBehaviour {
 	[SerializeField] GameObject ammoText;
 	[SerializeField] GameObject versionText;
 	public GameObject optionsMenu;
+	public GameObject serverOptionsMenu;
 
 	[SerializeField] InputField userName;
 	[SerializeField] InputField roomName;
@@ -61,6 +62,7 @@ public class NetworkManager : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.None;
 		versionText.SetActive (true);
 		optionsMenu.SetActive (false);
+		serverOptionsMenu.SetActive(false);
 		GameObject.FindGameObjectWithTag ("LobbyCam").GetComponent<AudioListener> ().enabled = true;
 		//Update Current Ping every second
 		InvokeRepeating ("pingUpdate", 0, 1);
@@ -172,6 +174,7 @@ public class NetworkManager : MonoBehaviour {
 		lobbyWindow.SetActive (false);
 		mainMenu.SetActive (false);
 		optionsMenu.SetActive (false);
+		serverOptionsMenu.SetActive(false);
 		ammoText.SetActive (true);
 		versionText.SetActive (false);
 		//
@@ -244,7 +247,7 @@ public class NetworkManager : MonoBehaviour {
 		//Display Win Screen
 		WinPrompt.SetActive(true);
 		WinPromptText.text = "Score Limit Reached! \n" + playerName + " Won";
-		
+		player.GetComponentInChildren<PlayerShooting>().enabled = false;
 	}
 
 	void pingUpdate(){
