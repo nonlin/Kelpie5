@@ -39,4 +39,5 @@ MonoBehaviour:
   - ShootingSound
   - RoundTimer
   - DisplayWinPrompt_RPC
+  - ToggleMuzzleFlash
   DisableAutoOpenWizard: 0

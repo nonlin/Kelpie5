@@ -7,6 +7,9 @@ using System.Linq;
 public class PlayerShooting: MonoBehaviour {
 	
 	public ParticleSystem muzzleFlash;
+	public GameObject[] muzzleLightFlashGO;
+	public Light muzzleLightFlash;
+	public bool muzzleFlashToggle;
 	Animator anim;
 	
 	public GameObject impactPrefab;
@@ -24,10 +27,10 @@ public class PlayerShooting: MonoBehaviour {
 	List < GameObject > .Enumerator e;
 	GameObject CurrentImpact;
 	//GameObject[] impacts;
-	NetworkManager NM;
+	public NetworkManager NM;
 	int currentImpact = 0;
 	int maxImpacts = 20;
-	bool shooting = false;
+	public bool shooting = false;
 	float damage = 16f;
 	int clipSize = 30;
 	public int clipAmount = 3;
@@ -41,7 +44,19 @@ public class PlayerShooting: MonoBehaviour {
 		
 		guiMan = GameObject.Find("NetworkManager").GetComponent < GUIManager > ();
 		NM = GameObject.Find("NetworkManager").GetComponent < NetworkManager > ();
-		
+		muzzleLightFlashGO = GameObject.FindGameObjectsWithTag("LightFlash");
+
+		//To assign the each players own muzzle flash toggle and not someone elses. 
+		for(int i = 0; i < muzzleLightFlashGO.Length; i++){
+			//If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+			if(muzzleLightFlashGO[i].GetComponentInParent<PlayerShooting>().gameObject.GetInstanceID() == gameObject.GetInstanceID() ){
+				muzzleLightFlash = muzzleLightFlashGO[i].GetComponent<Light>();
+				//muzzleLightFlash.enabled = false;
+				//muzzleFlashToggle = false;
+
+			}
+		}
+
 		ammoText = GameObject.FindGameObjectWithTag("Ammo").GetComponent < Text > ();
 		anim = GetComponentInChildren < Animator > ();
 		timeStamp = 0;
@@ -53,19 +68,30 @@ public class PlayerShooting: MonoBehaviour {
 	void Update() {
 		//Always update this text
 		ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
-		
+		if(NM.player.GetComponent<PlayerNetworkMover>().muzzleFlashToggle)
+			Debug.Log (NM.player.GetComponent<PlayerNetworkMover>().muzzleFlashToggle);
+		muzzleLightFlash.enabled = NM.player.GetComponent<PlayerNetworkMover>().muzzleFlashToggle;
 		if (Input.GetButton("Fire1") && !Input.GetKey(KeyCode.LeftShift) && timeStamp <= Time.time && clipSize > 0) {
-			
+
+			//Play flash particle for a second
 			muzzleFlash.Emit(1);
+			//Then enable muzzle flash light
+			muzzleLightFlash.enabled = true;
+			//muzzleFlashToggle = true;
+			//NM.player.GetComponent < PhotonView > ().RPC("ToggleMuzzleFlash", PhotonTargets.Others, true, NM.player.GetComponent < PhotonView > ().viewID);
 			clipSize--;
 			bulletsFired++;//For Stats Purposes 
 			ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
 			anim.SetBool("Fire", true);
 			shooting = true;
+
 			timeStamp = Time.time + 0.1f;
 			NM.player.GetComponent < PhotonView > ().RPC("ShootingSound", PhotonTargets.All, true);
 		} else {
 			anim.SetBool("Fire", false);
+			muzzleLightFlash.enabled = false;
+			//muzzleFlashToggle = true;
+			//NM.player.GetComponent < PhotonView > ().RPC("ToggleMuzzleFlash", PhotonTargets.Others, false, NM.player.GetComponent < PhotonView > ().viewID);
 		}
 		
 		if (Input.GetKeyDown(KeyCode.R) && !Input.GetButton("Fire1") && clipSize < 30 && clipAmount != 0 && !reloading) {

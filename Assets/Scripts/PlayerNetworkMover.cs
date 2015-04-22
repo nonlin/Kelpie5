@@ -29,6 +29,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	float Forward = 0f;
 	float turn = 0f;
 	bool initialLoad = true;
+	public bool muzzleFlashToggle = false;
 
 	public AudioClip Fire;
 	public AudioClip Reload;
@@ -51,7 +52,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[SerializeField] Animator animEthan;
 	[SerializeField] Animator animHitBoxes;
 	PhotonView photonView;
-	PlayerShooting playerShooting;
+	public PlayerShooting playerShooting;
 
 	//ColliderControl colidcon;
 	[SerializeField] bool alive;
@@ -100,6 +101,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			foreach(AudioListener AL in GetComponentsInChildren<AudioListener>()){
 				AL.enabled = true; 
 			}
+			//So that we can see our own weapons on the second camera and not other player weapons through walls
 			weapons = GameObject.FindGameObjectsWithTag("AK");
 			for(int i = 0; i < weapons.Length; i++){
 				//If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
@@ -127,7 +129,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 		}
 		else{
-		
+
 			StartCoroutine ("UpdateData");
 		}
 
@@ -156,6 +158,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			animEthan.SetBool ("Crouch",crouch);
 			animMainCam.SetBool("Crouch",crouch);
 			animHitBoxes.SetBool("Crouch",crouch);
+			//muzzleFlashToggle = playerShooting.shooting;
+			//Debug.Log (playerShooting.shooting);
 			yield return null; 
 		}
 	}
@@ -175,6 +179,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			stream.SendNext(animEthan.GetFloat("Forward"));
 			stream.SendNext(animEthan.GetFloat("Turn"));
 			stream.SendNext(animEthan.GetBool("Crouch"));
+			//stream.SendNext(muzzleFlashToggle);
 			//
 			stream.SendNext(alive);
 		
@@ -193,6 +198,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			Forward = (float)stream.ReceiveNext();
 			turn = (float)stream.ReceiveNext();
 			crouch = (bool)stream.ReceiveNext();
+			muzzleFlashToggle = (bool)stream.ReceiveNext();
 			//
 			alive = (bool)stream.ReceiveNext();
 			
@@ -277,32 +283,25 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			
 				audio1.clip = Fire;
 				audio1.Play();
-			}
 		}
+	}
 
 	[RPC]
 	public void ReloadingSound(){
-		
-		//if (firing) {
-			
-			//isShooting = true; 
-			audio1.clip = Reload;
-			audio1.Play();
-		//}
+
+		audio1.clip = Reload;
+		audio1.Play();
+
 	}
 
 	[RPC]
 	public void OutOfAmmo(){
-		
-		//if (firing) {
-		
-		//isShooting = true; 
+	
 		audio1.clip = Empty;
 		audio1.Play();
-		//}
+
 	}
-
-
+	
 	[RPC]
 	public void PlayLandingSound()
 	{
@@ -339,6 +338,30 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 		audio2.clip = flyByShots [Random.Range (0, 8)];
 		audio2.Play ();
+	}
+
+	//[RPC]
+	public void ToggleMuzzleFlash(bool toggle, int ID){
+		/*GameObject[] muzzleLightFlashGO = GameObject.FindGameObjectsWithTag("LightFlash");
+		
+		//To assign the each players own muzzle flash toggle and not someone elses. 
+		for(int i = 0; i < muzzleLightFlashGO.Length; i++){
+			//If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+			if(muzzleLightFlashGO[i].GetComponentInParent<PlayerNetworkMover>().GetComponent<PhotonView>().networkView.viewID == ID){
+				muzzleLightFlashGO[i].GetComponent<Light>().enabled = true;
+				yield return new WaitForSeconds(0.05f);
+				muzzleLightFlashGO[i].GetComponent<Light>().enabled = false;
+				//muzzleLightFlash.enabled = false;
+				//muzzleFlashToggle = false;
+				
+			}
+		}*/
+		//NM.AddMessage("Toggled: " + toggle);
+		//playerShooting.muzzleFlashToggle = toggle;
+		if(muzzleFlashToggle)
+			playerShooting.muzzleFlash.Emit(1);
+		//yield return new WaitForSeconds(0.05f);
+		//playerShooting.muzzleFlashToggle = !toggle;
 	}
 
 	// Update is called once per frame

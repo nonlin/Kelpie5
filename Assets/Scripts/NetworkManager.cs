@@ -95,6 +95,8 @@ public class NetworkManager : MonoBehaviour {
 				player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
 				player.GetComponentInChildren<PlayerShooting>().enabled = true;
 				pausePanel.SetActive(false);
+				optionsMenu.SetActive(false);
+				
 				//mainCanvas.enabled = true;
 				paused = !paused;
 			}
