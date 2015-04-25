@@ -11,7 +11,7 @@ public class PlayerShooting: MonoBehaviour {
 	public Light muzzleLightFlash;
 	public bool muzzleFlashToggle;
 	Animator anim;
-	
+	bool doOnce = false;
 	public GameObject impactPrefab;
 	public GameObject bloodSplatPrefab;
 	GameObject currentSplat;
@@ -60,24 +60,24 @@ public class PlayerShooting: MonoBehaviour {
 		ammoText = GameObject.FindGameObjectWithTag("Ammo").GetComponent < Text > ();
 		anim = GetComponentInChildren < Animator > ();
 		timeStamp = 0;
-		
+		//Intilize Current Ammo then call it every time the ammo changes when shooting to update
+		ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
 		
 	}
 	
 	// Update is called once per frame
 	void Update() {
-		//Always update this text
-		ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
 
 		if (Input.GetButton("Fire1") && !Input.GetKey(KeyCode.LeftShift) && timeStamp <= Time.time && clipSize > 0) {
 
+			doOnce = false;
 			//Play flash particle for a second
 			muzzleFlash.Emit(1);
 	
 			//Then enable muzzle flash light
 			muzzleLightFlash.enabled = true;
 
-			clipSize--;
+			clipSize--;//To display the current clipsize
 			bulletsFired++;//For Stats Purposes 
 			ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
 			anim.SetBool("Fire", true);
@@ -87,8 +87,11 @@ public class PlayerShooting: MonoBehaviour {
 			timeStamp = Time.time + 0.1f;
 			NM.player.GetComponent < PhotonView > ().RPC("ShootingSound", PhotonTargets.All, true);
 		} else {
-			anim.SetBool("Fire", false);
-			muzzleLightFlash.enabled = false;
+			if(!doOnce){
+				doOnce = true;
+				anim.SetBool("Fire", false);
+				muzzleLightFlash.enabled = false;
+			}
 
 		}
 		
