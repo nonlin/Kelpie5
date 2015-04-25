@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using ExitGames.Client.Photon;
+using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour {
 	float xAx;
 	float yAx;
 	public int killLimit;
+	bool doOnce = false;
 	[SerializeField] InputField killLimitInput;
 	// Use this for initialization
 	void Start () {
@@ -36,7 +38,13 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
+		if (PhotonNetwork.isMasterClient && !doOnce){
+			doOnce = true;
+			ExitGames.Client.Photon.Hashtable setKillLimit = new Hashtable(); 
+			setKillLimit["KL"] = killLimit;
+			PhotonNetwork.room.SetCustomProperties(setKillLimit);
+		}
 
 	}
 

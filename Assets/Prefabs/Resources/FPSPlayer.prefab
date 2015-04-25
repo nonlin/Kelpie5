@@ -3718,11 +3718,11 @@ Light:
   m_Type: 2
   m_Color: {r: .831372559, g: .776470602, b: .482352942, a: 1}
   m_Intensity: 3
-  m_Range: 6
-  m_SpotAngle: 135
+  m_Range: 4.92487764
+  m_SpotAngle: 100.05526
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_Strength: .5
     m_Bias: .0500000007
@@ -3753,8 +3753,10 @@ MonoBehaviour:
   muzzleFlash: {fileID: 19867874}
   muzzleLightFlashGO: []
   muzzleLightFlash: {fileID: 0}
+  muzzleFlashToggle: 0
   impactPrefab: {fileID: 164778, guid: 6444b6de1c8f7af4fb9294f0044b4f90, type: 2}
   bloodSplatPrefab: {fileID: 100000, guid: 80cd87e5e66b84b35b29f75198eeda8b, type: 2}
+  shooting: 0
   clipAmount: 3
   ammoText: {fileID: 0}
   target: {fileID: 0}
@@ -3871,6 +3873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerName: 
+  muzzleFlashToggle: 0
   Fire: {fileID: 8300000, guid: eb19c101e680075468ddaa277d8450f3, type: 3}
   Reload: {fileID: 8300000, guid: f5de39cefa5f73740b51645dc5498d06, type: 3}
   Empty: {fileID: 8300000, guid: d4bc06a9732617c43ad40b79daa9fdd4, type: 3}
@@ -3902,6 +3905,7 @@ MonoBehaviour:
   animMainCam: {fileID: 9522602}
   animEthan: {fileID: 9592996}
   animHitBoxes: {fileID: 9578350}
+  playerShooting: {fileID: 0}
   alive: 1
 --- !u!114 &11467880
 MonoBehaviour:

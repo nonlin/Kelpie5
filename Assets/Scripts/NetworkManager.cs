@@ -36,6 +36,7 @@ public class NetworkManager : MonoBehaviour {
 	public bool spawning = false; 
 	bool paused = false;
 	public bool joinedRoom = false;
+	public bool GameOver = false;
 
 	ExitGames.Client.Photon.Hashtable setPlayerKills = new ExitGames.Client.Photon.Hashtable() {{"K", 0}};
 	ExitGames.Client.Photon.Hashtable setPlayerDeaths = new ExitGames.Client.Photon.Hashtable() {{"D", 0}};
@@ -73,33 +74,7 @@ public class NetworkManager : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 
-			Debug.Log ("Esc hit");
-				if(!paused){
-
-				//Time.timeScale = 0;//To freeze time
-				Cursor.lockState = CursorLockMode.None;
-				Cursor.visible = true;
-				//Disable Shooting and movement
-				player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
-				player.GetComponentInChildren<PlayerShooting>().enabled = false;
-				pausePanel.SetActive(true);
-				//mainCanvas.enabled = false;
-				paused = !paused;
-			}
-			else{
-
-				//Time.timeScale = 1;
-				Cursor.lockState = CursorLockMode.Locked;
-				Cursor.visible = false;
-				//Re-Enable
-				player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
-				player.GetComponentInChildren<PlayerShooting>().enabled = true;
-				pausePanel.SetActive(false);
-				optionsMenu.SetActive(false);
-				
-				//mainCanvas.enabled = true;
-				paused = !paused;
-			}
+			PauseScreen();
 		}
 		//}
 		//RoundTimer();
@@ -250,6 +225,7 @@ public class NetworkManager : MonoBehaviour {
 		WinPrompt.SetActive(true);
 		WinPromptText.text = "Score Limit Reached! \n" + playerName + " Won";
 		player.GetComponentInChildren<PlayerShooting>().enabled = false;
+		GameOver = true;
 	}
 
 	void pingUpdate(){
@@ -266,6 +242,40 @@ public class NetworkManager : MonoBehaviour {
 
 		Application.Quit();
 	}
+
+	public void PauseScreen(){
+
+		Debug.Log ("Esc hit");
+		if(!paused){
+			
+			//Time.timeScale = 0;//To freeze time
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+			//Disable Shooting and movement
+			player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
+			player.GetComponentInChildren<PlayerShooting>().enabled = false;
+			pausePanel.SetActive(true);
+			//mainCanvas.enabled = false;
+			paused = !paused;
+		}
+		else{
+			
+			//Time.timeScale = 1;
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+			//Re-Enable
+			player.GetComponent<UnitySampleAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
+			//Basically we don't want shooting when game is over, so even if they pause it won't renable the shooting script.
+			if(!GameOver)
+				player.GetComponentInChildren<PlayerShooting>().enabled = true;
+			pausePanel.SetActive(false);
+			optionsMenu.SetActive(false);
+			
+			//mainCanvas.enabled = true;
+			paused = !paused;
+		}
+	}
+
 	void OnPhotonPlayerDisconnected(PhotonPlayer playerDC){
 		//Remove DC player from list of players
 

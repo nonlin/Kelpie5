@@ -27,7 +27,7 @@ public class PlayerShooting: MonoBehaviour {
 	List < GameObject > .Enumerator e;
 	GameObject CurrentImpact;
 	//GameObject[] impacts;
-	public NetworkManager NM;
+	NetworkManager NM;
 	int currentImpact = 0;
 	int maxImpacts = 20;
 	public bool shooting = false;
@@ -68,30 +68,28 @@ public class PlayerShooting: MonoBehaviour {
 	void Update() {
 		//Always update this text
 		ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
-		if(NM.player.GetComponent<PlayerNetworkMover>().muzzleFlashToggle)
-			Debug.Log (NM.player.GetComponent<PlayerNetworkMover>().muzzleFlashToggle);
-		muzzleLightFlash.enabled = NM.player.GetComponent<PlayerNetworkMover>().muzzleFlashToggle;
+
 		if (Input.GetButton("Fire1") && !Input.GetKey(KeyCode.LeftShift) && timeStamp <= Time.time && clipSize > 0) {
 
 			//Play flash particle for a second
 			muzzleFlash.Emit(1);
+	
 			//Then enable muzzle flash light
 			muzzleLightFlash.enabled = true;
-			//muzzleFlashToggle = true;
-			//NM.player.GetComponent < PhotonView > ().RPC("ToggleMuzzleFlash", PhotonTargets.Others, true, NM.player.GetComponent < PhotonView > ().viewID);
+
 			clipSize--;
 			bulletsFired++;//For Stats Purposes 
 			ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
 			anim.SetBool("Fire", true);
 			shooting = true;
-
+			//NM.player.GetComponent<PhotonView>().RPC("ToggleMuzzleFlash",PhotonTargets.All,true,0);
+			//NM.player.GetComponent<PlayerNetworkMover>().muzzleFlashToggle = true;
 			timeStamp = Time.time + 0.1f;
 			NM.player.GetComponent < PhotonView > ().RPC("ShootingSound", PhotonTargets.All, true);
 		} else {
 			anim.SetBool("Fire", false);
 			muzzleLightFlash.enabled = false;
-			//muzzleFlashToggle = true;
-			//NM.player.GetComponent < PhotonView > ().RPC("ToggleMuzzleFlash", PhotonTargets.Others, false, NM.player.GetComponent < PhotonView > ().viewID);
+
 		}
 		
 		if (Input.GetKeyDown(KeyCode.R) && !Input.GetButton("Fire1") && clipSize < 30 && clipAmount != 0 && !reloading) {
@@ -108,8 +106,9 @@ public class PlayerShooting: MonoBehaviour {
 			//StartCoroutine(EmptyGun());
 			NM.player.GetComponent < PhotonView > ().RPC("OutOfAmmo", PhotonTargets.All);
 		}
+
 		Debug.DrawRay(transform.position, transform.forward * 10, Color.red);
-		if (shooting) {
+		if (shooting ) {
 			
 			shooting = false;
 			

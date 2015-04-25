@@ -54,6 +54,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	PhotonView photonView;
 	public PlayerShooting playerShooting;
 
+	public Light muzzleLightFlash;
+	public GameObject[] muzzleLightFlashGO;
 	//ColliderControl colidcon;
 	[SerializeField] bool alive;
 	GameManager GMan;
@@ -81,6 +83,18 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		GMan = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager>();
 		playerShooting = GetComponentInChildren<PlayerShooting> ();
+		/*muzzleLightFlashGO = GameObject.FindGameObjectsWithTag("LightFlash");
+		
+		//To assign the each players own muzzle flash toggle and not someone elses. 
+		for(int i = 0; i < muzzleLightFlashGO.Length; i++){
+			//If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+			if(muzzleLightFlashGO[i].GetComponentInParent<PlayerShooting>().gameObject.GetInstanceID() == playerShooting.gameObject.GetInstanceID() ){
+				muzzleLightFlash = muzzleLightFlashGO[i].GetComponent<Light>();
+				//muzzleLightFlash.enabled = false;
+				//muzzleFlashToggle = false;
+				
+			}
+		}*/
 		//If its my player, not anothers
 		Debug.Log ("<color=red>Joined Room </color>" + PhotonNetwork.player.name + " " + photonView.isMine);
 		if (photonView.isMine) {
@@ -132,7 +146,16 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 			StartCoroutine ("UpdateData");
 		}
-
+		/*if(muzzleLightFlash != null){
+			muzzleFlashToggle = true;
+			if(muzzleFlashToggle){
+				Debug.Log ("muzzleFlash True");
+				muzzleLightFlash.enabled = true;
+			}
+			else{
+				muzzleLightFlash.enabled = false;
+			}
+		}*/
 	}
 
 	IEnumerator UpdateData(){
@@ -142,6 +165,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			initialLoad = false; 
 			transform.position = realPosition; 
 			transform.rotation = realRotation; 
+
 		}
 		while (true) {
 			//smooths every frame for the dummy players from where they are to where they should be, prevents jitter lose some accuracy I suppose
@@ -159,7 +183,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			animMainCam.SetBool("Crouch",crouch);
 			animHitBoxes.SetBool("Crouch",crouch);
 			//muzzleFlashToggle = playerShooting.shooting;
-			//Debug.Log (playerShooting.shooting);
+			//playerShooting.shooting = muzzleFlashToggle;
+
 			yield return null; 
 		}
 	}
@@ -180,7 +205,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			stream.SendNext(animEthan.GetFloat("Turn"));
 			stream.SendNext(animEthan.GetBool("Crouch"));
 			//stream.SendNext(muzzleFlashToggle);
-			//
+
 			stream.SendNext(alive);
 		
 		}
@@ -198,8 +223,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			Forward = (float)stream.ReceiveNext();
 			turn = (float)stream.ReceiveNext();
 			crouch = (bool)stream.ReceiveNext();
-			muzzleFlashToggle = (bool)stream.ReceiveNext();
-			//
+		//	muzzleFlashToggle = (bool)stream.ReceiveNext();
+
 			alive = (bool)stream.ReceiveNext();
 			
 		}
@@ -253,13 +278,13 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 				enemy.SetCustomProperties(setPlayerKills);
 
 				//If we reach the kill limit 
-				if(totalKIlls == GMan.killLimit){
+				if(totalKIlls == (int)(PhotonNetwork.room.customProperties["KL"])){
 					//Display Win Screen
 					NM.DisplayWinPrompt(enemy.name);
 				}
 
 				//Write Kills and Deaths to File On Death 
-				System.IO.File.AppendAllText (@"C:\Users\Public\PlayerStats.txt", "\n" + "KDR on Death: " + totalKIlls.ToString() + ":" + totalDeaths.ToString());
+				System.IO.File.AppendAllText (@"C:\Users\Public\PlayerStats.txt", "\n" + "KDR on Death: " + ((int)(PhotonNetwork.player.customProperties["K"])).ToString() + ":" + totalDeaths.ToString());
 
 				//Spawn ammo on death
 				PhotonNetwork.Instantiate("Ammo_AK47",transform.position - new Vector3 (0,0.9f,0), Quaternion.Euler(1.5f,149f,95f),0);
@@ -340,7 +365,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		audio2.Play ();
 	}
 
-	//[RPC]
+	[RPC]
 	public void ToggleMuzzleFlash(bool toggle, int ID){
 		/*GameObject[] muzzleLightFlashGO = GameObject.FindGameObjectsWithTag("LightFlash");
 		

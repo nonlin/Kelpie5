@@ -22,7 +22,7 @@ public class InRoomRoundTimer : MonoBehaviour
     public int SecondsPerTurn = 5;                  // time per round/turn
     public double StartTime;                        // this should could also be a private. i just like to see this in inspector
     public Rect TextPos = new Rect(0,80,150,300);   // default gui position. inspector overrides this!
-
+	bool doOnce = false;
     private bool startRoundWhenTimeIsSynced;        // used in an edge-case when we wanted to set a start time but don't know it yet.
     private const string StartTimeKey = "st";       // the name of our "start time" custom property.
 	[SerializeField] GameObject gameTimerText;
@@ -30,14 +30,16 @@ public class InRoomRoundTimer : MonoBehaviour
 	public Text gameTimeSecText;
 	public float minutes;
 	public double seconds;
-	[SerializeField] float timeLimit;
+	[SerializeField] float timeLimit = 10;
 	NetworkManager NM; 
 	[SerializeField] InputField timeLimitInput;
+
 	void Start(){
 
 		gameTimerText.SetActive (false);
 		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager>();
-		timeLimit = 10;
+
+
 	}
 
     private void StartRoundNow()
@@ -52,7 +54,9 @@ public class InRoomRoundTimer : MonoBehaviour
         }
         startRoundWhenTimeIsSynced = false;
 
-        
+		ExitGames.Client.Photon.Hashtable setTimeLimit = new Hashtable(); 
+		setTimeLimit["TL"] = (int)timeLimit;
+		PhotonNetwork.room.SetCustomProperties(setTimeLimit);
 
         ExitGames.Client.Photon.Hashtable startTimeProp = new Hashtable();  // only use ExitGames.Client.Photon.Hashtable for Photon
         startTimeProp[StartTimeKey] = PhotonNetwork.time;
@@ -64,8 +68,9 @@ public class InRoomRoundTimer : MonoBehaviour
     public void OnJoinedRoom()
     {
 		gameTimerText.SetActive (true);
-        if (PhotonNetwork.isMasterClient)
-        {
+		//Only want master client to set the initial values. 
+        if (PhotonNetwork.isMasterClient && !doOnce)
+		{	doOnce = true;
             this.StartRoundNow();
         }
         else
@@ -144,7 +149,9 @@ public class InRoomRoundTimer : MonoBehaviour
 			gameTimeSecText = GameObject.FindGameObjectWithTag("GameSec").GetComponent < Text > ();
 			gameTimeMinText.text = minutes.ToString("00");
 			gameTimeSecText.text = seconds.ToString("00");
-			if(minutes == timeLimit){
+
+			//If we run out time declare the person with the highest score as winner, no logic for ties atm.
+			if(minutes == (float)((int)(PhotonNetwork.room.customProperties["TL"]))){
 
 				SortedDictionary<string, int> playerKills = new SortedDictionary<string, int>();
 				foreach (PhotonPlayer p in PhotonNetwork.playerList) {
@@ -162,6 +169,7 @@ public class InRoomRoundTimer : MonoBehaviour
 
 		bool result = float.TryParse(timeLimitInput.text, out timeLimit);
 		if(result){
+
 			Debug.Log ("TimeLimit Accepted: " + timeLimit);
 		}
 		else{
