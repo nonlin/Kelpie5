@@ -1,7 +1,6 @@
 # Kelpie
-Publish Main Project
 
-Download Phonton Networking Plugin. 
+Download Phonton Networking Plugin. To do this go to Window->Asset Store and search for Photon Networking (Free). Download and Import but!!! (Keep Reading). 
 
 When importing the Photon Networking plugin a file used and mofified called InRoomRoundTimer
 located in Photon Unity Networking/UtilityScripts will be overwirrten with the default version provided
