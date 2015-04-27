@@ -2,7 +2,7 @@
 
 Download Phonton Networking Plugin. To do this go to Window->Asset Store and search for Photon Networking (Free). Download and Import but!!! (Keep Reading). 
 
-When importing the Photon Networking plugin a file used and mofified called InRoomRoundTimer
+When importing the Photon Networking plugin a file used and modified called InRoomRoundTimer
 located in Photon Unity Networking/UtilityScripts will be overwirrten with the default version provided
 by photon. Either uncheck that file so that it doesn't get imported/overwritten or once it does get overridden 
 copy over the download file from github and overwrite the orginal imported from photon. 
