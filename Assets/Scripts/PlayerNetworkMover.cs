@@ -16,7 +16,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	float smoothing = 10f;
 	float health = 100f;
 	public string playerName; 
-
+	public int pickedUpAmmo = 0;
 	GameObject[] weapons;
 	GameObject[] bodys;
 	//public GameObject injuryEffect;
@@ -285,7 +285,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 				//Write Kills and Deaths to File On Death 
 				System.IO.File.AppendAllText (@"C:\Users\Public\PlayerStats.txt", "\n" + "KDR on Death: " + ((int)(PhotonNetwork.player.customProperties["K"])).ToString() + ":" + totalDeaths.ToString());
-
+				//Write amount of ammo picked up so far until death. 
+				System.IO.File.AppendAllText (@"C:\Users\Public\PlayerStats.txt", "\n" + "Total Amount of ammmo picked up so far: " + pickedUpAmmo.ToString());
 				//Spawn ammo on death
 				PhotonNetwork.Instantiate("Ammo_AK47",transform.position - new Vector3 (0,0.9f,0), Quaternion.Euler(1.5f,149f,95f),0);
 				//Finally destroy the game Object.
@@ -421,6 +422,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			if(other.GetComponent<Ammo>().canGet){
 				Debug.Log ("<color=red>Picked Up Ammo</color>");
 				playerShooting.clipAmount++;
+				pickedUpAmmo++;
+				playerShooting.UpdateAmmoText();
 				other.GetComponent<Ammo>().OnPickUp();
 			}
 		}

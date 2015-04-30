@@ -61,7 +61,7 @@ public class PlayerShooting: MonoBehaviour {
 		anim = GetComponentInChildren < Animator > ();
 		timeStamp = 0;
 		//Intilize Current Ammo then call it every time the ammo changes when shooting to update
-		ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
+		UpdateAmmoText();
 		
 	}
 	
@@ -79,7 +79,7 @@ public class PlayerShooting: MonoBehaviour {
 
 			clipSize--;//To display the current clipsize
 			bulletsFired++;//For Stats Purposes 
-			ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
+			UpdateAmmoText();
 			anim.SetBool("Fire", true);
 			shooting = true;
 			//NM.player.GetComponent<PhotonView>().RPC("ToggleMuzzleFlash",PhotonTargets.All,true,0);
@@ -274,6 +274,11 @@ public class PlayerShooting: MonoBehaviour {
 			}
 		}
 		return hits.OrderBy(h => delta.magnitude).ToArray();
+	}
+
+	public void UpdateAmmoText(){
+
+		ammoText.text = clipAmount.ToString() + "/" + clipSize.ToString();
 	}
 	
 }

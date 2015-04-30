@@ -23,6 +23,7 @@ public class InRoomRoundTimer : MonoBehaviour
     public double StartTime;                        // this should could also be a private. i just like to see this in inspector
     public Rect TextPos = new Rect(0,80,150,300);   // default gui position. inspector overrides this!
 	bool doOnce = false;
+	bool playerWait = true;
     private bool startRoundWhenTimeIsSynced;        // used in an edge-case when we wanted to set a start time but don't know it yet.
     private const string StartTimeKey = "st";       // the name of our "start time" custom property.
 	[SerializeField] GameObject gameTimerText;
@@ -39,11 +40,11 @@ public class InRoomRoundTimer : MonoBehaviour
 		gameTimerText.SetActive (false);
 		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager>();
 
-
 	}
 
     private void StartRoundNow()
     {
+
         // in some cases, when you enter a room, the server time is not available immediately.
         // time should be 0.0f but to make sure we detect it correctly, check for a very low value.
         if (PhotonNetwork.time < 0.0001f)
@@ -61,7 +62,8 @@ public class InRoomRoundTimer : MonoBehaviour
         ExitGames.Client.Photon.Hashtable startTimeProp = new Hashtable();  // only use ExitGames.Client.Photon.Hashtable for Photon
         startTimeProp[StartTimeKey] = PhotonNetwork.time;
         PhotonNetwork.room.SetCustomProperties(startTimeProp);              // implement OnPhotonCustomRoomPropertiesChanged(Hashtable propertiesThatChanged) to get this change everywhere
-    }
+
+	}
 
     
     /// <summary>Called by PUN when this client entered a room (no matter if joined or created).</summary>
@@ -69,7 +71,7 @@ public class InRoomRoundTimer : MonoBehaviour
     {
 		gameTimerText.SetActive (true);
 		//Only want master client to set the initial values. 
-        if (PhotonNetwork.isMasterClient && !doOnce)
+		if (PhotonNetwork.isMasterClient && !doOnce)
 		{	doOnce = true;
             this.StartRoundNow();
         }
@@ -108,10 +110,15 @@ public class InRoomRoundTimer : MonoBehaviour
     {
 
 
-        if (startRoundWhenTimeIsSynced)
+		if (startRoundWhenTimeIsSynced)
         {
             this.StartRoundNow();   // the "time is known" check is done inside the method.
         }
+		//Start round time over once we have 2 or more players. 
+		if(PhotonNetwork.playerList.Count () > 1 && playerWait && PhotonNetwork.isMasterClient){
+			playerWait = false;
+			this.StartRoundNow(); 
+		}
 		DisplayTimer();
     }
 
@@ -138,31 +145,34 @@ public class InRoomRoundTimer : MonoBehaviour
 
 	public void DisplayTimer(){
 
-		double elapsedTime = (PhotonNetwork.time - StartTime);
+		//Only care about time related stuff like updating and win checking if there are two or more players
+		if(PhotonNetwork.playerList.Count() > 1){
 
-		minutes = (Mathf.Floor((float)elapsedTime / 60));
-		seconds = (elapsedTime % 60);
-		//If we've enabled the timer then we can set the time to the GUI
-		if(gameTimerText.activeSelf){
+			double elapsedTime = (PhotonNetwork.time - StartTime);
 
-			gameTimeMinText = GameObject.FindGameObjectWithTag("GameTimer").GetComponent < Text > ();
-			gameTimeSecText = GameObject.FindGameObjectWithTag("GameSec").GetComponent < Text > ();
-			gameTimeMinText.text = minutes.ToString("00");
-			gameTimeSecText.text = seconds.ToString("00");
+			minutes = (Mathf.Floor((float)elapsedTime / 60));
+			seconds = (elapsedTime % 60);
+			//If we've enabled the timer then we can set the time to the GUI
+			if(gameTimerText.activeSelf){
 
-			//If we run out time declare the person with the highest score as winner, no logic for ties atm.
-			if(minutes == (float)((int)(PhotonNetwork.room.customProperties["TL"]))){
+				gameTimeMinText = GameObject.FindGameObjectWithTag("GameTimer").GetComponent < Text > ();
+				gameTimeSecText = GameObject.FindGameObjectWithTag("GameSec").GetComponent < Text > ();
+				gameTimeMinText.text = minutes.ToString("00");
+				gameTimeSecText.text = seconds.ToString("00");
 
-				SortedDictionary<string, int> playerKills = new SortedDictionary<string, int>();
-				foreach (PhotonPlayer p in PhotonNetwork.playerList) {
+				//If we run out time declare the person with the highest score as winner, no logic for ties atm.
+				if(minutes == (float)((int)(PhotonNetwork.room.customProperties["TL"]))){
 
-					playerKills.Add (p.name, (int)p.customProperties["K"]);
+					SortedDictionary<string, int> playerKills = new SortedDictionary<string, int>();
+					foreach (PhotonPlayer p in PhotonNetwork.playerList) {
+
+						playerKills.Add (p.name, (int)p.customProperties["K"]);
+					}
+					//Order Dictionary by value with highest value first, then get the first and display the key (AKA Player Name)
+					NM.DisplayWinPrompt(playerKills.OrderByDescending(d => d.Value).First().Key);
 				}
-				//Order Dictionary by value with highest value first, then get the first and display the key (AKA Player Name)
-				NM.DisplayWinPrompt(playerKills.OrderByDescending(d => d.Value).First().Key);
 			}
 		}
-
 	}
 
 	public void SetTimeLimit(){

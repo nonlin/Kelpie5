@@ -231,7 +231,9 @@ namespace UnitySampleAssets.Characters.FirstPerson
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
             _isWalking = !Input.GetKey(KeyCode.LeftShift) || stamina <= staminaDrain;
-			bool aim = Input.GetButton("Fire2");
+			bool aim = false;
+			if(_isWalking)
+				aim = Input.GetButton("Fire2");
 			_isCrouching = Input.GetKey(KeyCode.LeftControl);
 
 			//Move the camera down then back up for crouch effect
