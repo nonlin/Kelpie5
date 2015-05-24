@@ -115,9 +115,10 @@ public class InRoomRoundTimer : MonoBehaviour
             this.StartRoundNow();   // the "time is known" check is done inside the method.
         }
 		//Start round time over once we have 2 or more players. 
+		//Buggy causes the round to restart iif there is a new masterClint I think(Doesn't do just once)
 		if(PhotonNetwork.playerList.Count () > 1 && playerWait && PhotonNetwork.isMasterClient){
 			playerWait = false;
-			this.StartRoundNow(); 
+			//this.StartRoundNow(); 
 		}
 		DisplayTimer();
     }
