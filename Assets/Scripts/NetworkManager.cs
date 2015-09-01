@@ -200,7 +200,7 @@ public class NetworkManager : MonoBehaviour {
 		photonView.RPC ("AddMessage_RPC", PhotonTargets.All, message);
 	}
 
-	[RPC]
+	[PunRPC]
 	void AddMessage_RPC(string message){
 
 		//Update queues for all clients
@@ -218,7 +218,7 @@ public class NetworkManager : MonoBehaviour {
 		photonView.RPC ("DisplayWinPrompt_RPC", PhotonTargets.All, playerName);
 	}
 
-	[RPC]
+	[PunRPC]
 	void DisplayWinPrompt_RPC(string playerName){
 
 		//Display Win Screen

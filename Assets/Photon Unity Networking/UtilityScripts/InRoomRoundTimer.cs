@@ -21,26 +21,30 @@ public class InRoomRoundTimer : MonoBehaviour
 {
     public int SecondsPerTurn = 5;                  // time per round/turn
     public double StartTime;                        // this should could also be a private. i just like to see this in inspector
-    public Rect TextPos = new Rect(0,80,150,300);   // default gui position. inspector overrides this!
-	bool doOnce = false;
-	bool playerWait = true;
+    public Rect TextPos = new Rect(0, 80, 150, 300);   // default gui position. inspector overrides this!
+    bool doOnce = false;
+    bool playerWait = true;
     private bool startRoundWhenTimeIsSynced;        // used in an edge-case when we wanted to set a start time but don't know it yet.
     private const string StartTimeKey = "st";       // the name of our "start time" custom property.
-	[SerializeField] GameObject gameTimerText;
-	public Text gameTimeMinText;
-	public Text gameTimeSecText;
-	public float minutes;
-	public double seconds;
-	[SerializeField] float timeLimit = 10;
-	NetworkManager NM; 
-	[SerializeField] InputField timeLimitInput;
+    [SerializeField]
+    GameObject gameTimerText;
+    public Text gameTimeMinText;
+    public Text gameTimeSecText;
+    public float minutes;
+    public double seconds;
+    [SerializeField]
+    float timeLimit = 10;
+    NetworkManager NM;
+    [SerializeField]
+    InputField timeLimitInput;
 
-	void Start(){
+    void Start()
+    {
 
-		gameTimerText.SetActive (false);
-		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager>();
+        gameTimerText.SetActive(false);
+        NM = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<NetworkManager>();
 
-	}
+    }
 
     private void StartRoundNow()
     {
@@ -55,24 +59,25 @@ public class InRoomRoundTimer : MonoBehaviour
         }
         startRoundWhenTimeIsSynced = false;
 
-		ExitGames.Client.Photon.Hashtable setTimeLimit = new Hashtable(); 
-		setTimeLimit["TL"] = (int)timeLimit;
-		PhotonNetwork.room.SetCustomProperties(setTimeLimit);
+        ExitGames.Client.Photon.Hashtable setTimeLimit = new Hashtable();
+        setTimeLimit["TL"] = (int)timeLimit;
+        PhotonNetwork.room.SetCustomProperties(setTimeLimit);
 
         ExitGames.Client.Photon.Hashtable startTimeProp = new Hashtable();  // only use ExitGames.Client.Photon.Hashtable for Photon
         startTimeProp[StartTimeKey] = PhotonNetwork.time;
         PhotonNetwork.room.SetCustomProperties(startTimeProp);              // implement OnPhotonCustomRoomPropertiesChanged(Hashtable propertiesThatChanged) to get this change everywhere
 
-	}
+    }
 
-    
+
     /// <summary>Called by PUN when this client entered a room (no matter if joined or created).</summary>
     public void OnJoinedRoom()
     {
-		gameTimerText.SetActive (true);
-		//Only want master client to set the initial values. 
-		if (PhotonNetwork.isMasterClient && !doOnce)
-		{	doOnce = true;
+        gameTimerText.SetActive(true);
+        //Only want master client to set the initial values. 
+        if (PhotonNetwork.isMasterClient && !doOnce)
+        {
+            doOnce = true;
             this.StartRoundNow();
         }
         else
@@ -110,17 +115,17 @@ public class InRoomRoundTimer : MonoBehaviour
     {
 
 
-		if (startRoundWhenTimeIsSynced)
+        if (startRoundWhenTimeIsSynced)
         {
             this.StartRoundNow();   // the "time is known" check is done inside the method.
         }
-		//Start round time over once we have 2 or more players. 
-		//Buggy causes the round to restart iif there is a new masterClint I think(Doesn't do just once)
-		if(PhotonNetwork.playerList.Count () > 1 && playerWait && PhotonNetwork.isMasterClient){
-			playerWait = false;
-			//this.StartRoundNow(); 
-		}
-		DisplayTimer();
+        //Start round time over once we have 2 or more players. 
+        if (PhotonNetwork.playerList.Count() > 1 && playerWait && PhotonNetwork.isMasterClient)
+        {
+            playerWait = false;
+            //this.StartRoundNow(); 
+        }
+        DisplayTimer();
     }
 
     public void OnGUI()
@@ -133,59 +138,67 @@ public class InRoomRoundTimer : MonoBehaviour
 
 
         // simple gui for output
-       /* GUILayout.BeginArea(TextPos);
-        GUILayout.Label(string.Format("elapsed: {0:0.000}", elapsedTime));
-        GUILayout.Label(string.Format("remaining: {0:0.000}", remainingTime));
-        GUILayout.Label(string.Format("turn: {0:0}", turn));
-        if (GUILayout.Button("new round"))
-        {
-            this.StartRoundNow();
-        }
-        GUILayout.EndArea();*/
+        /* GUILayout.BeginArea(TextPos);
+         GUILayout.Label(string.Format("elapsed: {0:0.000}", elapsedTime));
+         GUILayout.Label(string.Format("remaining: {0:0.000}", remainingTime));
+         GUILayout.Label(string.Format("turn: {0:0}", turn));
+         if (GUILayout.Button("new round"))
+         {
+             this.StartRoundNow();
+         }
+         GUILayout.EndArea();*/
     }
 
-	public void DisplayTimer(){
+    public void DisplayTimer()
+    {
 
-		//Only care about time related stuff like updating and win checking if there are two or more players
-		if(PhotonNetwork.playerList.Count() > 1){
+        //Only care about time related stuff like updating and win checking if there are two or more players
+        if (PhotonNetwork.playerList.Count() > 1)
+        {
 
-			double elapsedTime = (PhotonNetwork.time - StartTime);
+            double elapsedTime = (PhotonNetwork.time - StartTime);
 
-			minutes = (Mathf.Floor((float)elapsedTime / 60));
-			seconds = (elapsedTime % 60);
-			//If we've enabled the timer then we can set the time to the GUI
-			if(gameTimerText.activeSelf){
+            minutes = (Mathf.Floor((float)elapsedTime / 60));
+            seconds = (elapsedTime % 60);
+            //If we've enabled the timer then we can set the time to the GUI
+            if (gameTimerText.activeSelf)
+            {
 
-				gameTimeMinText = GameObject.FindGameObjectWithTag("GameTimer").GetComponent < Text > ();
-				gameTimeSecText = GameObject.FindGameObjectWithTag("GameSec").GetComponent < Text > ();
-				gameTimeMinText.text = minutes.ToString("00");
-				gameTimeSecText.text = seconds.ToString("00");
+                gameTimeMinText = GameObject.FindGameObjectWithTag("GameTimer").GetComponent<Text>();
+                gameTimeSecText = GameObject.FindGameObjectWithTag("GameSec").GetComponent<Text>();
+                gameTimeMinText.text = minutes.ToString("00");
+                gameTimeSecText.text = seconds.ToString("00");
 
-				//If we run out time declare the person with the highest score as winner, no logic for ties atm.
-				if(minutes == (float)((int)(PhotonNetwork.room.customProperties["TL"]))){
+                //If we run out time declare the person with the highest score as winner, no logic for ties atm.
+                if (minutes == (float)((int)(PhotonNetwork.room.customProperties["TL"])))
+                {
 
-					SortedDictionary<string, int> playerKills = new SortedDictionary<string, int>();
-					foreach (PhotonPlayer p in PhotonNetwork.playerList) {
+                    SortedDictionary<string, int> playerKills = new SortedDictionary<string, int>();
+                    foreach (PhotonPlayer p in PhotonNetwork.playerList)
+                    {
 
-						playerKills.Add (p.name, (int)p.customProperties["K"]);
-					}
-					//Order Dictionary by value with highest value first, then get the first and display the key (AKA Player Name)
-					NM.DisplayWinPrompt(playerKills.OrderByDescending(d => d.Value).First().Key);
-				}
-			}
-		}
-	}
+                        playerKills.Add(p.name, (int)p.customProperties["K"]);
+                    }
+                    //Order Dictionary by value with highest value first, then get the first and display the key (AKA Player Name)
+                    NM.DisplayWinPrompt(playerKills.OrderByDescending(d => d.Value).First().Key);
+                }
+            }
+        }
+    }
 
-	public void SetTimeLimit(){
+    public void SetTimeLimit()
+    {
 
-		bool result = float.TryParse(timeLimitInput.text, out timeLimit);
-		if(result){
+        bool result = float.TryParse(timeLimitInput.text, out timeLimit);
+        if (result)
+        {
 
-			Debug.Log ("TimeLimit Accepted: " + timeLimit);
-		}
-		else{
-			Debug.Log ("Error TimeLimit Can't be parsed");
-			timeLimit = 10;
-		}
-	}
+            Debug.Log("TimeLimit Accepted: " + timeLimit);
+        }
+        else
+        {
+            Debug.Log("Error TimeLimit Can't be parsed");
+            timeLimit = 10;
+        }
+    }
 }

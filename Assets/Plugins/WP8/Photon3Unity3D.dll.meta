@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: cb40498534490c84daaa81578cb2b3ab
+guid: 9dfb919a806fc7f4cb1b94addeb1a021
+timeCreated: 1434457307
+licenseType: Store
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
@@ -40,7 +42,7 @@ PluginImporter:
       settings:
         CPU: AnyCPU
         DontProcess: False
-        PlaceholderPath: 
+        PlaceholderPath: Assets/Plugins/Photon3Unity3D.dll
     Win:
       enabled: 0
       settings:

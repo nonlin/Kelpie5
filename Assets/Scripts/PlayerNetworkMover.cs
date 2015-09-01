@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -236,7 +236,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		return health;
 	}
 
-	[RPC]
+	[PunRPC]
 	public void GetShot(float damage, PhotonPlayer enemy){
 		//Take Damage and check for death
 		health -= damage;
@@ -271,6 +271,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 				PhotonNetwork.player.SetCustomProperties(setPlayerDeaths);
 
 				//Increment Kill Count for the enemy player
+                if(!(enemy.name == "DroneAI")){
 				int totalKIlls = (int)enemy.customProperties["K"];
 				totalKIlls ++;
 				ExitGames.Client.Photon.Hashtable setPlayerKills = new ExitGames.Client.Photon.Hashtable() {{"K", totalKIlls}};
@@ -282,11 +283,12 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 					//Display Win Screen
 					NM.DisplayWinPrompt(enemy.name);
 				}
-
+               
 				//Write Kills and Deaths to File On Death 
-				System.IO.File.AppendAllText (@"C:\Users\Public\PlayerStats.txt", "\n" + "KDR on Death: " + ((int)(PhotonNetwork.player.customProperties["K"])).ToString() + ":" + totalDeaths.ToString());
+				//System.IO.File.AppendAllText (@"C:\Users\Public\PlayerStats.txt", "\n" + "KDR on Death: " + ((int)(PhotonNetwork.player.customProperties["K"])).ToString() + ":" + totalDeaths.ToString());
 				//Write amount of ammo picked up so far until death. 
-				System.IO.File.AppendAllText (@"C:\Users\Public\PlayerStats.txt", "\n" + "Total Amount of ammmo picked up so far: " + pickedUpAmmo.ToString());
+                //System.IO.File.AppendAllText(@"C:\Users\Public\PlayerStats.txt", "\n" + "Total Amount of ammmo picked up so far: " + pickedUpAmmo.ToString());
+                }
 				//Spawn ammo on death
 				PhotonNetwork.Instantiate("Ammo_AK47",transform.position - new Vector3 (0,0.9f,0), Quaternion.Euler(1.5f,149f,95f),0);
 				//Finally destroy the game Object.
@@ -302,7 +304,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	}
 
 
-	[RPC]
+	[PunRPC]
 	public void ShootingSound(bool firing){
 		
 		if (firing) {
@@ -312,7 +314,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		}
 	}
 
-	[RPC]
+	[PunRPC]
 	public void ReloadingSound(){
 
 		audio1.clip = Reload;
@@ -320,7 +322,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 	}
 
-	[RPC]
+	[PunRPC]
 	public void OutOfAmmo(){
 	
 		audio1.clip = Empty;
@@ -328,7 +330,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 	}
 	
-	[RPC]
+	[PunRPC]
 	public void PlayLandingSound()
 	{
 		GetComponent<AudioSource>().clip = _landSound;
@@ -337,7 +339,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		
 	}
 	
-	[RPC]
+	[PunRPC]
 	public void PlayJumpSound()
 	{
 		GetComponent<AudioSource>().clip = _jumpSound;
@@ -345,7 +347,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	}
 
 	
-	[RPC]
+	[PunRPC]
 	public void PlayFootStepAudio()
 	{
 		//if (!_characterController.isGrounded) return;
@@ -359,14 +361,14 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		_footstepSounds[0] = GetComponent<AudioSource>().clip;
 	}
 
-	[RPC]
+	[PunRPC]
 	public void PlayFlyByShots(){
 
 		audio2.clip = flyByShots [Random.Range (0, 8)];
 		audio2.Play ();
 	}
 
-	[RPC]
+	[PunRPC]
 	public void ToggleMuzzleFlash(bool toggle, int ID){
 		/*GameObject[] muzzleLightFlashGO = GameObject.FindGameObjectsWithTag("LightFlash");
 		

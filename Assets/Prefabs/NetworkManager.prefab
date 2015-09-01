@@ -40,7 +40,8 @@ AudioSource:
   m_GameObject: {fileID: 181898}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24353472, guid: a9f695d13010d374eb56168dafba14bc,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: 7d629ae13f62dd9479ae4c9c3fe6e554, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -186,12 +187,12 @@ MonoBehaviour:
   group: 0
   prefixBackup: -1
   observed: {fileID: 0}
-  synchronization: 3
+  synchronization: 0
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 11481898}
+  - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -235,6 +236,7 @@ MonoBehaviour:
   player: {fileID: 0}
   spawning: 0
   joinedRoom: 0
+  GameOver: 0
 --- !u!114 &11483726
 MonoBehaviour:
   m_ObjectHideFlags: 1

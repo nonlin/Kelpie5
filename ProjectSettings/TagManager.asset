@@ -28,6 +28,7 @@ TagManager:
   - GameSec
   - RoomList
   - LightFlash
+  - DroneDetectionRadius
   layers:
   - Default
   - TransparentFX
