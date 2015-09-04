@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 499552}
   - 33: {fileID: 3377352}
   - 23: {fileID: 2318814}
+  - 114: {fileID: 11405118}
   m_Layer: 0
   m_Name: PA_DroneBladeRight
   m_TagString: Untagged
@@ -129,6 +130,7 @@ GameObject:
   - 4: {fileID: 406946}
   - 33: {fileID: 3301336}
   - 23: {fileID: 2341978}
+  - 114: {fileID: 11417438}
   m_Layer: 0
   m_Name: PA_DroneBladeLeft
   m_TagString: Untagged
@@ -154,7 +156,7 @@ GameObject:
   - 114: {fileID: 11473888}
   m_Layer: 0
   m_Name: PA_Drone 1
-  m_TagString: Untagged
+  m_TagString: FlyByRange
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -656,6 +658,30 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &11405118
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f5c292a5f18834e83d6e36a8998166, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RPM: 1000
+--- !u!114 &11417438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70f5c292a5f18834e83d6e36a8998166, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RPM: 1000
 --- !u!114 &11473888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -671,12 +697,12 @@ MonoBehaviour:
   group: 0
   prefixBackup: -1
   observed: {fileID: 0}
-  synchronization: 0
+  synchronization: 3
   onSerializeTransformOption: 3
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 0}
+  - {fileID: 447426}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
@@ -712,7 +738,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 4.5
-  m_Center: {x: 0, y: -2.61999989, z: 4.21999979}
+  m_Center: {x: 0, y: -2.42000008, z: 4.21999979}
 --- !u!195 &19558378
 NavMeshAgent:
   m_ObjectHideFlags: 1

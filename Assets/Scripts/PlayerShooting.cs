@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -39,6 +39,7 @@ public class PlayerShooting: MonoBehaviour {
 	public Transform target;
 	bool enumDeclared = false;
 	int bulletsFired = 0;
+    int MaxRange = 10000;
 	// Use this for initialization
 	void Start() {
 		
@@ -118,11 +119,11 @@ public class PlayerShooting: MonoBehaviour {
 			RaycastHit[] hits;
 			bool flyByTrue = true;
 			int decalHitCount = 0;//to know how many walls we've hit limit bullet decal spray
-			hits = RaycastAllNonConvex(transform.position, transform.forward);
+			hits = RaycastAllNonConvex(transform.position, transform.forward * MaxRange);
 			// Physics.RaycastAll(transform.position, transform.forward);//.OrderBy(h=>h.distance).ToArray();
 		
 			Debug.Log("Origin: " + transform.position + ", direction: " + transform.forward);
-			Debug.DrawRay(transform.position, transform.forward * 10, Color.red);
+            Debug.DrawRay(transform.position, transform.forward * MaxRange, Color.red);
 			
 			foreach(RaycastHit hit in hits) {
 				
@@ -262,11 +263,12 @@ public class PlayerShooting: MonoBehaviour {
 		List < RaycastHit > hits = new List < RaycastHit > ();
 		Vector3 delta = destination - origin;
 		Vector3 dir = destination.normalized;
-		
+        int RayCastPenetratinLimit = 9;
 		while (true) {
 			RaycastHit hit;
 			float dist = delta.magnitude; //get raycast distance
-			if (Physics.Raycast(origin, dir, out hit, dist)) {
+            if (Physics.Raycast(origin, dir, out hit, dist) && hits.Count < RayCastPenetratinLimit)
+            {
 				origin = hit.point + dir * 0.01f; //rem that collision is inclusive
 				hits.Add(hit); //Add this point to the list
 			} else {
