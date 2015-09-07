@@ -1,4 +1,4 @@
-﻿using ExitGames.Client.Photon;
+using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 	public Text yAxis_Text;
 	public Toggle smoothToggle;
 	public Toggle vSync;
+    public Toggle DOF;
+    public Toggle CMB;
 	NetworkManager NM;
 	float xAx;
 	float yAx;
@@ -24,13 +26,17 @@ public class GameManager : MonoBehaviour {
 			PlayerPrefs.SetFloat ("xAxis", 15f);
 			PlayerPrefs.SetFloat ("yAxis", 15f);
 			PlayerPrefs.SetInt("smooth", (false ? 1 : 0));
+            PlayerPrefs.Save();
 		}
 
 		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager> ();
+        //Load Saved Settings when game is loaded, setting is on if not 0 (aka equal to 1)
 		yAxis_Text.text = PlayerPrefs.GetFloat("yAxis").ToString();
 		xAxis_Text.text = PlayerPrefs.GetFloat("xAxis").ToString();
 		smoothToggle.isOn = (PlayerPrefs.GetInt("smooth") != 0);
 		vSync.isOn = (PlayerPrefs.GetInt("vSync") != 0);
+        DOF.isOn = (PlayerPrefs.GetInt("DOF") != 0);
+        CMB.isOn = (PlayerPrefs.GetInt("CMB") != 0);
 		optionsAnim = GameObject.FindGameObjectWithTag ("OptionsPanel").GetComponent<Animator> ();
 		killLimit = 10;
 
@@ -64,12 +70,14 @@ public class GameManager : MonoBehaviour {
 		
 		PlayerPrefs.SetFloat("xAxis", xAxis);
 		xAxis_Text.text = xAxis.ToString();
+        PlayerPrefs.Save();
 	}
 	
 	public void SetMouseY(float yAxis){
 		
 		PlayerPrefs.SetFloat("yAxis", yAxis);
 		yAxis_Text.text = yAxis.ToString();
+        PlayerPrefs.Save();
 	}
 
 	public void SmoothMouse(bool on){
@@ -87,6 +95,7 @@ public class GameManager : MonoBehaviour {
 
 		optionsAnim.SetBool ("Show", false);
 		NM.optionsMenu.SetActive (false);
+        PlayerPrefs.Save();
 	}
 
 	public void ShowServerOptions(){
@@ -98,12 +107,29 @@ public class GameManager : MonoBehaviour {
 		
 		//serverOptionsAnim.SetBool ("Show", false);
 		NM.serverOptionsMenu.SetActive (false);
+        PlayerPrefs.Save();
 	}
 
 	public void VsyncToggle(bool on){
 
 		PlayerPrefs.SetInt("vSync", (on ? 1 : 0));
+        PlayerPrefs.Save();
 	}
+
+    public void DOFToggle(bool on){
+
+        PlayerPrefs.SetInt("DOF", (on ? 1 : 0));
+        PlayerPrefs.Save();
+        Debug.Log("DOF" + PlayerPrefs.GetInt("DOF"));
+    }
+
+    public void CMBToggle(bool on)
+    {
+
+        PlayerPrefs.SetInt("CMB", (on ? 1 : 0));
+        PlayerPrefs.Save();
+        Debug.Log("CMB" + PlayerPrefs.GetInt("CMB"));
+    }
 
 	public void QuitGame(){
 		

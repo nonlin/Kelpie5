@@ -31,6 +31,8 @@ MonoBehaviour:
   yAxis_Text: {fileID: 0}
   smoothToggle: {fileID: 0}
   vSync: {fileID: 0}
+  DOF: {fileID: 0}
+  CMB: {fileID: 0}
   killLimit: 10
   killLimitInput: {fileID: 0}
 --- !u!224 &22498752

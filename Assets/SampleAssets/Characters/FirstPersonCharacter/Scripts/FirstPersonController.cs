@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnitySampleAssets.CrossPlatformInput;
 using UnitySampleAssets.Utility;
 using UnityEngine.UI;
@@ -231,6 +231,7 @@ namespace UnitySampleAssets.Characters.FirstPerson
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
             _isWalking = !Input.GetKey(KeyCode.LeftShift) || stamina <= staminaDrain;
+            Debug.Log("<color=yellow>Sprint Bool: </color>" + Input.GetKeyDown("left shift"));
 			bool aim = false;
 			if(_isWalking)
 				aim = Input.GetButton("Fire2");

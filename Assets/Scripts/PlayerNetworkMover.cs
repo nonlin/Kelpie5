@@ -60,6 +60,11 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[SerializeField] bool alive;
 	GameManager GMan;
 	NetworkManager NM;
+    public UnityStandardAssets.ImageEffects.CameraMotionBlur cameraMotionBlur;
+    public UnityStandardAssets.ImageEffects.DepthOfField depthOfField;
+    bool CMBEnabled = false;
+    bool DOFEnabled = false;
+    bool myAim = false;
 	//AudioSource audio;
 	// Use this for initialization
 	void Start () {
@@ -83,6 +88,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		GMan = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager>();
 		playerShooting = GetComponentInChildren<PlayerShooting> ();
+
 		/*muzzleLightFlashGO = GameObject.FindGameObjectsWithTag("LightFlash");
 		
 		//To assign the each players own muzzle flash toggle and not someone elses. 
@@ -141,6 +147,28 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			//If player is ours have CC ignore body parts
 			Physics.IgnoreLayerCollision(0,12, true);
 
+            cameraMotionBlur = this.GetComponentInChildren<UnityStandardAssets.ImageEffects.CameraMotionBlur>();
+            depthOfField = this.GetComponentInChildren<UnityStandardAssets.ImageEffects.DepthOfField>();
+            //Enable CameraMotionBlur if Setting is allowed to be on
+            if (PlayerPrefs.GetInt("CMB") == 1)
+            {
+                CMBEnabled = true;
+            }
+            else
+            {
+                CMBEnabled = false;
+                cameraMotionBlur.enabled = false;
+            }
+
+            if (PlayerPrefs.GetInt("DOF") == 1)
+            {
+                DOFEnabled = true;
+            }
+            else
+            {
+                DOFEnabled = false;
+                depthOfField.enabled = false;
+            }
 		}
 		else{
 
@@ -401,6 +429,19 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			gameObject.GetComponent<PhotonView>().RPC ("GetShot", PhotonTargets.All, 25f, PhotonNetwork.player);
 			Debug.Log (health);
 		}
+
+        myAim = Input.GetButton("Fire2");
+        //We use these settings for aiming only, if they are on and we are aiming use them
+        if (myAim && DOFEnabled)
+        {
+            depthOfField.enabled = true;
+        }
+        else if (depthOfField.enabled = true && !myAim) { depthOfField.enabled = false; }
+        if (myAim && CMBEnabled)
+        {
+            cameraMotionBlur.enabled = true;
+        }
+        else if (cameraMotionBlur.enabled = true && !myAim) { cameraMotionBlur.enabled = false; }
 	}
 
 	private IEnumerator WaitForAnimation ( float waitTime )
