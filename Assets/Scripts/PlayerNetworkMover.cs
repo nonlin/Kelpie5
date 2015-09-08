@@ -31,9 +31,9 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	bool initialLoad = true;
 	public bool muzzleFlashToggle = false;
 
-	public AudioClip Fire;
-	public AudioClip Reload;
-	public AudioClip Empty;
+    List<Weapon> WeaponList = new List<Weapon>();
+    Weapon currentWeapon;
+
 	[SerializeField] private AudioClip _jumpSound; // the sound played when character leaves the ground.
 	[SerializeField] private AudioClip _landSound; // the sound played when character touches back on ground.
 	[SerializeField] private AudioClip[] _footstepSounds;
@@ -121,13 +121,12 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			foreach(AudioListener AL in GetComponentsInChildren<AudioListener>()){
 				AL.enabled = true; 
 			}
+
 			//So that we can see our own weapons on the second camera and not other player weapons through walls
-			weapons = GameObject.FindGameObjectsWithTag("AK");
-			for(int i = 0; i < weapons.Length; i++){
-				//If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
-				if(weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID() )
-					weapons[i].layer = 10; 
-			}
+            WeaponSetup();
+            currentWeapon = WeaponList[0];
+
+            Debug.Log(currentWeapon.name + " <color=red> Current Weapon Name </color> ");
 			//Change Body Part Collider Layers from default to body just for the player's own game not all players so that they can collide with others
 			//We need to ignore colliders cause we layer a lot of them together
 			//So we find all body parts and if it matches our own we are good to change it so it can be ignored.
@@ -216,6 +215,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			yield return null; 
 		}
 	}
+
 	//Serilize Data Across the network, we want everyone to know where they are
 	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){
 
@@ -258,6 +258,31 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		}
 																												
 	}
+
+    public void WeaponSetup() {
+        //So that we can see our own weapons on the second camera and not other player weapons through walls
+        weapons = GameObject.FindGameObjectsWithTag("WeaponMain");
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+            if (weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+            {
+                weapons[i].layer = 10;
+                Debug.Log(" <color=red> Current Weapon Name </color> " + " " + weapons[i].name);
+                WeaponList.Add(weapons[i].GetComponent<Weapon>());
+            }
+        }
+
+        weapons = GameObject.FindGameObjectsWithTag("WeaponParts");
+        for (int i = 0; i < weapons.Length; i++)
+        {
+            //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+            if (weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+            {
+                weapons[i].layer = 10;
+            }
+        }
+    }
 
 	public float GetHealth(){
 
@@ -337,7 +362,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		
 		if (firing) {
 			
-				audio1.clip = Fire;
+				audio1.clip = currentWeapon.Fire;
 				audio1.Play();
 		}
 	}
@@ -345,7 +370,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[PunRPC]
 	public void ReloadingSound(){
 
-		audio1.clip = Reload;
+		audio1.clip = currentWeapon.Reload;
 		audio1.Play();
 
 	}
@@ -353,7 +378,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[PunRPC]
 	public void OutOfAmmo(){
 	
-		audio1.clip = Empty;
+		audio1.clip = currentWeapon.Empty;
 		audio1.Play();
 
 	}
@@ -432,16 +457,23 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
         myAim = Input.GetButton("Fire2");
         //We use these settings for aiming only, if they are on and we are aiming use them
-        if (myAim && DOFEnabled)
+        if (depthOfField != null)
         {
-            depthOfField.enabled = true;
+            if (myAim && DOFEnabled)
+            {
+                depthOfField.enabled = true;
+            }
+            else if (depthOfField.enabled = true && !myAim) { depthOfField.enabled = false; }
         }
-        else if (depthOfField.enabled = true && !myAim) { depthOfField.enabled = false; }
-        if (myAim && CMBEnabled)
+
+        if (cameraMotionBlur != null)
         {
-            cameraMotionBlur.enabled = true;
+            if (myAim && CMBEnabled)
+            {
+                cameraMotionBlur.enabled = true;
+            }
+            else if (cameraMotionBlur.enabled = true && !myAim) { cameraMotionBlur.enabled = false; }
         }
-        else if (cameraMotionBlur.enabled = true && !myAim) { cameraMotionBlur.enabled = false; }
 	}
 
 	private IEnumerator WaitForAnimation ( float waitTime )
@@ -464,8 +496,11 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 			if(other.GetComponent<Ammo>().canGet){
 				Debug.Log ("<color=red>Picked Up Ammo</color>");
-				playerShooting.clipAmount++;
+                //Don't excede clip size limit
+                if (playerShooting.WeaponStats.clipAmount < playerShooting.WeaponStats.clipAmountMax)
+                    playerShooting.WeaponStats.clipAmount++;
 				pickedUpAmmo++;
+                //Update teh ammo shown
 				playerShooting.UpdateAmmoText();
 				other.GetComponent<Ammo>().OnPickUp();
 			}

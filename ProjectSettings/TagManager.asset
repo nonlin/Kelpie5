@@ -29,6 +29,10 @@ TagManager:
   - RoomList
   - LightFlash
   - DroneDetectionRadius
+  - Shotgun
+  - WeaponMain
+  - WeaponParts
+  - Weapon
   layers:
   - Default
   - TransparentFX

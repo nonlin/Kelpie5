@@ -259,7 +259,7 @@ namespace UnitySampleAssets.Characters.FirstPerson
 			if(aim && !doOnce){
 				_isWalking = true; 
 				doOnce = true;
-				_mouseLook.XSensitivity = mouseTempX - (mouseTempX * 0.45f);//Probalby have to store it in a temp to do a perecent reduction
+				_mouseLook.XSensitivity = mouseTempX - (mouseTempX * 0.45f);
 				_mouseLook.YSensitivity = mouseTempY - (mouseTempY  * 0.45f);
 
 				Debug.Log (_mouseLook.YSensitivity);
@@ -271,7 +271,7 @@ namespace UnitySampleAssets.Characters.FirstPerson
 				_mouseLook.XSensitivity = PlayerPrefs.GetFloat ("xAxis");
 				_mouseLook.YSensitivity = PlayerPrefs.GetFloat ("yAxis");
 			}
-			//
+			//Player Movement Animation Logic
 			AnimationLogic(vertical, horizontal);
 
 			//Weapon Animations
