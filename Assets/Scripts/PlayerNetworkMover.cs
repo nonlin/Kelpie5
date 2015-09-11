@@ -65,6 +65,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
     bool CMBEnabled = false;
     bool DOFEnabled = false;
     bool myAim = false;
+    bool qSwapping = false;
 	//AudioSource audio;
 	// Use this for initialization
 	void Start () {
@@ -199,6 +200,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			//Ideally we want the movement to be equal to the amount of time since the last update
 			transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);// + _characterController.velocity * Time.deltaTime;
 			transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);//Time.deltaTime * smoothing
+            //qSwapping = Input.GetKeyDown(KeyCode.Q);
 			//Sync Animation States
 			anim.SetBool ("Aim", aim); 
 			anim.SetBool ("Sprint", sprint); 
@@ -224,7 +226,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			stream.SendNext(playerName);
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
-			stream.SendNext(health); 
+			stream.SendNext(health);
+            //stream.SendNext(qSwapping);
 			//Sync Animation States
 			stream.SendNext(anim.GetBool ("Aim"));
 			stream.SendNext(anim.GetBool ("Sprint"));
@@ -244,6 +247,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			realPosition = (Vector3)stream.ReceiveNext();
 			realRotation = (Quaternion)stream.ReceiveNext();
 			health = (float)stream.ReceiveNext();
+            //qSwapping = (bool)stream.ReceiveNext();
 			//Sync Animation States
 			aim = (bool)stream.ReceiveNext();
 			sprint = (bool)stream.ReceiveNext();
@@ -260,26 +264,29 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	}
 
     public void WeaponSetup() {
-        //So that we can see our own weapons on the second camera and not other player weapons through walls
-        weapons = GameObject.FindGameObjectsWithTag("WeaponMain");
-        for (int i = 0; i < weapons.Length; i++)
-        {
-            //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
-            if (weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
-            {
-                weapons[i].layer = 10;
-                Debug.Log(" <color=red> Current Weapon Name </color> " + " " + weapons[i].name);
-                WeaponList.Add(weapons[i].GetComponent<Weapon>());
-            }
-        }
+        if (photonView.isMine) { 
 
-        weapons = GameObject.FindGameObjectsWithTag("WeaponParts");
-        for (int i = 0; i < weapons.Length; i++)
-        {
-            //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
-            if (weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+            //So that we can see our own weapons on the second camera and not other player weapons through walls
+            weapons = GameObject.FindGameObjectsWithTag("WeaponMain");
+            for (int i = 0; i < weapons.Length; i++)
             {
-                weapons[i].layer = 10;
+                //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+                if (weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                {
+                    weapons[i].layer = 10;
+                    Debug.Log(" <color=red> Current Weapon Name </color> " + " " + weapons[i].name);
+                    WeaponList.Add(weapons[i].GetComponent<Weapon>());
+                }
+            }
+
+            weapons = GameObject.FindGameObjectsWithTag("WeaponParts");
+            for (int i = 0; i < weapons.Length; i++)
+            {
+                //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+                if (weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                {
+                    weapons[i].layer = 10;
+                }
             }
         }
     }
@@ -459,20 +466,20 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
         //We use these settings for aiming only, if they are on and we are aiming use them
         if (depthOfField != null)
         {
-            if (myAim && DOFEnabled)
+            if (aim && DOFEnabled)
             {
                 depthOfField.enabled = true;
             }
-            else if (depthOfField.enabled = true && !myAim) { depthOfField.enabled = false; }
+            else if (depthOfField.enabled = true && !aim) { depthOfField.enabled = false; }
         }
 
         if (cameraMotionBlur != null)
         {
-            if (myAim && CMBEnabled)
+            if (aim && CMBEnabled)
             {
                 cameraMotionBlur.enabled = true;
             }
-            else if (cameraMotionBlur.enabled = true && !myAim) { cameraMotionBlur.enabled = false; }
+            else if (cameraMotionBlur.enabled = true && !aim) { cameraMotionBlur.enabled = false; }
         }
 
         if (Input.GetKeyDown(KeyCode.Q))

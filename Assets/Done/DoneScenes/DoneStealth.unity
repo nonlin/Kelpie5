@@ -1523,7 +1523,7 @@ Transform:
   - {fileID: 1095297338}
   - {fileID: 1814646207}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
 --- !u!64 &35376001
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12685,7 +12685,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 468068, guid: 1d703e2c0ec63bc4cbfaa2e1e5b55e71, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11467874, guid: 1d703e2c0ec63bc4cbfaa2e1e5b55e71, type: 2}
       propertyPath: ammoText

@@ -280,15 +280,8 @@ namespace UnitySampleAssets.Characters.FirstPerson
                 SwapWeapons();
             }
 
-			if(_isCrouching){
 
-				animMainCam.SetBool("Crouch",true);
-				animHitBoxes.SetBool("Crouch",true);
-			}
-			else{
-				animMainCam.SetBool("Crouch",false);
-				animHitBoxes.SetBool("Crouch",false);
-			}
+
 			//Slow mouse movement when aiming by 45 percent
 			if(aim && !doOnce){
 				_isWalking = true; 
@@ -443,8 +436,24 @@ namespace UnitySampleAssets.Characters.FirstPerson
 				animEthan.SetFloat("Jump",5 - 0.1f);			
 			}
 
-			//Crouching
-			animEthan.SetBool ("Crouch",_isCrouching);
+            //Crouching
+            //When Crouching we have to toggle the characters animations, shift the hit boxes and shift the weapons position to have a convincing looking crouch
+            if (_isCrouching)
+            {
+
+                animMainCam.SetBool("Crouch", _isCrouching);
+                animHitBoxes.SetBool("Crouch", _isCrouching);
+                animEthan.SetBool("Crouch", _isCrouching);
+            }
+            else
+            {
+                animMainCam.SetBool("Crouch", _isCrouching);
+                animHitBoxes.SetBool("Crouch", _isCrouching);
+                animEthan.SetBool("Crouch", _isCrouching);
+            }
+
+			
+			//animEthan.SetBool ("Crouch",_isCrouching);
 		}
 		IEnumerator StaminaRegen(float waitTime){
 
