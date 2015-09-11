@@ -59,7 +59,7 @@ public class PlayerShooting: MonoBehaviour {
 		}
 
 		ammoText = GameObject.FindGameObjectWithTag("Ammo").GetComponent < Text > ();
-		anim = GetComponentInChildren < Animator > ();
+        anim = GetComponentInChildren<Animator>();
 		timeStamp = 0;
 		//Intilize Current Ammo then call it every time the ammo changes when shooting to update
 		UpdateAmmoText();
@@ -118,11 +118,17 @@ public class PlayerShooting: MonoBehaviour {
         if (shooting) {
 
             //Loop through weapon's rayCount to cast more than one ray if weapons permits like a shotgun for example
-            for (int k = 0; k < 1; ++k) { 
+            for (int k = 0; k < WeaponStats.rayCount; ++k) { 
                 ShotLogic();
                 //Debug.Log("<color=yellow> Raycast Count </color>" + k + " " + WeaponStats.rayCount);
             }
             shooting = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q)) {
+
+            WeaponStats = GetComponentInChildren<Weapon>();
+            UpdateAmmoText();
         }
         
 	}
@@ -159,14 +165,14 @@ public class PlayerShooting: MonoBehaviour {
         Debug.DrawRay(transform.position, direction * WeaponStats.MaxRange, Color.red);
         // Physics.RaycastAll(transform.position, transform.forward);//.OrderBy(h=>h.distance).ToArray();
 
-        Debug.Log("Origin: " + transform.position + ", direction: " + transform.forward);
+        //Debug.Log("Origin: " + transform.position + ", direction: " + transform.forward);
         Debug.DrawRay(transform.position, transform.forward * WeaponStats.MaxRange, Color.red);
 
-        foreach (RaycastHit hit in hits)
+        /*foreach (RaycastHit hit in hits)
         {
 
             Debug.Log("<color=blue>Hit Order: </color>" + hit.collider.name + " " + hit.distance);
-        }
+        }*/
 
         for (int i = 0; i < hits.Length; i++)
         {
@@ -175,7 +181,7 @@ public class PlayerShooting: MonoBehaviour {
             {
 
                 Quaternion hitRotation = Quaternion.FromToRotation(Vector3.up, hits[i].normal);
-                Debug.Log("<color=red>Tag of Hit Object</color> " + hits[i].transform.tag + " " + hits[i].transform.name + " " + hits.Length);
+                //Debug.Log("<color=red>Tag of Hit Object</color> " + hits[i].transform.tag + " " + hits[i].transform.name + " " + hits.Length);
                 //If they hit the FlyByRange first or second then we know we can check to see if they hit the player
                 if (i == 1 || i == 2 && (hits[0].collider.tag == "FlyByRange" || hits[1].collider.tag == "FlyByRange")) if (hits[i].collider.tag == "Body")
                     {
@@ -203,7 +209,7 @@ public class PlayerShooting: MonoBehaviour {
                             damage = WeaponStats.damage / 1.6f;
                         }
 
-                        Debug.Log("<color=red>Collider Tag</color> " + hits[i].collider.tag);
+                        //Debug.Log("<color=red>Collider Tag</color> " + hits[i].collider.tag);
                         Instantiate(bloodSplatPrefab, hits[i].point, hitRotation);
                         //Tell all we shot a player and call the RPC function GetShot passing damage runs on person shooting
                         hits[i].transform.GetComponent<PhotonView>().RPC("GetShot", PhotonTargets.All, damage, PhotonNetwork.player);
@@ -257,7 +263,7 @@ public class PlayerShooting: MonoBehaviour {
                 if (hits[0].collider.tag == "FlyByRange" && flyByTrue)
                 {
                     //if(temphit.collider.tag == "FlyByRange" ){
-                    Debug.Log("<color=green>FlyRange Sound</color>");
+                    //Debug.Log("<color=green>FlyRange Sound</color>");
                     hits[0].transform.GetComponent<PhotonView>().RPC("PlayFlyByShots", PhotonTargets.Others);
                 }
                 //Second Hit on FlyByRange
@@ -266,7 +272,7 @@ public class PlayerShooting: MonoBehaviour {
                     if (hits[1].collider.tag == "FlyByRange" && flyByTrue)
                     {
                         //if(temphit.collider.tag == "FlyByRange" ){
-                        Debug.Log("<color=green>FlyRange Sound</color>");
+                        //Debug.Log("<color=green>FlyRange Sound</color>");
                         hits[1].transform.GetComponent<PhotonView>().RPC("PlayFlyByShots", PhotonTargets.Others);
                     }
                 }
@@ -316,7 +322,7 @@ public class PlayerShooting: MonoBehaviour {
 		List < RaycastHit > hits = new List < RaycastHit > ();
 		Vector3 delta = destination - origin;
 		Vector3 dir = destination.normalized;
-        int RayCastPenetratinLimit = 9;
+        int RayCastPenetratinLimit = 6;
 		while (true) {
 			RaycastHit hit;
 			float dist = delta.magnitude; //get raycast distance

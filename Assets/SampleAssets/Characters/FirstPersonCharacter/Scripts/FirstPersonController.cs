@@ -37,7 +37,7 @@ namespace UnitySampleAssets.Characters.FirstPerson
         [SerializeField] private AudioClip _landSound; // the sound played when character touches back on ground.
 
 		NetworkManager NM;
-		[SerializeField] Animator anim;
+		public Animator anim;
 		[SerializeField] Animator animMainCam;
 		[SerializeField] Animator animEthan;
 		[SerializeField] Animator animHitBoxes;
@@ -69,10 +69,16 @@ namespace UnitySampleAssets.Characters.FirstPerson
 		float mouseTempY; 
 		float staminaDrain;
 		float staminaRecover;
+        //[SerializeField] GameObject crosshair; 
+        public GameObject[] weapons;
 		void Awake(){
 
 			guiMan = GameObject.Find ("NetworkManager").GetComponent<GUIManager> ();
 			NM = GetComponent<NetworkManager> ();
+            //Enable crosshair when spawning player
+            GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = true;
+            //Doesn't differentiate between other players
+            //anim = GameObject.FindGameObjectWithTag("WeaponMain").GetComponent<Animator>();
 			staminaDrain = 0.9f;
 			staminaRecover = 0.5f;
 		}
@@ -88,12 +94,30 @@ namespace UnitySampleAssets.Characters.FirstPerson
             _stepCycle = 0f;
             _nextStep = _stepCycle/2f;
             _jumping = false;
+            
 			NM = GameObject.Find("NetworkManager").GetComponent<NetworkManager>(); 
 			_mouseLook.XSensitivity = PlayerPrefs.GetFloat ("xAxis");
 			_mouseLook.YSensitivity = PlayerPrefs.GetFloat ("yAxis");
 			_mouseLook.smooth = (PlayerPrefs.GetInt("smooth") != 0);
 			mouseTempX = _mouseLook.XSensitivity;
 			mouseTempY = _mouseLook.YSensitivity;
+
+            PhotonView photonView = new PhotonView();
+            if (photonView.isMine) {
+
+                //weapons = GameObject.FindGameObjectsWithTag("WeaponMain");
+                for (int i = 0; i < weapons.Length; i++)
+                {
+                    //If we own weapon and its active use currently equiped weapons animation
+                    if (weapons[i].GetActive() == true)
+                    {
+                        anim = weapons[i].GetComponent<Animator>();
+                        //Debug.Log(" <color=red> Current Weapon Name </color> " + " " + weapons[i].name);
+                        //WeaponList.Add(weapons[i].GetComponent<Weapon>());
+                    }
+                }
+            }
+
 			//players = GameObject.FindGameObjectsWithTag("Player");
 			// get the transform of the main camera
 			if (Camera.main != null)
@@ -219,6 +243,20 @@ namespace UnitySampleAssets.Characters.FirstPerson
             _cameraRefocus.SetFocusPoint();
         }
 
+        public void SwapWeapons() {
+
+            if (weapons[0].GetActive() == true)
+            {
+                anim = weapons[1].GetComponent<Animator>();
+                weapons[0].SetActive(false);
+                weapons[1].SetActive(true);
+            }
+            else if(weapons[1].GetActive() == true) {
+                anim = weapons[0].GetComponent<Animator>();
+                weapons[1].SetActive(false);
+                weapons[0].SetActive(true);     
+            }
+        }
         private void GetInput(out float speed)
         {
             // Read input
@@ -231,20 +269,16 @@ namespace UnitySampleAssets.Characters.FirstPerson
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
             _isWalking = !Input.GetKey(KeyCode.LeftShift) || stamina <= staminaDrain;
-            Debug.Log("<color=yellow>Sprint Bool: </color>" + Input.GetKeyDown("left shift"));
+           
 			bool aim = false;
 			if(_isWalking)
 				aim = Input.GetButton("Fire2");
 			_isCrouching = Input.GetKey(KeyCode.LeftControl);
 
-			//Move the camera down then back up for crouch effect
-			/*if(Input.GetKeyDown(KeyCode.LeftControl) && _isCrouching){
-				_isWalking = true;
-				_camera.transform.position = _camera.transform.position - new Vector3 (0,1.2f,0);
-			}
-			else if (Input.GetKeyUp(KeyCode.LeftControl) && (!_isCrouching)){
-				_camera.transform.position = _camera.transform.position + new Vector3 (0,1.2f,0);
-			}*/
+            if (Input.GetKeyDown(KeyCode.Q)) {
+
+                SwapWeapons();
+            }
 
 			if(_isCrouching){
 
@@ -259,6 +293,7 @@ namespace UnitySampleAssets.Characters.FirstPerson
 			if(aim && !doOnce){
 				_isWalking = true; 
 				doOnce = true;
+                GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = false;
 				_mouseLook.XSensitivity = mouseTempX - (mouseTempX * 0.45f);
 				_mouseLook.YSensitivity = mouseTempY - (mouseTempY  * 0.45f);
 
@@ -270,6 +305,7 @@ namespace UnitySampleAssets.Characters.FirstPerson
 				doOnce = false;
 				_mouseLook.XSensitivity = PlayerPrefs.GetFloat ("xAxis");
 				_mouseLook.YSensitivity = PlayerPrefs.GetFloat ("yAxis");
+                GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = true;
 			}
 			//Player Movement Animation Logic
 			AnimationLogic(vertical, horizontal);

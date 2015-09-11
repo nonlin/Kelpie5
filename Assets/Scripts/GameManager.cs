@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+        GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = false;
 		//Set Default Mouse Settings if there isn't one
 		if(PlayerPrefs.GetFloat("xAxis") <= 0f || PlayerPrefs.GetFloat("yAxis") <= 0f){
 			PlayerPrefs.SetFloat ("xAxis", 15f);

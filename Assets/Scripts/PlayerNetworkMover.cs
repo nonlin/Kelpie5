@@ -17,7 +17,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	float health = 100f;
 	public string playerName; 
 	public int pickedUpAmmo = 0;
-	GameObject[] weapons;
+	public GameObject[] weapons;
 	GameObject[] bodys;
 	//public GameObject injuryEffect;
 	Animator injuryAnim;
@@ -30,7 +30,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	float turn = 0f;
 	bool initialLoad = true;
 	public bool muzzleFlashToggle = false;
-
+    public GameObject[] weaponsForSwapping;
     List<Weapon> WeaponList = new List<Weapon>();
     Weapon currentWeapon;
 
@@ -82,7 +82,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		audio1 = aSources [1];
 		audio2 = aSources [2];
 
-		//anim = GetComponentInChildren<Animator> ();
+		anim = GetComponentInChildren<Animator> ();
 		//animEthan = transform.Find("char_ethan").GetComponent<Animator> ();
 		injuryAnim = GameObject.FindGameObjectWithTag ("InjuryEffect").GetComponent<Animator>();
 		GMan = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
@@ -473,6 +473,21 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
                 cameraMotionBlur.enabled = true;
             }
             else if (cameraMotionBlur.enabled = true && !myAim) { cameraMotionBlur.enabled = false; }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            //Check all weapons in list if active set as currentWeapon
+            for (int i = 0; i < 2; i++) {
+
+                if (weaponsForSwapping[i].GetActive() == true)
+                {
+
+                    currentWeapon = weaponsForSwapping[i].GetComponent<Weapon>();
+                    WeaponSetup();
+                    //Debug.Log("<color=yellow> WeaponFor Network MOver </color>" + currentWeapon.name);
+                }
+            }
         }
 	}
 

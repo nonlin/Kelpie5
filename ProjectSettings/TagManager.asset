@@ -33,6 +33,7 @@ TagManager:
   - WeaponMain
   - WeaponParts
   - Weapon
+  - Crosshair
   layers:
   - Default
   - TransparentFX

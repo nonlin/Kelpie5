@@ -621,9 +621,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
---- !u!127 &3
-LevelGameManager:
-  m_ObjectHideFlags: 0
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -652,6 +649,7 @@ LightmapSettings:
     m_TextureCompression: 0
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
+    m_ReflectionCompression: 2
   m_LightmapSnapshot: {fileID: 112000000, guid: 449bfe5a032fc7c499df0b7a69b61ef4,
     type: 2}
   m_RuntimeCPUUsage: 100
@@ -5315,6 +5313,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 5
@@ -9134,6 +9133,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 5
@@ -12366,6 +12366,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 5
@@ -14066,45 +14067,45 @@ Prefab:
       propertyPath: m_OnValueChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1337783297}
-    - target: {fileID: 22495292, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
-      propertyPath: m_AnchorMax.x
-      value: .482758611
-      objectReference: {fileID: 0}
-    - target: {fileID: 22495292, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 22495322, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
-      propertyPath: m_AnchorMin.x
-      value: .482758611
-      objectReference: {fileID: 0}
-    - target: {fileID: 22495322, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
-      propertyPath: m_AnchorMax.x
-      value: .482758611
-      objectReference: {fileID: 0}
-    - target: {fileID: 22495322, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 22495288, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
       propertyPath: m_AnchorMax.x
-      value: .482758611
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22495288, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22495284, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
       propertyPath: m_AnchorMin.x
-      value: .482758611
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22495284, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
       propertyPath: m_AnchorMax.x
-      value: .482758611
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22495284, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22495292, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22495292, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22495322, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22495322, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22495322, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
@@ -14708,6 +14709,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 5
@@ -25188,6 +25190,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 5
@@ -26319,6 +26322,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -32621,6 +32625,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -33810,6 +33815,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 5
@@ -36472,6 +36478,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
