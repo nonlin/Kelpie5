@@ -247,7 +247,6 @@ namespace UnitySampleAssets.Characters.FirstPerson
              
             if (Input.GetAxis("Mouse ScrollWheel") > 0) {
 
-                previousWeapon = currentWeapon;
                 if (currentWeapon + 1 <= weapons.Length-1)
                 {
                     currentWeapon++;
@@ -258,7 +257,6 @@ namespace UnitySampleAssets.Characters.FirstPerson
 
             if (Input.GetAxis("Mouse ScrollWheel") < 0) {
 
-                previousWeapon = currentWeapon;
                 if (currentWeapon - 1 >= 0)
                 {
                     currentWeapon--;
@@ -269,15 +267,17 @@ namespace UnitySampleAssets.Characters.FirstPerson
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha1)) {
-
-                previousWeapon = currentWeapon;
+                //Prevents setting currentWeapon = previous weapon if user hits the same weapon twice
+                if (currentWeapon != 0)
+                    previousWeapon = currentWeapon;
                 currentWeapon = 0;
                 SelectWeapon(currentWeapon);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                previousWeapon = currentWeapon;
+                if (currentWeapon != 1)
+                    previousWeapon = currentWeapon;
                 currentWeapon = 1;
                 SelectWeapon(currentWeapon);
             }
@@ -316,6 +316,9 @@ namespace UnitySampleAssets.Characters.FirstPerson
                     //Update Player Shooting for Weapon Switch
                     playerShooting.WeaponStats = weapons[i].GetComponent<Weapon>();
                     playerShooting.UpdateAmmoText();
+                    //To assign each weapon the proper type of muzzle flash
+                    playerShooting.muzzleFlash = weapons[i].GetComponentInChildren<ParticleSystem>();
+                    playerShooting.AssignMuzzleLightSource();
                 }
                 else { weapons[i].SetActive(false); }
             }

@@ -44,19 +44,11 @@ public class PlayerShooting: MonoBehaviour {
 		
 		guiMan = GameObject.Find("NetworkManager").GetComponent < GUIManager > ();
 		NM = GameObject.Find("NetworkManager").GetComponent < NetworkManager > ();
-		muzzleLightFlashGO = GameObject.FindGameObjectsWithTag("LightFlash");
+		
         //Check for children weapon scripts and use what is equiped to load that weapon's unique stats
         WeaponStats = GetComponentInChildren<Weapon>();
 		//To assign the each players own muzzle flash toggle and not someone elses. 
-		for(int i = 0; i < muzzleLightFlashGO.Length; i++){
-			//If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
-			if(muzzleLightFlashGO[i].GetComponentInParent<PlayerShooting>().gameObject.GetInstanceID() == gameObject.GetInstanceID() ){
-				muzzleLightFlash = muzzleLightFlashGO[i].GetComponent<Light>();
-				//muzzleLightFlash.enabled = false;
-				//muzzleFlashToggle = false;
-
-			}
-		}
+        AssignMuzzleLightSource();
 
 		ammoText = GameObject.FindGameObjectWithTag("Ammo").GetComponent < Text > ();
         anim = GetComponentInChildren<Animator>();
@@ -65,7 +57,23 @@ public class PlayerShooting: MonoBehaviour {
 		UpdateAmmoText();
 		
 	}
-	
+
+    public void AssignMuzzleLightSource() {
+
+        muzzleLightFlashGO = GameObject.FindGameObjectsWithTag("LightFlash");
+
+        for (int i = 0; i < muzzleLightFlashGO.Length; i++)
+        {
+            //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+            if (muzzleLightFlashGO[i].GetComponentInParent<PlayerShooting>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+            {
+                muzzleLightFlash = muzzleLightFlashGO[i].GetComponent<Light>();
+                //muzzleLightFlash.enabled = false;
+                //muzzleFlashToggle = false;
+
+            }
+        }
+    }
 	// Update is called once per frame
 	void Update() {
 
@@ -337,8 +345,5 @@ public class PlayerShooting: MonoBehaviour {
             
             ammoText.text = WeaponStats.clipAmount.ToString() + "/" + WeaponStats.clipSize.ToString();
         }
-
 	}
-	
-
 }
