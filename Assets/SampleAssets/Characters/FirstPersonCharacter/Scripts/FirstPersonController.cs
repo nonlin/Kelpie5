@@ -71,16 +71,32 @@ namespace UnitySampleAssets.Characters.FirstPerson
 		float staminaRecover;
         //[SerializeField] GameObject crosshair; 
         public GameObject[] weapons;
+        public int currentWeapon;
+        public int previousWeapon;
+        public bool previousBool = false;
+        public PlayerNetworkMover PNM;
+        public PlayerShooting playerShooting;
 		void Awake(){
 
+            staminaDrain = 0.9f;
+            staminaRecover = 0.5f;
+            currentWeapon = 0;
+            previousWeapon = 0;
+            //initlize a weapon when spawned default 0 (AK)
+            SelectWeapon(0);
+
+            //Init GameObjects and Scripts before creating this game object
 			guiMan = GameObject.Find ("NetworkManager").GetComponent<GUIManager> ();
 			NM = GetComponent<NetworkManager> ();
+            //PNM = this.GetComponent<PlayerNetworkMover>();
+            PNM.currentWeapon = weapons[0].GetComponent<Weapon>();
+            //playerShooting.UpdateAmmoText();
+            //playerShooting = GameObject.FindGameObjectWithTag("WeaponsCam").GetComponent<PlayerShooting>();
             //Enable crosshair when spawning player
             GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = true;
             //Doesn't differentiate between other players
             //anim = GameObject.FindGameObjectWithTag("WeaponMain").GetComponent<Animator>();
-			staminaDrain = 0.9f;
-			staminaRecover = 0.5f;
+
 		}
         // Use this for initialization
         private void Start()
@@ -101,22 +117,6 @@ namespace UnitySampleAssets.Characters.FirstPerson
 			_mouseLook.smooth = (PlayerPrefs.GetInt("smooth") != 0);
 			mouseTempX = _mouseLook.XSensitivity;
 			mouseTempY = _mouseLook.YSensitivity;
-
-            PhotonView photonView = new PhotonView();
-            if (photonView.isMine) {
-
-                //weapons = GameObject.FindGameObjectsWithTag("WeaponMain");
-                for (int i = 0; i < weapons.Length; i++)
-                {
-                    //If we own weapon and its active use currently equiped weapons animation
-                    if (weapons[i].GetActive() == true)
-                    {
-                        anim = weapons[i].GetComponent<Animator>();
-                        //Debug.Log(" <color=red> Current Weapon Name </color> " + " " + weapons[i].name);
-                        //WeaponList.Add(weapons[i].GetComponent<Weapon>());
-                    }
-                }
-            }
 
 			//players = GameObject.FindGameObjectsWithTag("Player");
 			// get the transform of the main camera
@@ -243,20 +243,84 @@ namespace UnitySampleAssets.Characters.FirstPerson
             _cameraRefocus.SetFocusPoint();
         }
 
-        public void SwapWeapons() {
+        public void WeaponInput() {
+             
+            if (Input.GetAxis("Mouse ScrollWheel") > 0) {
 
-            if (weapons[0].GetActive() == true)
-            {
-                anim = weapons[1].GetComponent<Animator>();
-                weapons[0].SetActive(false);
-                weapons[1].SetActive(true);
+                previousWeapon = currentWeapon;
+                if (currentWeapon + 1 <= weapons.Length-1)
+                {
+                    currentWeapon++;
+                }//loop back to start of list when scrolling up/forward
+                else { currentWeapon = 0; }
+                SelectWeapon(currentWeapon);
             }
-            else if(weapons[1].GetActive() == true) {
-                anim = weapons[0].GetComponent<Animator>();
-                weapons[1].SetActive(false);
-                weapons[0].SetActive(true);     
+
+            if (Input.GetAxis("Mouse ScrollWheel") < 0) {
+
+                previousWeapon = currentWeapon;
+                if (currentWeapon - 1 >= 0)
+                {
+                    currentWeapon--;
+                }//Loop back to end of list when scrolling down/backwards
+                else { currentWeapon = weapons.Length-1; }
+                SelectWeapon(currentWeapon);
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1)) {
+
+                previousWeapon = currentWeapon;
+                currentWeapon = 0;
+                SelectWeapon(currentWeapon);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                previousWeapon = currentWeapon;
+                currentWeapon = 1;
+                SelectWeapon(currentWeapon);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q)) {
+
+                //Swaps to last weapon used
+                if (!previousBool)
+                {
+                    previousBool = !previousBool;
+                    SelectWeapon(previousWeapon);
+                }
+                else {
+                    previousBool = !previousBool;
+                    SelectWeapon(currentWeapon); 
+                }
+            }
+            
+        }
+
+        public void SelectWeapon(int index) {
+
+            Debug.Log("Weapon Index is " + index);
+            for (int i = 0; i < weapons.Length; i++) {
+
+                if (i == index)
+                {
+                    //Update Weapon animations and models for weapon switch
+                    weapons[i].SetActive(true);
+                    anim = weapons[i].GetComponent<Animator>();
+                    //Update Player Network Mover for Weapon Switwch
+                    PNM.anim = weapons[i].GetComponent<Animator>();
+                    PNM.currentWeapon = weapons[i].GetComponent<Weapon>();
+                    //To update the weapon layers again each weapon switch
+                    PNM.WeaponSetup();
+                    //Update Player Shooting for Weapon Switch
+                    playerShooting.WeaponStats = weapons[i].GetComponent<Weapon>();
+                    playerShooting.UpdateAmmoText();
+                }
+                else { weapons[i].SetActive(false); }
             }
         }
+
         private void GetInput(out float speed)
         {
             // Read input
@@ -275,12 +339,15 @@ namespace UnitySampleAssets.Characters.FirstPerson
 				aim = Input.GetButton("Fire2");
 			_isCrouching = Input.GetKey(KeyCode.LeftControl);
 
-            if (Input.GetKeyDown(KeyCode.Q)) {
+            //Need this hear to set animations to proper weapon
+            bool qSwapping = Input.GetKeyDown(KeyCode.Q);
+            if (qSwapping) 
+            {
 
-                SwapWeapons();
+                //SwapWeapons();
             }
 
-
+            WeaponInput();
 
 			//Slow mouse movement when aiming by 45 percent
 			if(aim && !doOnce){

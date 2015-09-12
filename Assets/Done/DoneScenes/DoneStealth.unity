@@ -12699,6 +12699,10 @@ Prefab:
       propertyPath: instantiationId
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 168068, guid: 1d703e2c0ec63bc4cbfaa2e1e5b55e71, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1d703e2c0ec63bc4cbfaa2e1e5b55e71, type: 2}
   m_IsPrefabParent: 0
@@ -27387,7 +27391,7 @@ Transform:
   m_PrefabParentObject: {fileID: 400936, guid: c25f5ed33db39b04aafb2b37c757a0e1, type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1653905040}
-  m_LocalRotation: {x: -.664862573, y: .320714533, z: .166496307, w: .653742373}
+  m_LocalRotation: {x: -.664862514, y: .320714504, z: .166496292, w: .653742313}
   m_LocalPosition: {x: 1.43934464, y: 1.03503299, z: 12.5267181}
   m_LocalScale: {x: 1.29999995, y: 1.29999995, z: 1.29999995}
   m_Children: []
@@ -35407,7 +35411,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
 --- !u!81 &1975474046
 AudioListener:
   m_ObjectHideFlags: 0

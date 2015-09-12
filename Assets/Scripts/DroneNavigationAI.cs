@@ -17,7 +17,7 @@ public class DroneNavigationAI : MonoBehaviour {
     //Paths for Drone To Take
     Vector3 destination1Loc = new Vector3(-23f, 0f, 29f);
     Vector3 destination2Loc = new Vector3(-11.7f, 0f, 17.3f);
-    Vector3 destination3Loc =new Vector3(-11.6f, 3.5f, 42f);
+    Vector3 destination3Loc =new Vector3(-11.6f, 0f, 42f);
     //Set Custom PhotonPlayer for Drone since it isn't really a player connecting to be automatically added to PhotonPlayerList
     PhotonPlayer DroneAI = new PhotonPlayer(false,-1,"DroneAI");
     bool playerDetected = false;

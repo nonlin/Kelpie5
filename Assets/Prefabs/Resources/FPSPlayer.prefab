@@ -370,7 +370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &134962
 GameObject:
   m_ObjectHideFlags: 1
@@ -963,7 +963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &168060
 GameObject:
   m_ObjectHideFlags: 1
@@ -4251,6 +4251,11 @@ MonoBehaviour:
   weapons:
   - {fileID: 168028}
   - {fileID: 134726}
+  currentWeapon: 0
+  previousWeapon: 0
+  previousBool: 0
+  PNM: {fileID: 11467878}
+  playerShooting: {fileID: 11467874}
 --- !u!114 &11467878
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4266,9 +4271,7 @@ MonoBehaviour:
   pickedUpAmmo: 0
   weapons: []
   muzzleFlashToggle: 0
-  weaponsForSwapping:
-  - {fileID: 168028}
-  - {fileID: 134726}
+  currentWeapon: {fileID: 0}
   _jumpSound: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
   _landSound: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
   _footstepSounds:
@@ -4303,6 +4306,7 @@ MonoBehaviour:
   alive: 1
   cameraMotionBlur: {fileID: 0}
   depthOfField: {fileID: 0}
+  qSwapping: 0
 --- !u!114 &11467880
 MonoBehaviour:
   m_ObjectHideFlags: 1

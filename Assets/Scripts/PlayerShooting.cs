@@ -38,7 +38,7 @@ public class PlayerShooting: MonoBehaviour {
 	bool enumDeclared = false;
 	int bulletsFired = 0;
     public Weapon WeaponStats;
-    List<Weapon> Weapon= new List<Weapon>();
+ 
 	// Use this for initialization
 	void Start() {
 		
@@ -123,12 +123,6 @@ public class PlayerShooting: MonoBehaviour {
                 //Debug.Log("<color=yellow> Raycast Count </color>" + k + " " + WeaponStats.rayCount);
             }
             shooting = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q)) {
-
-            WeaponStats = GetComponentInChildren<Weapon>();
-            UpdateAmmoText();
         }
         
 	}
@@ -339,7 +333,11 @@ public class PlayerShooting: MonoBehaviour {
 
 	public void UpdateAmmoText(){
 
-        ammoText.text = WeaponStats.clipAmount.ToString() + "/" + WeaponStats.clipSize.ToString();
+        if (WeaponStats != null) { 
+            
+            ammoText.text = WeaponStats.clipAmount.ToString() + "/" + WeaponStats.clipSize.ToString();
+        }
+
 	}
 	
 

@@ -30,10 +30,10 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	float turn = 0f;
 	bool initialLoad = true;
 	public bool muzzleFlashToggle = false;
-    public GameObject[] weaponsForSwapping;
-    List<Weapon> WeaponList = new List<Weapon>();
-    Weapon currentWeapon;
 
+    public Weapon currentWeapon;
+    UnitySampleAssets.Characters.FirstPerson.FirstPersonController FPC;
+   
 	[SerializeField] private AudioClip _jumpSound; // the sound played when character leaves the ground.
 	[SerializeField] private AudioClip _landSound; // the sound played when character touches back on ground.
 	[SerializeField] private AudioClip[] _footstepSounds;
@@ -47,7 +47,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	AudioSource audio1;
 	AudioSource audio2;
 	AudioSource[] aSources;
-	[SerializeField] Animator anim;
+	public Animator anim;
 	[SerializeField] Animator animMainCam;
 	[SerializeField] Animator animEthan;
 	[SerializeField] Animator animHitBoxes;
@@ -65,7 +65,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
     bool CMBEnabled = false;
     bool DOFEnabled = false;
     bool myAim = false;
-    bool qSwapping = false;
+    public bool qSwapping = false;
 	//AudioSource audio;
 	// Use this for initialization
 	void Start () {
@@ -125,7 +125,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 			//So that we can see our own weapons on the second camera and not other player weapons through walls
             WeaponSetup();
-            currentWeapon = WeaponList[0];
+            //currentWeapon = WeaponList[0];
 
             Debug.Log(currentWeapon.name + " <color=red> Current Weapon Name </color> ");
 			//Change Body Part Collider Layers from default to body just for the player's own game not all players so that they can collide with others
@@ -194,14 +194,14 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			transform.position = realPosition; 
 			transform.rotation = realRotation; 
 
-		}
+		}//This is where we set all other player prefab settings that isn't the local player's settings
 		while (true) {
 			//smooths every frame for the dummy players from where they are to where they should be, prevents jitter lose some accuracy I suppose
 			//Ideally we want the movement to be equal to the amount of time since the last update
 			transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);// + _characterController.velocity * Time.deltaTime;
 			transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);//Time.deltaTime * smoothing
-            //qSwapping = Input.GetKeyDown(KeyCode.Q);
-			//Sync Animation States
+
+			//Sync Animation States by tell the respctive animators what the bools we have synced over network are
 			anim.SetBool ("Aim", aim); 
 			anim.SetBool ("Sprint", sprint); 
 			animEthan.SetBool("OnGround",onGround);
@@ -220,14 +220,14 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 	//Serilize Data Across the network, we want everyone to know where they are
 	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info){
-
+        //Send to everyone else a local players variables to be synced and recieved by all other players on network
 		if (stream.isWriting) {
 			//send to clients where we are
 			stream.SendNext(playerName);
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
 			stream.SendNext(health);
-            //stream.SendNext(qSwapping);
+            stream.SendNext(qSwapping);
 			//Sync Animation States
 			stream.SendNext(anim.GetBool ("Aim"));
 			stream.SendNext(anim.GetBool ("Sprint"));
@@ -242,12 +242,12 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		}
 		else{
 			//Get from clients where they are
-			//Write in teh same order we read, if not writing we are reading. 
+			//Write in the same order we read, if not writing we are reading. 
 			playerName = (string)stream.ReceiveNext();
 			realPosition = (Vector3)stream.ReceiveNext();
 			realRotation = (Quaternion)stream.ReceiveNext();
 			health = (float)stream.ReceiveNext();
-            //qSwapping = (bool)stream.ReceiveNext();
+            qSwapping = (bool)stream.ReceiveNext();
 			//Sync Animation States
 			aim = (bool)stream.ReceiveNext();
 			sprint = (bool)stream.ReceiveNext();
@@ -275,7 +275,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
                 {
                     weapons[i].layer = 10;
                     Debug.Log(" <color=red> Current Weapon Name </color> " + " " + weapons[i].name);
-                    WeaponList.Add(weapons[i].GetComponent<Weapon>());
+                   // WeaponList.Add(weapons[i].GetComponent<Weapon>());
                 }
             }
 
@@ -466,36 +466,22 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
         //We use these settings for aiming only, if they are on and we are aiming use them
         if (depthOfField != null)
         {
-            if (aim && DOFEnabled)
+            if (myAim && DOFEnabled)
             {
                 depthOfField.enabled = true;
             }
-            else if (depthOfField.enabled = true && !aim) { depthOfField.enabled = false; }
+            else if (depthOfField.enabled = true && !myAim) { depthOfField.enabled = false; }
         }
 
         if (cameraMotionBlur != null)
         {
-            if (aim && CMBEnabled)
+            if (myAim && CMBEnabled)
             {
                 cameraMotionBlur.enabled = true;
             }
-            else if (cameraMotionBlur.enabled = true && !aim) { cameraMotionBlur.enabled = false; }
+            else if (cameraMotionBlur.enabled = true && !myAim) { cameraMotionBlur.enabled = false; }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            //Check all weapons in list if active set as currentWeapon
-            for (int i = 0; i < 2; i++) {
-
-                if (weaponsForSwapping[i].GetActive() == true)
-                {
-
-                    currentWeapon = weaponsForSwapping[i].GetComponent<Weapon>();
-                    WeaponSetup();
-                    //Debug.Log("<color=yellow> WeaponFor Network MOver </color>" + currentWeapon.name);
-                }
-            }
-        }
 	}
 
 	private IEnumerator WaitForAnimation ( float waitTime )
