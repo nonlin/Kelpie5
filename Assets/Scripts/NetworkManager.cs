@@ -160,9 +160,17 @@ public class NetworkManager : MonoBehaviour {
 		StartSpawnProcess (0f);
 		AddMessage ("Player " + PhotonNetwork.player.name + " has joined.");
 		GameObject.FindGameObjectWithTag ("LobbyCam").GetComponent<AudioListener> ().enabled = false;
+        if (PhotonNetwork.isMasterClient) {
+            //Only master client spawns and controls drone, otherwise we'd get lots of drones every time someone joins
+            SpawnDrone();
+        }
 
 	}
 
+    public void SpawnDrone() {
+
+        PhotonNetwork.Instantiate("PA_Drone", new Vector3(-23f, 2.747f, 29f), new Quaternion(0f,97f,0f, 0f), 0);
+    }
 	public void StartSpawnProcess (float respawnTime){
 		//Show Lobby cam on death vs blank screen
 		sceneCamera.enabled = true; 

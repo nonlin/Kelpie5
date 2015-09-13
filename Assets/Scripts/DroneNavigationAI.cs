@@ -66,10 +66,10 @@ public class DroneNavigationAI : MonoBehaviour {
 	void Update () {
 
         //Route to patrol
-        //if (PhotonNetwork.isMasterClient) { 
+        if (PhotonNetwork.isMasterClient) { 
         
             PatrolNavigation();
-        //}
+        }
         //Animate movement of drone
         AnimateMovements();
         
