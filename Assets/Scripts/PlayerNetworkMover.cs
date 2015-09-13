@@ -17,7 +17,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	float health = 100f;
 	public string playerName; 
 	public int pickedUpAmmo = 0;
-	public GameObject[] weapons;
+	public GameObject[] weaponMains;
+    public GameObject[] weaponParts;
 	GameObject[] bodys;
 	//public GameObject injuryEffect;
 	Animator injuryAnim;
@@ -53,7 +54,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[SerializeField] Animator animHitBoxes;
 	PhotonView photonView;
 	public PlayerShooting playerShooting;
-
+    public GameObject[] WeaponArray;
 	public Light muzzleLightFlash;
 	public GameObject[] muzzleLightFlashGO;
 	//ColliderControl colidcon;
@@ -65,14 +66,15 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
     bool CMBEnabled = false;
     bool DOFEnabled = false;
     bool myAim = false;
-    public bool qSwapping = false;
+    public int currentWeaponIndex;
+    public bool updateWeaponIndex;
 	//AudioSource audio;
 	// Use this for initialization
 	void Start () {
 
 		PhotonNetwork.sendRate = 30;
 		PhotonNetwork.sendRateOnSerialize = 15;
-
+        currentWeaponIndex = 0;
 		alive = true; 
 		photonView = GetComponent<PhotonView> ();
 		//Disables my Character Controller interstingly enough. That way I can only enable it for the clien'ts player.  
@@ -105,7 +107,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		//If its my player, not anothers
 		Debug.Log ("<color=red>Joined Room </color>" + PhotonNetwork.player.name + " " + photonView.isMine);
 		if (photonView.isMine) {
-
+            
 			//Enable CC so we can control character. 
 			transform.GetComponent<Collider>().enabled = true;
 			//Use for Sound toggle
@@ -125,9 +127,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 
 			//So that we can see our own weapons on the second camera and not other player weapons through walls
             WeaponSetup();
-            //currentWeapon = WeaponList[0];
-
-            Debug.Log(currentWeapon.name + " <color=red> Current Weapon Name </color> ");
+     
 			//Change Body Part Collider Layers from default to body just for the player's own game not all players so that they can collide with others
 			//We need to ignore colliders cause we layer a lot of them together
 			//So we find all body parts and if it matches our own we are good to change it so it can be ignored.
@@ -146,32 +146,10 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			}
 			//If player is ours have CC ignore body parts
 			Physics.IgnoreLayerCollision(0,12, true);
-
-            cameraMotionBlur = this.GetComponentInChildren<UnityStandardAssets.ImageEffects.CameraMotionBlur>();
-            depthOfField = this.GetComponentInChildren<UnityStandardAssets.ImageEffects.DepthOfField>();
-            //Enable CameraMotionBlur if Setting is allowed to be on
-            if (PlayerPrefs.GetInt("CMB") == 1)
-            {
-                CMBEnabled = true;
-            }
-            else
-            {
-                CMBEnabled = false;
-                cameraMotionBlur.enabled = false;
-            }
-
-            if (PlayerPrefs.GetInt("DOF") == 1)
-            {
-                DOFEnabled = true;
-            }
-            else
-            {
-                DOFEnabled = false;
-                depthOfField.enabled = false;
-            }
+            InitPostProcessingEffects();
 		}
 		else{
-
+            //All other players
 			StartCoroutine ("UpdateData");
 		}
 		/*if(muzzleLightFlash != null){
@@ -186,14 +164,42 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		}*/
 	}
 
+    public void InitPostProcessingEffects() {
+
+        cameraMotionBlur = this.GetComponentInChildren<UnityStandardAssets.ImageEffects.CameraMotionBlur>();
+        depthOfField = this.GetComponentInChildren<UnityStandardAssets.ImageEffects.DepthOfField>();
+        cameraMotionBlur.enabled = false;
+        depthOfField.enabled = false;
+        //Enable CameraMotionBlur if Setting is allowed to be on
+        if (PlayerPrefs.GetInt("CMB") == 1)
+        {
+            CMBEnabled = true;
+        }
+        else
+        {
+            CMBEnabled = false;
+            cameraMotionBlur.enabled = false;
+        }
+
+        if (PlayerPrefs.GetInt("DOF") == 1)
+        {
+            DOFEnabled = true;
+        }
+        else
+        {
+            DOFEnabled = false;
+            depthOfField.enabled = false;
+        }
+    }
 	IEnumerator UpdateData(){
 
 		if (initialLoad) {
+
 			//jiiter correction incomplete, could check position if accurate to .0001 don't move them 
 			initialLoad = false; 
 			transform.position = realPosition; 
-			transform.rotation = realRotation; 
-
+			transform.rotation = realRotation;
+            SelectWeapon(currentWeaponIndex);     
 		}//This is where we set all other player prefab settings that isn't the local player's settings
 		while (true) {
 			//smooths every frame for the dummy players from where they are to where they should be, prevents jitter lose some accuracy I suppose
@@ -213,7 +219,11 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			animHitBoxes.SetBool("Crouch",crouch);
 			//muzzleFlashToggle = playerShooting.shooting;
 			//playerShooting.shooting = muzzleFlashToggle;
-
+            //Need to update weapon index from FPC to the network, so we don't spam we do it just once everytime a player switches weapons in their FPC
+            if (updateWeaponIndex) {
+                SelectWeapon(currentWeaponIndex);
+                updateWeaponIndex = false;
+            }
 			yield return null; 
 		}
 	}
@@ -227,7 +237,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
 			stream.SendNext(health);
-            stream.SendNext(qSwapping);
+            stream.SendNext(currentWeaponIndex);
+            stream.SendNext(updateWeaponIndex);
 			//Sync Animation States
 			stream.SendNext(anim.GetBool ("Aim"));
 			stream.SendNext(anim.GetBool ("Sprint"));
@@ -247,7 +258,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			realPosition = (Vector3)stream.ReceiveNext();
 			realRotation = (Quaternion)stream.ReceiveNext();
 			health = (float)stream.ReceiveNext();
-            qSwapping = (bool)stream.ReceiveNext();
+            currentWeaponIndex = (int)stream.ReceiveNext();
+            updateWeaponIndex = (bool)stream.ReceiveNext();
 			//Sync Animation States
 			aim = (bool)stream.ReceiveNext();
 			sprint = (bool)stream.ReceiveNext();
@@ -255,40 +267,61 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			Forward = (float)stream.ReceiveNext();
 			turn = (float)stream.ReceiveNext();
 			crouch = (bool)stream.ReceiveNext();
-		//	muzzleFlashToggle = (bool)stream.ReceiveNext();
+		    //muzzleFlashToggle = (bool)stream.ReceiveNext();
 
 			alive = (bool)stream.ReceiveNext();
 			
-		}
-																												
+		}																										
 	}
 
     public void WeaponSetup() {
-        if (photonView.isMine) { 
 
-            //So that we can see our own weapons on the second camera and not other player weapons through walls
-            weapons = GameObject.FindGameObjectsWithTag("WeaponMain");
-            for (int i = 0; i < weapons.Length; i++)
-            {
-                //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
-                if (weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+        //Photon view gets called before its intialized (in FPC) on spawn so we just make a check here to prevent trying to use it before its intialized
+        if (photonView != null) {
+            //If we are the owner of the weapons change the tags, other wise leave the tags for networked players to deafult so we can't see their weapons
+            if (photonView.isMine) { 
+
+                //So that we can see our own weapons on the second camera and not other player weapons through walls
+                weaponMains = GameObject.FindGameObjectsWithTag("WeaponMain");
+                for (int i = 0; i < weaponMains.Length; i++)
                 {
-                    weapons[i].layer = 10;
-                    Debug.Log(" <color=red> Current Weapon Name </color> " + " " + weapons[i].name);
-                   // WeaponList.Add(weapons[i].GetComponent<Weapon>());
+                    //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+                    if (weaponMains[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                    {
+                        weaponMains[i].layer = 10;
+                        Debug.Log(" <color=red> Current Weapon Name </color> " + " " + weaponMains[i].name);
+                        // WeaponList.Add(weapons[i].GetComponent<Weapon>());
+                    }
                 }
-            }
 
-            weapons = GameObject.FindGameObjectsWithTag("WeaponParts");
-            for (int i = 0; i < weapons.Length; i++)
-            {
-                //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
-                if (weapons[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                weaponParts = GameObject.FindGameObjectsWithTag("WeaponParts");
+                for (int i = 0; i < weaponParts.Length; i++)
                 {
-                    weapons[i].layer = 10;
+                    //If the weapon we find has the same ID as the player its attached to, set the tag to layer 10
+                    if (weaponParts[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                    {
+                        weaponParts[i].layer = 10;
+                    }
                 }
             }
         }
+    }
+
+    public void SelectWeapon(int index){
+
+        //Update all networked players weapons, FPC updates localy, this updates for the network 
+        for (int i = 0; i < WeaponArray.Length; i++)
+        {
+            if (i == index)
+            {             
+                WeaponArray[i].SetActive(true);
+                currentWeapon = WeaponArray[i].GetComponent<Weapon>();
+                
+            }
+            else { WeaponArray[i].SetActive(false); }
+        }
+        anim = currentWeapon.GetComponent<Animator>();
+        Debug.Log("<color=red> Weapon Name </color>" + currentWeapon.name);
     }
 
 	public float GetHealth(){

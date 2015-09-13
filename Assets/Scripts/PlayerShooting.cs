@@ -341,7 +341,7 @@ public class PlayerShooting: MonoBehaviour {
 
 	public void UpdateAmmoText(){
 
-        if (WeaponStats != null) { 
+        if (ammoText != null) { 
             
             ammoText.text = WeaponStats.clipAmount.ToString() + "/" + WeaponStats.clipSize.ToString();
         }

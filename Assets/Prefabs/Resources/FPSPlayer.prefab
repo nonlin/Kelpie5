@@ -4329,7 +4329,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: 
   pickedUpAmmo: 0
-  weapons: []
+  weaponMains: []
+  weaponParts: []
   muzzleFlashToggle: 0
   currentWeapon: {fileID: 0}
   _jumpSound: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
@@ -4361,12 +4362,16 @@ MonoBehaviour:
   animEthan: {fileID: 9592996}
   animHitBoxes: {fileID: 9578350}
   playerShooting: {fileID: 0}
+  WeaponArray:
+  - {fileID: 168028}
+  - {fileID: 134726}
   muzzleLightFlash: {fileID: 0}
   muzzleLightFlashGO: []
   alive: 1
-  cameraMotionBlur: {fileID: 0}
-  depthOfField: {fileID: 0}
-  qSwapping: 0
+  cameraMotionBlur: {fileID: 11489912}
+  depthOfField: {fileID: 11466778}
+  currentWeaponIndex: 0
+  updateWeaponIndex: 0
 --- !u!114 &11467880
 MonoBehaviour:
   m_ObjectHideFlags: 1

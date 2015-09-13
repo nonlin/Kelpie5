@@ -10,6 +10,7 @@ public class DroneNavigationAI : MonoBehaviour {
     NavMeshAgent agent;
     GameObject[] wayPoints;
     SphereCollider CameraDetection;
+    PhotonView photonView;
     //Weather we've reached the destination or not
     bool destination1 = false;
     bool destination2 = false;
@@ -51,6 +52,7 @@ public class DroneNavigationAI : MonoBehaviour {
 	// Use this for initialization
     void Start()
     {
+        photonView = GetComponent<PhotonView>();
         droneAnimator = gameObject.GetComponent<Animator>();
         physics = gameObject.GetComponent<Rigidbody>();
         //wayPoints = GameObject.FindGameObjectsWithTag("WayPoints");
@@ -64,7 +66,10 @@ public class DroneNavigationAI : MonoBehaviour {
 	void Update () {
 
         //Route to patrol
-        PatrolNavigation();
+        //if (PhotonNetwork.isMasterClient) { 
+        
+            PatrolNavigation();
+        //}
         //Animate movement of drone
         AnimateMovements();
         

@@ -80,16 +80,11 @@ namespace UnitySampleAssets.Characters.FirstPerson
 
             staminaDrain = 0.9f;
             staminaRecover = 0.5f;
-            currentWeapon = 0;
-            previousWeapon = 0;
-            //initlize a weapon when spawned default 0 (AK)
-            SelectWeapon(0);
-
             //Init GameObjects and Scripts before creating this game object
 			guiMan = GameObject.Find ("NetworkManager").GetComponent<GUIManager> ();
 			NM = GetComponent<NetworkManager> ();
             //PNM = this.GetComponent<PlayerNetworkMover>();
-            PNM.currentWeapon = weapons[0].GetComponent<Weapon>();
+            //PNM.currentWeapon = weapons[0].GetComponent<Weapon>();
             //playerShooting.UpdateAmmoText();
             //playerShooting = GameObject.FindGameObjectWithTag("WeaponsCam").GetComponent<PlayerShooting>();
             //Enable crosshair when spawning player
@@ -101,6 +96,8 @@ namespace UnitySampleAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
+            currentWeapon = 0;
+            previousWeapon = 0;
             _characterController = GetComponent<CharacterController>();
             _camera = Camera.main;
             _originalCameraPosition = _camera.transform.localPosition;
@@ -130,6 +127,8 @@ namespace UnitySampleAssets.Characters.FirstPerson
 					"Warning: no main camera found. Third person character needs a Camera tagged \"MainCamera\", for camera-relative controls.");
 				// we use self-relative controls in this case, which probably isn't what the user wants, but hey, we warned them!
 			}
+            //initlize a weapon when spawned default 0 (AK)
+            SelectWeapon(0);
 		}
 		
 		// Update is called once per frame
@@ -311,6 +310,8 @@ namespace UnitySampleAssets.Characters.FirstPerson
                     //Update Player Network Mover for Weapon Switwch
                     PNM.anim = weapons[i].GetComponent<Animator>();
                     PNM.currentWeapon = weapons[i].GetComponent<Weapon>();
+                    PNM.currentWeaponIndex = index;
+                    PNM.updateWeaponIndex = true;
                     //To update the weapon layers again each weapon switch
                     PNM.WeaponSetup();
                     //Update Player Shooting for Weapon Switch
