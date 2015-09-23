@@ -16,8 +16,15 @@ public class GameManager : MonoBehaviour {
 	float xAx;
 	float yAx;
 	public int killLimit;
+    public int timeLimit;
 	bool doOnce = false;
+    public bool killToWin;
+    public bool timeToWin;
+
 	[SerializeField] InputField killLimitInput;
+    [SerializeField] Toggle toggleKillLimit;
+    [SerializeField] Toggle toggleTimeLimit;
+    [SerializeField] InputField timeLimitInput;
 	// Use this for initialization
 	void Start () {
 
@@ -40,16 +47,30 @@ public class GameManager : MonoBehaviour {
         CMB.isOn = (PlayerPrefs.GetInt("CMB") != 0);
 		optionsAnim = GameObject.FindGameObjectWithTag ("OptionsPanel").GetComponent<Animator> ();
 		killLimit = 10;
+        timeLimit = 10;
+        killToWin = toggleKillLimit.isOn;
+        timeToWin = toggleTimeLimit.isOn;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+        
+        //Once there is a master client update to the network the game configuration just once
 		if (PhotonNetwork.isMasterClient && !doOnce){
 			doOnce = true;
+
 			ExitGames.Client.Photon.Hashtable setKillLimit = new Hashtable(); 
 			setKillLimit["KL"] = killLimit;
+
+            ExitGames.Client.Photon.Hashtable toggleKillLimit = new Hashtable();
+            setKillLimit["TKL"] = killToWin ? 1 : 0;
+
+            ExitGames.Client.Photon.Hashtable setTimeLimit = new Hashtable();
+            setKillLimit["TL"] = timeLimit;
+
+            ExitGames.Client.Photon.Hashtable toggleTimeLimit = new Hashtable();
+            setKillLimit["TTL"] = timeToWin ? 1 : 0;
 			PhotonNetwork.room.SetCustomProperties(setKillLimit);
 		}
 
@@ -66,6 +87,21 @@ public class GameManager : MonoBehaviour {
 			killLimit = 10;
 		}
 	}
+
+    public void SetTimeLimit()
+    {
+
+        bool result = int.TryParse(timeLimitInput.text, out timeLimit);
+        if (result)
+        {
+            Debug.Log("KillLimit Accepted: " + timeLimit);
+        }
+        else
+        {
+            Debug.Log("Error timeLimit Can't be parsed");
+            timeLimit = 10;
+        }
+    }
 
 	public void SetMouseX(float xAxis){
 		
@@ -130,6 +166,21 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.SetInt("CMB", (on ? 1 : 0));
         PlayerPrefs.Save();
         Debug.Log("CMB" + PlayerPrefs.GetInt("CMB"));
+    }
+
+    public void SetKillToWin(bool optionChoice)
+    {
+
+        killToWin = optionChoice;
+        timeToWin = !optionChoice;
+    }
+
+
+    public void SetTimeToWin(bool optionChoice)
+    {
+
+        timeToWin = optionChoice;
+        killToWin = !optionChoice;
     }
 
 	public void QuitGame(){

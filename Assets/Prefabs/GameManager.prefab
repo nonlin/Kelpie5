@@ -34,7 +34,13 @@ MonoBehaviour:
   DOF: {fileID: 0}
   CMB: {fileID: 0}
   killLimit: 10
+  timeLimit: 10
+  killToWin: 1
+  timeToWin: 0
   killLimitInput: {fileID: 0}
+  toggleKillLimit: {fileID: 0}
+  toggleTimeLimit: {fileID: 0}
+  timeLimitInput: {fileID: 0}
 --- !u!224 &22498752
 RectTransform:
   m_ObjectHideFlags: 1

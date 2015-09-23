@@ -371,8 +371,9 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 				Debug.Log ("<color=red>KillCounter Called at </color>" + totalKIlls);
 				enemy.SetCustomProperties(setPlayerKills);
 
-				//If we reach the kill limit 
-				if(totalKIlls == (int)(PhotonNetwork.room.customProperties["KL"])){
+				//If we reach the kill limit by checking rooms custom property and if this is enabled
+                if (totalKIlls == (int)(PhotonNetwork.room.customProperties["KL"]) && (int)(PhotonNetwork.room.customProperties["TKL"]) == 1)
+                {
 					//Display Win Screen
 					NM.DisplayWinPrompt(enemy.name);
 				}
@@ -547,4 +548,5 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			}
 		}
 	}
+
 }

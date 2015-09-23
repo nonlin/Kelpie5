@@ -78,7 +78,7 @@ public class InRoomRoundTimer : MonoBehaviour
         if (PhotonNetwork.isMasterClient && !doOnce)
         {
             doOnce = true;
-            this.StartRoundNow();
+           // this.StartRoundNow();
         }
         else
         {
@@ -119,13 +119,23 @@ public class InRoomRoundTimer : MonoBehaviour
         {
             this.StartRoundNow();   // the "time is known" check is done inside the method.
         }
-        //Start round time over once we have 2 or more players. 
+        //Start round time over once we have 2 or more players on servers end
         if (PhotonNetwork.playerList.Count() > 1 && playerWait && PhotonNetwork.isMasterClient)
         {
             playerWait = false;
-            //this.StartRoundNow(); 
+            this.StartRoundNow(); 
         }
-        DisplayTimer();
+        //For Clients to start Displaying Timer 
+        else if (PhotonNetwork.playerList.Count() > 1 && playerWait) {
+
+            playerWait = false;
+        }
+
+        if (!playerWait) {
+
+            DisplayTimer();
+        }
+       
     }
 
     public void OnGUI()
@@ -169,18 +179,21 @@ public class InRoomRoundTimer : MonoBehaviour
                 gameTimeMinText.text = minutes.ToString("00");
                 gameTimeSecText.text = seconds.ToString("00");
 
+                //Debug.Log("Minutes Left " + minutes + "TTL = " + (int)(PhotonNetwork.room.customProperties["TTL"]));
                 //If we run out time declare the person with the highest score as winner, no logic for ties atm.
-                if (minutes == (float)((int)(PhotonNetwork.room.customProperties["TL"])))
+                if (minutes == (float)((int)(PhotonNetwork.room.customProperties["TL"])) && (int)(PhotonNetwork.room.customProperties["TTL"]) == 1)
                 {
-
+         
+                    //Debug.Log("Time Over");
                     SortedDictionary<string, int> playerKills = new SortedDictionary<string, int>();
                     foreach (PhotonPlayer p in PhotonNetwork.playerList)
                     {
 
                         playerKills.Add(p.name, (int)p.customProperties["K"]);
                     }
-                    //Order Dictionary by value with highest value first, then get the first and display the key (AKA Player Name)
+                    //Order Dictionary by value with highest value first, then get the first and display the key (AKA Player Name)             
                     NM.DisplayWinPrompt(playerKills.OrderByDescending(d => d.Value).First().Key);
+                    
                 }
             }
         }

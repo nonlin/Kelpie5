@@ -231,8 +231,11 @@ public class NetworkManager : MonoBehaviour {
 
 		//Display Win Screen
 		WinPrompt.SetActive(true);
-		WinPromptText.text = "Score Limit Reached! \n" + playerName + " Won";
-		player.GetComponentInChildren<PlayerShooting>().enabled = false;
+		WinPromptText.text = "Match Over \n" + playerName + " Won";
+        if (player.GetComponentInChildren<PlayerShooting>() != null) { 
+
+		    player.GetComponentInChildren<PlayerShooting>().enabled = false;
+        }
 		GameOver = true;
 	}
 
