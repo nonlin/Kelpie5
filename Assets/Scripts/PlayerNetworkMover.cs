@@ -20,6 +20,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	public GameObject[] weaponMains;
     public GameObject[] weaponParts;
 	GameObject[] bodys;
+    public GameObject firstPersonChar;
+    Quaternion firstPersonCharRealRotation;
 	//public GameObject injuryEffect;
 	Animator injuryAnim;
 
@@ -53,7 +55,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[SerializeField] Animator animEthan;
 	[SerializeField] Animator animHitBoxes;
 	PhotonView photonView;
-	public PlayerShooting playerShooting;
+	private PlayerShooting playerShooting;
     public GameObject[] WeaponArray;
 	public Light muzzleLightFlash;
 	public GameObject[] muzzleLightFlashGO;
@@ -199,6 +201,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			initialLoad = false; 
 			transform.position = realPosition; 
 			transform.rotation = realRotation;
+            firstPersonChar.transform.rotation = firstPersonCharRealRotation;
             SelectWeapon(currentWeaponIndex);     
 		}//This is where we set all other player prefab settings that isn't the local player's settings
 		while (true) {
@@ -206,17 +209,19 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			//Ideally we want the movement to be equal to the amount of time since the last update
 			transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);// + _characterController.velocity * Time.deltaTime;
 			transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);//Time.deltaTime * smoothing
-
+            firstPersonChar.transform.rotation = Quaternion.Lerp(firstPersonChar.transform.rotation, firstPersonCharRealRotation, 0.1f);
 			//Sync Animation States by tell the respctive animators what the bools we have synced over network are
-			anim.SetBool ("Aim", aim); 
-			anim.SetBool ("Sprint", sprint); 
-			animEthan.SetBool("OnGround",onGround);
-			animEthan.SetFloat("Forward",Forward);
-			animEthan.SetFloat("Turn",turn);
-			//Be sure to set the values here for all crouching aspects
-			animEthan.SetBool ("Crouch",crouch);
-			animMainCam.SetBool("Crouch",crouch);
-			animHitBoxes.SetBool("Crouch",crouch);
+            if (anim != null) { 
+			    anim.SetBool ("Aim", aim); 
+			    anim.SetBool ("Sprint", sprint); 
+			    animEthan.SetBool("OnGround",onGround);
+			    animEthan.SetFloat("Forward",Forward);
+			    animEthan.SetFloat("Turn",turn);
+			    //Be sure to set the values here for all crouching aspects
+			    animEthan.SetBool ("Crouch",crouch);
+			    animMainCam.SetBool("Crouch",crouch);
+			    animHitBoxes.SetBool("Crouch",crouch);
+            }
 			//muzzleFlashToggle = playerShooting.shooting;
 			//playerShooting.shooting = muzzleFlashToggle;
             //Need to update weapon index from FPC to the network, so we don't spam we do it just once everytime a player switches weapons in their FPC
@@ -236,6 +241,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			stream.SendNext(playerName);
 			stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
+            stream.SendNext(firstPersonChar.transform.rotation);
 			stream.SendNext(health);
             stream.SendNext(currentWeaponIndex);
             stream.SendNext(updateWeaponIndex);
@@ -257,6 +263,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			playerName = (string)stream.ReceiveNext();
 			realPosition = (Vector3)stream.ReceiveNext();
 			realRotation = (Quaternion)stream.ReceiveNext();
+            firstPersonCharRealRotation = (Quaternion)stream.ReceiveNext();
 			health = (float)stream.ReceiveNext();
             currentWeaponIndex = (int)stream.ReceiveNext();
             updateWeaponIndex = (bool)stream.ReceiveNext();
@@ -458,8 +465,11 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[PunRPC]
 	public void PlayFlyByShots(){
 
+        if (flyByShots != null) { 
+
 		audio2.clip = flyByShots [Random.Range (0, 8)];
 		audio2.Play ();
+        }
 	}
 
 	[PunRPC]

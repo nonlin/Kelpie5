@@ -7,6 +7,7 @@
 // </summary>
 // <author>developer@exitgames.com</author>
 // ----------------------------------------------------------------------------
+#pragma warning disable 618
 
 using System;
 using System.Collections.Generic;

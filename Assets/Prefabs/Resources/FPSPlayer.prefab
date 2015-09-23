@@ -4331,6 +4331,7 @@ MonoBehaviour:
   pickedUpAmmo: 0
   weaponMains: []
   weaponParts: []
+  firstPersonChar: {fileID: 168066}
   muzzleFlashToggle: 0
   currentWeapon: {fileID: 0}
   _jumpSound: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
@@ -4361,7 +4362,6 @@ MonoBehaviour:
   animMainCam: {fileID: 9522602}
   animEthan: {fileID: 9592996}
   animHitBoxes: {fileID: 9578350}
-  playerShooting: {fileID: 0}
   WeaponArray:
   - {fileID: 168028}
   - {fileID: 134726}

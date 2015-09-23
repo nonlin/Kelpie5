@@ -29,7 +29,7 @@ public class PlayerShooting: MonoBehaviour {
 	//GameObject[] impacts;
 	NetworkManager NM;
 	int currentImpact = 0;
-	int maxImpacts = 20;
+	int maxImpacts = 30;
 	public bool shooting = false;
 	float damage = 16f;
 	bool reloading = false;

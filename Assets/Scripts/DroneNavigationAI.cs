@@ -11,6 +11,11 @@ public class DroneNavigationAI : MonoBehaviour {
     GameObject[] wayPoints;
     SphereCollider CameraDetection;
     PhotonView photonView;
+    Vector3 realPosition;
+    Quaternion realRotation;
+    public float realAgentVeloctiyX;
+    public float realAgentVeloctiyY;
+    bool initialLoad = true;
     //Weather we've reached the destination or not
     bool destination1 = false;
     bool destination2 = false;
@@ -39,11 +44,9 @@ public class DroneNavigationAI : MonoBehaviour {
     List<GameObject>.Enumerator e;
     GameObject CurrentImpact;
     int currentImpact = 0;
-    int maxImpacts = 20;
+    int maxImpacts = 50;
     public bool shooting = false;
     float damage = 16f;
-    int clipSize = 30;
-    public int clipAmount = 3;
     bool reloading = false;
     public Transform target;
     bool enumDeclared = false;
@@ -58,29 +61,89 @@ public class DroneNavigationAI : MonoBehaviour {
         //wayPoints = GameObject.FindGameObjectsWithTag("WayPoints");
         agent = GetComponent<NavMeshAgent>();
         CameraDetection = GameObject.FindGameObjectWithTag("DroneDetectionRadius").GetComponent<SphereCollider>();
-        
+        if (photonView.isMine){
+            agent.enabled = true;
+        }
+        else {
+            //All other players
+            StartCoroutine("UpdateData");
+        }
         //agent.destination = new Vector3(-11.7f,0f,17.3f);
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        //Route to patrol
-        if (PhotonNetwork.isMasterClient) { 
-        
+        //Route to patrol done only on Master Client
+        if (PhotonNetwork.isMasterClient)
+        {
+
             PatrolNavigation();
+            droneAnimator.SetFloat("VelocityX", agent.velocity.x);
+            droneAnimator.SetFloat("VelocityZ", agent.velocity.y);
         }
-        //Animate movement of drone
-        AnimateMovements();
-        
-        
-	
+        else {
+
+        }
 	}
+
+    IEnumerator UpdateData()
+    {
+
+        if (initialLoad)
+        {
+
+            //jiiter correction incomplete, could check position if accurate to .0001 don't move them 
+            initialLoad = false;
+            transform.position = realPosition;
+            transform.rotation = realRotation;
+
+        }//This is where we set all other player prefab settings that isn't the local player's settings
+        while (true)
+        {
+            //smooths every frame for the dummy players from where they are to where they should be, prevents jitter lose some accuracy I suppose
+            //Ideally we want the movement to be equal to the amount of time since the last update
+            transform.position = Vector3.Lerp(transform.position, realPosition, 0.1f);// + _characterController.velocity * Time.deltaTime;
+            transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, 0.1f);//Time.deltaTime * smoothing
+
+            //Sync Animation
+            AnimateMovements();
+            yield return null;
+        }
+    }
+
+    //Serilize Data Across the network, we want everyone to know where they are
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //Send to everyone else a local players variables to be synced and recieved by all other players on network
+        if (stream.isWriting)
+        {
+            //send to clients where we are
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(agent.velocity.x);
+            stream.SendNext(agent.velocity.y);
+            stream.SendNext(playerDetected);
+            
+        }
+        else
+        {
+            //Get from clients where they are
+            //Write in the same order we read, if not writing we are reading. 
+            realPosition = (Vector3)stream.ReceiveNext();
+            realRotation = (Quaternion)stream.ReceiveNext();
+            realAgentVeloctiyX = (float)stream.ReceiveNext();
+            realAgentVeloctiyY = (float)stream.ReceiveNext();
+            playerDetected = (bool)stream.ReceiveNext();
+        }
+    }
+
     void AnimateMovements()
     {
-        droneAnimator.SetFloat("VelocityX", agent.velocity.x);
-        droneAnimator.SetFloat("VelocityZ", agent.velocity.z);
+        droneAnimator.SetFloat("VelocityX", realAgentVeloctiyX);
+        droneAnimator.SetFloat("VelocityZ", realAgentVeloctiyY);
     }
+
     void PatrolNavigation() {
 
         //We look to see if we've reached a destination by checking x and z location (ignore height (y)) and if so move to next target location
@@ -113,46 +176,55 @@ public class DroneNavigationAI : MonoBehaviour {
     }
 
     void OnTriggerStay(Collider col)
-    {
-        if (col.gameObject.tag == "Player")
-        {
-            Debug.Log("<color=Red>Target Locked</color>");
-            playerDetected = true;
-            agent.Stop();
-            if (timeStampShootingRate <= Time.time)
+    {//Use stay for shooting
+       // if (PhotonNetwork.isMasterClient) { 
+            if (col.gameObject.tag == "Player")
             {
-                timeStampShootingRate = Time.time + ShootingRate;
-                ShootTarget(col.gameObject);
+                Debug.Log("<color=Red>Target Locked</color>");
+                //playerDetected = true;
+                agent.Stop();
+                if (timeStampShootingRate <= Time.time)
+                {
+                    timeStampShootingRate = Time.time + ShootingRate;
+                    ShootTarget(col.gameObject);
+                }
             }
-        }
-        else {
-            //If no player detected keep going
-            agent.Resume();
-        }
-        
+            else {
+                //playerDetected = false;
+                //If no player detected keep going
+            
+                 agent.Resume(); 
+            }
+       // }
     }
 
     void OnTriggerEnter(Collider col)
-    {
+    {//We use Enter and Exit so we don't spam = true or = false
+       
         if (col.gameObject.tag == "Player")
         {
             Debug.Log("<color=Yellow>Detected Player</color>");
-            
+
             playerDetected = true;
-        }
+            //if (PhotonNetwork.isMasterClient)
+                agent.Stop();
+        }    
     }
 
     void OnTriggerExit(Collider col)
     {
+
         if (col.gameObject.tag == "Player")
         {
             Debug.Log("<color=Green>Sights Lost</color>");
             playerDetected = false;
-            agent.Resume();
+           // if (PhotonNetwork.isMasterClient)
+                agent.Resume();
         }
     }
 
     void ShootTarget(GameObject target) {
+
         RaycastHit[] hits;
         bool flyByTrue = true;
         //Offset was to help avoid the Collision Detection Sphere but I just moved the sphere instead. 
