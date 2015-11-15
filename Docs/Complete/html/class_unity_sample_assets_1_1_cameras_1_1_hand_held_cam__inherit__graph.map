@@ -1,0 +1,4 @@
+<map id="UnitySampleAssets.Cameras.HandHeldCam" name="UnitySampleAssets.Cameras.HandHeldCam">
+<area shape="rect" id="node2" href="$class_unity_sample_assets_1_1_cameras_1_1_lookat_target.html" title="{LookatTarget\n|# followVelocity\l|# Start()\l# FollowTarget()\l}" alt="" coords="47,315,161,407"/>
+<area shape="rect" id="node3" href="$class_unity_sample_assets_1_1_cameras_1_1_abstract_target_follower.html" title="{AbstractTargetFollower\n|+ Target\l# target\l|+ FindAndTargetPlayer()\l+ SetTarget()\l# Start()\l# FollowTarget()\l}" alt="" coords="23,131,185,267"/>
+</map>

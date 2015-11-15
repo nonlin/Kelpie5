@@ -1,0 +1,4 @@
+<map id="PhotonEditor" name="PhotonEditor">
+<area shape="rect" id="node3" href="$class_account_service.html" title="{AccountService\n|+ Message\l+ Exception\l+ AppId\l+ ReturnCode\l|+ AccountService()\l+ RegisterByEmail()\l+ RegisterByEmailAsync()\l+ Validator()\l}" alt="" coords="133,35,309,200"/>
+<area shape="rect" id="node4" href="$class_pun_wizard_text.html" title="{PunWizardText\n|+ WindowTitle\l+ SetupWizardWarningTitle\l+ SetupWizardWarningMessage\l+ MainMenuButton\l+ SetupWizardTitle\l+ SetupWizardInfo\l+ EmailOrAppIdLabel\l+ AlreadyRegisteredInfo\l+ SkipRegistrationInfo\l+ RegisteredNewAccountInfo\land 42 more...\l|}" alt="" coords="333,5,543,229"/>
+</map>

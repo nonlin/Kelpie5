@@ -1,0 +1,5 @@
+<map id="UnitySampleAssets.Cameras.PivotBasedCameraRig" name="UnitySampleAssets.Cameras.PivotBasedCameraRig">
+<area shape="rect" id="node4" href="$class_unity_sample_assets_1_1_cameras_1_1_auto_cam.html" title="{UnitySampleAssets.Cameras.\lAutoCam\n||# FollowTarget()\l}" alt="" coords="5,499,203,591"/>
+<area shape="rect" id="node5" href="$class_unity_sample_assets_1_1_cameras_1_1_free_look_cam.html" title="{UnitySampleAssets.Cameras.\lFreeLookCam\n||# Awake()\l# Update()\l# FollowTarget()\l}" alt="" coords="227,484,424,605"/>
+<area shape="rect" id="node2" href="$class_unity_sample_assets_1_1_cameras_1_1_abstract_target_follower.html" title="{AbstractTargetFollower\n|+ Target\l# target\l|+ FindAndTargetPlayer()\l+ SetTarget()\l# Start()\l# FollowTarget()\l}" alt="" coords="133,131,296,267"/>
+</map>

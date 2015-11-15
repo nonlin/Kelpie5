@@ -1,0 +1,4 @@
+<map id="OVRPlugin.Posef" name="OVRPlugin.Posef">
+<area shape="rect" id="node2" href="$struct_o_v_r_plugin_1_1_vector3f.html" title="{OVRPlugin.Vector3f\n|+ x\l+ y\l+ z\l|}" alt="" coords="5,13,144,119"/>
+<area shape="rect" id="node3" href="$struct_o_v_r_plugin_1_1_quatf.html" title="{OVRPlugin.Quatf\n|+ x\l+ y\l+ z\l+ w\l|}" alt="" coords="169,5,290,127"/>
+</map>

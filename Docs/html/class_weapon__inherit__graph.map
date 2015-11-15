@@ -1,0 +1,4 @@
+<map id="Weapon" name="Weapon">
+<area shape="rect" id="node3" href="$class_a_k_weapon.html" title="{AKWeapon\n||+ AKWeapon()\l}" alt="" coords="5,403,113,480"/>
+<area shape="rect" id="node4" href="$class_shotgun.html" title="{Shotgun\n||+ Shotgun()\l}" alt="" coords="138,403,229,480"/>
+</map>

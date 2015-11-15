@@ -1,0 +1,4 @@
+<map id="Photon.PunBehaviour" name="Photon.PunBehaviour">
+<area shape="rect" id="node2" href="$class_photon_1_1_mono_behaviour.html" title="This class adds the property photonView, while logging a warning when your game still uses the networ..." alt="" coords="20,197,179,289"/>
+<area shape="rect" id="node4" href="$interface_i_pun_callbacks.html" title="Defines all the methods that PUN will call in specific situations, except OnPhotonSerializeView. " alt="" coords="203,131,414,355"/>
+</map>

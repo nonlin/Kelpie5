@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CommonUtils" Collapsed="true">
+    <Position X="2.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Editor\CommonUtils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="VersionIncrementor" Collapsed="true">
+    <Position X="4" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Editor\VersionIncrementor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OVRMoonlightLoader" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Assets\OVR\Moonlight\Editor\OVRMoonlightLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AccountService" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgCAAAAAiAAABAAAAAIAAAgABAIBQAAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\AccountService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonConverter" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAhACAAIAAgAAAAABAAACAAAAKAAAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\PhotonConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PunWizardText" Collapsed="true">
+    <Position X="4" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oIIQgoYgQQkElgIDAAQQEIEwAAAAFIOJEgKIDoAAIEA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\PhotonEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonEditor" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQABEgEAAANIC1wFCgEAIQKEAAFoAAkUIjCBAUhAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\PhotonEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonGUI" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CDBQABBEAQBAGAAQABQAAAAIAAAgAgIAABBQEIAoAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\PhotonGUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonViewHandler" Collapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAgAAAAAAAgQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\PhotonViewHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonViewInspector" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAQBAAAAAAAAAAAACAAAAgAAAQAAAAAgAAAACAQ=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\PhotonViewInspector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneSetting" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\PunSceneSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PunSceneSettings" Collapsed="true">
+    <Position X="2.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAQAAAAAACAAASAgAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\PunSceneSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ServerSettingsInspector" Collapsed="true">
+    <Position X="9.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAACAAAAAAAAEAAAAAgAAAAAQA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\ServerSettingsInspector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonAnimatorViewEditor" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAABAAAAIAAAAACKAQBAAAARAIAAAAAAAACAg=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\Views\PhotonAnimatorViewEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonRigidbody2DViewEditor" Collapsed="true">
+    <Position X="4" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\Views\PhotonRigidbody2DViewEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonRigidbodyViewEditor" Collapsed="true">
+    <Position X="5.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\Views\PhotonRigidbodyViewEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PhotonTransformViewEditor" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAIEAAAIAAACAVAACJAAAiESSQCgigBIABgQKiA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\Views\PhotonTransformViewEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LightShaftsEditor" Collapsed="true">
+    <Position X="2.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAgABIHAiAAAAASICAShgJEQAAAAQCAECAAYAQCAA=</HashCode>
+      <FileName>Assets\SampleAssets\Effects\LightShafts\Editor\LightShaftsEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.AntialiasingEditor" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAABAABACAAAgACAACAAAAAAAECAAAAACACAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\AntialiasingEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.BloomAndFlaresEditor" Collapsed="true">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAEAQAAAACjDAAAAIgAAJACAABUAEEDAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\BloomAndFlaresEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.BloomEditor" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAQAABADjDAAAAIgIAJAiAABUAEEDAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\BloomEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.CameraMotionBlurEditor" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAQAAQAGIIAABBABCAACBAAAAAACIE=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\CameraMotionBlurEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.ColorCorrectionCurvesEditor" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAEAIAABKWAAKACAAAAEAAQACACEAAAAAACAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\ColorCorrectionCurvesEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.ColorCorrectionLookupEditor" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAACAAAAAAAAAAACAAAAAAACAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\ColorCorrectionLookupEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.DepthOfFieldDeprecatedEditor" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABQKGAQgkEAAAAAABAAQCSAAEBAAAACASAAAFAAECAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\DepthOfFieldDeprecatedEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.DepthOfFieldEditor" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAgAAQQAkBQAAAGAAIAQAAAAgBCCAAAAgICAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\DepthOfFieldEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.EdgeDetectionEditor" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAIAACAAAAACAAAAABAAAQACAAAgAgCCAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\EdgeDetectionEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.NoiseAndGrainEditor" Collapsed="true">
+    <Position X="4" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAQAQAAABBAAQCAIAAAgAQAAACYAAIBAACAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\NoiseAndGrainEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.SunShaftsEditor" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACgAAAAAAAAAIAgACCBAAAAgAAAACIAgAAAACAI=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\SunShaftsEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.TonemappingEditor" Collapsed="true">
+    <Position X="2.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAIAAECAAAAAABAAEACABAAAAAGAA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\TonemappingEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityStandardAssets.ImageEffects.VignetteAndChromaticAberrationEditor" Collapsed="true">
+    <Position X="5.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAgAEAAAAAgAACAAAAAKAAAAhAAAAAAAACQA=</HashCode>
+      <FileName>Assets\Editor\ImageEffects\VignetteAndChromaticAberrationEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rotorz.ReorderableList.Internal.ReorderableListResources" Collapsed="true">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAoAAAIAAAACBgBQAAAEAAIAACAIhAAAEBAAAEA=</HashCode>
+      <FileName>Assets\Photon Unity Networking\Editor\PhotonNetwork\ReorderableListResources.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnitySampleAssets.CrossPlatformInput.Inspector.CrossPlatformInitialize" Collapsed="true">
+    <Position X="4" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABQAAAAAAAAIAAAAAAACAAAAAAAAAAAAAAgAABAAIA=</HashCode>
+      <FileName>Assets\SampleAssets\CrossPlatformInput\Scripts\Editor\CrossPlatformInputInitialize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnitySampleAssets.CrossPlatformInput.Inspector.InputAxisScrollbarCI" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\SampleAssets\CrossPlatformInput\Scripts\Editor\InputAxisScrollbarCI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="10" />
+</ClassDiagram>

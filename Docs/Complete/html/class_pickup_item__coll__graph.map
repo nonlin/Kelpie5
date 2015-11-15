@@ -1,0 +1,4 @@
+<map id="PickupItem" name="PickupItem">
+<area shape="rect" id="node2" href="$class_photon_1_1_mono_behaviour.html" title="This class adds the property photonView, while logging a warning when your game still uses the networ..." alt="" coords="20,131,179,223"/>
+<area shape="rect" id="node4" href="$interface_i_pun_observable.html" title="Defines the OnPhotonSerializeView method to make it easy to implement correctly for observable script..." alt="" coords="203,138,382,215"/>
+</map>

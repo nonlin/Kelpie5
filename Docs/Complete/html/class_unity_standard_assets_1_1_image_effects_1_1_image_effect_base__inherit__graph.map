@@ -1,0 +1,8 @@
+<map id="UnityStandardAssets.ImageEffects.ImageEffectBase" name="UnityStandardAssets.ImageEffects.ImageEffectBase">
+<area shape="rect" id="node3" href="$class_unity_standard_assets_1_1_image_effects_1_1_color_correction_ramp.html" title="{UnityStandardAssets.Image\lEffects.ColorCorrectionRamp\n|+ textureRamp\l|}" alt="" coords="5,315,195,407"/>
+<area shape="rect" id="node4" href="$class_unity_standard_assets_1_1_image_effects_1_1_grayscale.html" title="{UnityStandardAssets.Image\lEffects.Grayscale\n|+ textureRamp\l+ rampOffset\l|}" alt="" coords="219,307,403,414"/>
+<area shape="rect" id="node5" href="$class_unity_standard_assets_1_1_image_effects_1_1_motion_blur.html" title="{UnityStandardAssets.Image\lEffects.MotionBlur\n|+ blurAmount\l+ extraBlur\l|# Start()\l# OnDisable()\l}" alt="" coords="427,300,611,421"/>
+<area shape="rect" id="node6" href="$class_unity_standard_assets_1_1_image_effects_1_1_sepia_tone.html" title="{UnityStandardAssets.Image\lEffects.SepiaTone\n||}" alt="" coords="635,315,819,407"/>
+<area shape="rect" id="node7" href="$class_unity_standard_assets_1_1_image_effects_1_1_twirl.html" title="{UnityStandardAssets.Image\lEffects.Twirl\n|+ radius\l+ angle\l+ center\l|}" alt="" coords="843,300,1027,421"/>
+<area shape="rect" id="node8" href="$class_unity_standard_assets_1_1_image_effects_1_1_vortex.html" title="{UnityStandardAssets.Image\lEffects.Vortex\n|+ radius\l+ angle\l+ center\l|}" alt="" coords="1051,300,1235,421"/>
+</map>

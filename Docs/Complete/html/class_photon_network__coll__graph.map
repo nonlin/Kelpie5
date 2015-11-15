@@ -1,0 +1,9 @@
+<map id="PhotonNetwork" name="PhotonNetwork">
+<area shape="rect" id="node2" title="Implements Photon LoadBalancing used in PUN. " alt="" coords="487,580,725,1435"/>
+<area shape="rect" id="node3" title="Internally used by PUN, a LoadbalancingPeer provides the operations and enum definitions needed to us..." alt="" coords="557,169,788,466"/>
+<area shape="rect" id="node8" title="Internal Monobehaviour that allows Photon to run an Update loop. " alt="" coords="159,822,387,1193"/>
+<area shape="rect" id="node6" href="$class_photon_player.html" title="Summarizes a &quot;player&quot; within a room, identified (in that room) by actorID. " alt="" coords="812,132,992,503"/>
+<area shape="rect" id="node7" href="$class_room_info.html" title="A simplified room with just the info required to list and join, used for the room listing in the lobb..." alt="" coords="367,139,533,495"/>
+<area shape="rect" id="node9" href="$class_photon_1_1_mono_behaviour.html" title="This class adds the property photonView, while logging a warning when your game still uses the networ..." alt="" coords="20,271,179,363"/>
+<area shape="rect" id="node11" href="$class_server_settings.html" title="Collection of connection&#45;relevant settings, used internally by PhotonNetwork.ConnectUsingSettings. " alt="" coords="903,881,1079,1134"/>
+</map>

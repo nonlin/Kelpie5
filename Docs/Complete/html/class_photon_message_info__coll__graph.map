@@ -1,0 +1,5 @@
+<map id="PhotonMessageInfo" name="PhotonMessageInfo">
+<area shape="rect" id="node2" href="$class_photon_player.html" title="Summarizes a &quot;player&quot; within a room, identified (in that room) by actorID. " alt="" coords="5,457,185,827"/>
+<area shape="rect" id="node3" href="$class_photon_view.html" title="PUN&#39;s NetworkView replacement class for networking. " alt="" coords="210,273,445,1011"/>
+<area shape="rect" id="node4" href="$class_photon_1_1_mono_behaviour.html" title="This class adds the property photonView, while logging a warning when your game still uses the networ..." alt="" coords="248,132,407,224"/>
+</map>

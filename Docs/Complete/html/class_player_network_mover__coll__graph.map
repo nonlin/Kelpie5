@@ -1,0 +1,4 @@
+<map id="PlayerNetworkMover" name="PlayerNetworkMover">
+<area shape="rect" id="node2" href="$class_photon_1_1_mono_behaviour.html" title="This class adds the property photonView, while logging a warning when your game still uses the networ..." alt="" coords="23,198,181,290"/>
+<area shape="rect" id="node4" href="$class_weapon.html" title="{Weapon\n|+ weaponID\l+ Fire\l+ Reload\l+ Empty\l+ damage\l+ clipSizeMax\l+ clipAmountMax\l+ clipSize\l+ clipAmount\l+ MaxRange\land 6 more...\l|}" alt="" coords="209,132,333,356"/>
+</map>

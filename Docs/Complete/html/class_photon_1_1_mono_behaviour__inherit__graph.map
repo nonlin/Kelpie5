@@ -1,0 +1,19 @@
+<map id="Photon.MonoBehaviour" name="Photon.MonoBehaviour">
+<area shape="rect" id="node3" href="$class_connect_and_join_random.html" title="This script automatically connects to Photon (using the settings file), tries to join a random room a..." alt="" coords="5,549,216,729"/>
+<area shape="rect" id="node4" href="$class_drone_network_mover.html" title="{DroneNetworkMover\n||}" alt="" coords="241,601,378,678"/>
+<area shape="rect" id="node5" href="$class_highlight_owned_game_obj.html" title="{HighlightOwnedGameObj\n|+ PointerPrefab\l+ Offset\l|}" alt="" coords="402,593,569,685"/>
+<area shape="rect" id="node6" href="$class_in_room_chat.html" title="{InRoomChat\n|+ GuiRect\l+ IsVisible\l+ AlignBottom\l+ messages\l+ ChatRPC\l|+ Start()\l+ OnGUI()\l+ Chat()\l+ AddLine()\l}" alt="" coords="593,549,698,729"/>
+<area shape="rect" id="node7" href="$class_move_by_keys.html" title="Very basic component to move a GameObject by WASD and Space. " alt="" coords="723,579,837,700"/>
+<area shape="rect" id="node8" href="$class_on_awake_use_photon_view.html" title="{OnAwakeUsePhotonView\n||+ OnAwakeRPC()\l+ OnAwakeRPC()\l}" alt="" coords="861,593,1032,685"/>
+<area shape="rect" id="node9" href="$class_on_click_destroy.html" title="Implements OnClick to destroy the GameObject it&#39;s attached to. " alt="" coords="1057,593,1175,685"/>
+<area shape="rect" id="node10" href="$class_photon_1_1_pun_behaviour.html" title="This class provides a .photonView and all callbacks/events that PUN can call. " alt="" coords="1200,527,1411,751"/>
+<area shape="rect" id="node11" href="$class_photon_converter.html" title="{PhotonConverter\n||+ RunConversion()\l+ PickFolderAndConvertScripts()\l+ GetScriptsInFolder()\l}" alt="" coords="1435,586,1645,693"/>
+<area shape="rect" id="node12" title="Internal Monobehaviour that allows Photon to run an Update loop. " alt="" coords="1670,447,1898,832"/>
+<area shape="rect" id="node13" href="$class_photon_view.html" title="PUN&#39;s NetworkView replacement class for networking. " alt="" coords="1923,271,2157,1008"/>
+<area shape="rect" id="node14" href="$class_pickup_item.html" title="Makes a scene object pickup&#45;able. " alt="" coords="2181,491,2360,788"/>
+<area shape="rect" id="node15" href="$class_pickup_item_simple.html" title="Makes a scene object pickup&#45;able. " alt="" coords="2385,564,2559,715"/>
+<area shape="rect" id="node16" href="$class_pickup_item_syncer.html" title="Finds out which PickupItems are not spawned at the moment and send this to new players. " alt="" coords="2583,571,2806,707"/>
+<area shape="rect" id="node17" href="$class_player_network_mover.html" title="{PlayerNetworkMover\n|+ playerName\l+ pickedUpAmmo\l+ weaponMains\l+ weaponParts\l+ firstPersonChar\l+ muzzleFlashToggle\l+ currentWeapon\l+ anim\l+ WeaponArray\l+ muzzleLightFlash\l+ muzzleLightFlashGO\l+ cameraMotionBlur\l+ depthOfField\l+ currentWeaponIndex\l+ updateWeaponIndex\l|+ Respawn()\l+ SendMessage()\l+ InitPostProcessingEffects()\l+ WeaponSetup()\l+ SelectWeapon()\l+ GetHealth()\l+ GetShot()\l+ ShootingSound()\l+ ReloadingSound()\l+ OutOfAmmo()\l+ PlayLandingSound()\l+ PlayJumpSound()\l+ PlayFootStepAudio()\l+ PlayFlyByShots()\l+ ToggleMuzzleFlash()\l}" alt="" coords="2830,395,3021,883"/>
+<area shape="rect" id="node18" href="$class_show_info_of_player.html" title="Can be attached to a GameObject to show info about the owner of the PhotonView. " alt="" coords="3045,586,3211,693"/>
+<area shape="rect" id="node19" href="$class_smooth_sync_movement.html" title="{SmoothSyncMovement\n|+ SmoothingDelay\l|+ Awake()\l+ OnPhotonSerializeView()\l+ Update()\l}" alt="" coords="3235,586,3413,693"/>
+</map>

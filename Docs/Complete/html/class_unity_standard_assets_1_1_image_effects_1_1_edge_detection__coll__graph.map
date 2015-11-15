@@ -1,0 +1,3 @@
+<map id="UnityStandardAssets.ImageEffects.EdgeDetection" name="UnityStandardAssets.ImageEffects.EdgeDetection">
+<area shape="rect" id="node2" href="$class_unity_standard_assets_1_1_image_effects_1_1_post_effects_base.html" title="{PostEffectsBase\n|# supportHDRTextures\l# supportDX11\l# isSupported\l|+ CheckResources()\l+ Dx11Support()\l# CheckShaderAndCreateMaterial()\l# CreateMaterial()\l# CheckSupport()\l# Start()\l# CheckSupport()\l# CheckSupport()\l# ReportAutoDisable()\l# NotSupported()\l# DrawBorder()\l}" alt="" coords="5,131,232,384"/>
+</map>

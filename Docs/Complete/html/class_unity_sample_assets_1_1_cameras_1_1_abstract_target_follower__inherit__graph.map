@@ -1,0 +1,8 @@
+<map id="UnitySampleAssets.Cameras.AbstractTargetFollower" name="UnitySampleAssets.Cameras.AbstractTargetFollower">
+<area shape="rect" id="node3" href="$class_unity_sample_assets_1_1_cameras_1_1_lookat_target.html" title="{UnitySampleAssets.Cameras.\lLookatTarget\n|# followVelocity\l|# Start()\l# FollowTarget()\l}" alt="" coords="5,344,203,451"/>
+<area shape="rect" id="node5" href="$class_unity_sample_assets_1_1_cameras_1_1_pivot_based_camera_rig.html" title="{UnitySampleAssets.Cameras.\lPivotBasedCameraRig\n|# cam\l# pivot\l# lastTargetPosition\l|# Awake()\l}" alt="" coords="227,337,424,458"/>
+<area shape="rect" id="node8" href="$class_unity_sample_assets_1_1_cameras_1_1_target_field_of_view.html" title="{UnitySampleAssets.Cameras.\lTargetFieldOfView\n||+ SetTarget()\l+ MaxBoundsExtent()\l# Start()\l# FollowTarget()\l}" alt="" coords="448,329,645,465"/>
+<area shape="rect" id="node4" href="$class_unity_sample_assets_1_1_cameras_1_1_hand_held_cam.html" title="{UnitySampleAssets.Cameras.\lHandHeldCam\n||# FollowTarget()\l}" alt="" coords="5,528,203,620"/>
+<area shape="rect" id="node6" href="$class_unity_sample_assets_1_1_cameras_1_1_auto_cam.html" title="{UnitySampleAssets.Cameras.\lAutoCam\n||# FollowTarget()\l}" alt="" coords="227,528,424,620"/>
+<area shape="rect" id="node7" href="$class_unity_sample_assets_1_1_cameras_1_1_free_look_cam.html" title="{UnitySampleAssets.Cameras.\lFreeLookCam\n||# Awake()\l# Update()\l# FollowTarget()\l}" alt="" coords="448,513,645,635"/>
+</map>

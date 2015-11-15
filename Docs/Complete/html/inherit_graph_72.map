@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_room_info.html" title="A simplified room with just the info required to list and join, used for the room listing in the lobb..." alt="" coords="5,5,81,32"/>
+<area shape="rect" id="node2" href="$class_room.html" title="This class resembles a room that PUN joins (or joined). " alt="" coords="129,5,185,32"/>
+</map>
