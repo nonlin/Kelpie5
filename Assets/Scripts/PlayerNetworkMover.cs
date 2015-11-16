@@ -18,6 +18,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
     private float normalLerpRate = 4.5f;
     private float fasterLerpRate = 8;
     private Vector3 lastPos;
+    private float threshold = 0.01f;
     private List<Vector3> syncPosList = new List<Vector3>();
     private bool useHistoricalLerping = true;
     private float closeEnough = 0.1f;
@@ -260,14 +261,17 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
             SelectWeapon(currentWeaponIndex);     
 		}//This is where we set all other player prefab settings that isn't the local player's settings
 		while (true) {
-			//smooths every frame for the dummy players from where they are to where they should be, prevents jitter lose some accuracy I suppose
-			//Ideally we want the movement to be equal to the amount of time since the last update
+            //smooths every frame for the dummy players from where they are to where they should be, prevents jitter lose some accuracy I suppose
+            //Ideally we want the movement to be equal to the amount of time since the last update
             // (Don't need to update pos when not moving so check using threshold) 
-           // if (Vector3.Distance(transform.position, lastPos) > threshold) { 
-            //transform.position = Vector3.SmoothDamp(transform.position, realPosition,  ,0.06f);// + _characterController.velocity * Time.deltaTime;
+            if (Vector3.Distance(transform.position, realPosition) > threshold)
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, realPosition, ref velocity, 0.06f);// + _characterController.velocity * Time.deltaTime;
+            }
             //transform.position = SuperSmoothLerp(transform.position, lastPos, realPosition, Time.deltaTime, 0.5f);
             //SyncPositionValues(realPosition);
-            syncPosList.Add(realPosition);
+            //Alternative, but not effective way of syncing, for some reason to slow. 
+           /* syncPosList.Add(realPosition);
             if (useHistoricalLerping){
 
                 HistoricalLerping();
@@ -275,7 +279,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
             else {
 
                 OrdinaryLerping();
-            }
+            }*/
             
             transform.rotation = Quaternion.Lerp(transform.rotation, realRotation, Time.deltaTime * lerpRate);//Time.deltaTime * smoothing
             firstPersonChar.transform.rotation = Quaternion.Lerp(firstPersonChar.transform.rotation, firstPersonCharRealRotation, Time.deltaTime * lerpRate);
@@ -309,7 +313,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			//send to clients where we are
 			stream.SendNext(playerName);
             stream.SendNext(_characterController.velocity);
-			stream.SendNext(transform.position);
+            stream.SendNext(transform.position);
 			stream.SendNext(transform.rotation);
             stream.SendNext(firstPersonChar.transform.rotation);
 			stream.SendNext(health);
@@ -332,7 +336,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			//Write in the same order we read, if not writing we are reading. 
 			playerName = (string)stream.ReceiveNext();
             realVelocity = (Vector3)stream.ReceiveNext();
-			realPosition = (Vector3)stream.ReceiveNext();
+            realPosition = (Vector3)stream.ReceiveNext();            
 			realRotation = (Quaternion)stream.ReceiveNext();
             firstPersonCharRealRotation = (Quaternion)stream.ReceiveNext();
 			health = (float)stream.ReceiveNext();

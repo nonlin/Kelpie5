@@ -114,7 +114,7 @@ public class PlayerShooting: MonoBehaviour {
 			NM.player.GetComponent < PhotonView > ().RPC("ReloadingSound", PhotonTargets.All);
 			StartCoroutine(Reload());
 			//Write Kills and Deaths to File On Death 
-			System.IO.File.AppendAllText (@"C:\Users\Public\PlayerSootingStats.txt", "\n" + "Bullets Fired: " + (bulletsFired).ToString() + " On Reload");
+			//System.IO.File.AppendAllText (@"C:\Users\Public\PlayerSootingStats.txt", "\n" + "Bullets Fired: " + (bulletsFired).ToString() + " On Reload");
 		}
         if (WeaponStats.clipSize <= 0 && Input.GetButtonDown("Fire1"))
         {
@@ -343,7 +343,7 @@ public class PlayerShooting: MonoBehaviour {
 
         if (ammoText != null) { 
             
-            ammoText.text = WeaponStats.clipAmount.ToString() + "/" + WeaponStats.clipSize.ToString();
+            ammoText.text = WeaponStats.clipSize.ToString() + "/" + WeaponStats.clipAmount.ToString();
         }
 	}
 }

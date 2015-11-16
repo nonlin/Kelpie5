@@ -182,7 +182,7 @@ public class DroneNavigationAI : MonoBehaviour {
             {
                 Debug.Log("<color=Red>Target Locked</color>");
                 //playerDetected = true;
-                agent.Stop();
+                //agent.Stop();
                 if (timeStampShootingRate <= Time.time)
                 {
                     timeStampShootingRate = Time.time + ShootingRate;
@@ -193,7 +193,7 @@ public class DroneNavigationAI : MonoBehaviour {
                 //playerDetected = false;
                 //If no player detected keep going
             
-                 agent.Resume(); 
+                 //agent.Resume(); 
             }
        // }
     }
@@ -207,7 +207,7 @@ public class DroneNavigationAI : MonoBehaviour {
 
             playerDetected = true;
             //if (PhotonNetwork.isMasterClient)
-                agent.Stop();
+            //agent.Stop();
         }    
     }
 
@@ -219,7 +219,7 @@ public class DroneNavigationAI : MonoBehaviour {
             Debug.Log("<color=Green>Sights Lost</color>");
             playerDetected = false;
            // if (PhotonNetwork.isMasterClient)
-                agent.Resume();
+            //agent.Resume();
         }
     }
 
