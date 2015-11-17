@@ -48,6 +48,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -222,6 +223,7 @@ MonoBehaviour:
   mainMenu: {fileID: 0}
   ammoText: {fileID: 0}
   versionText: {fileID: 0}
+  crosshair: {fileID: 0}
   optionsMenu: {fileID: 0}
   serverOptionsMenu: {fileID: 0}
   userName: {fileID: 0}

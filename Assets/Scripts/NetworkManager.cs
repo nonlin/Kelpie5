@@ -14,6 +14,7 @@ public class NetworkManager : MonoBehaviour {
 	[SerializeField] GameObject mainMenu;
 	[SerializeField] GameObject ammoText;
 	[SerializeField] GameObject versionText;
+    [SerializeField] GameObject crosshair;
 	public GameObject optionsMenu;
 	public GameObject serverOptionsMenu;
 
@@ -48,8 +49,8 @@ public class NetworkManager : MonoBehaviour {
 	
 		photonView = GetComponent<PhotonView> ();//Initillze PhotonView
 		messages = new Queue<string> (messageCount);//Specify Size for garbage Collection 
-		PhotonNetwork.sendRate = 30;
-		PhotonNetwork.sendRateOnSerialize = 15;
+		PhotonNetwork.sendRate = 40;
+		PhotonNetwork.sendRateOnSerialize = 20;
 		PhotonNetwork.logLevel = PhotonLogLevel.Full;//So we see everything in output
 		//connect to Server with setup info and sets game version
 		PhotonNetwork.ConnectUsingSettings ("0.4");
@@ -231,7 +232,8 @@ public class NetworkManager : MonoBehaviour {
 
 		//Display Win Screen
 		WinPrompt.SetActive(true);
-		WinPromptText.text = "Match Over \n" + playerName + " Won";
+        crosshair.SetActive(false);
+        WinPromptText.text = "Match Over \n" + playerName + " Won";
         if (player.GetComponentInChildren<PlayerShooting>() != null) { 
 
 		    player.GetComponentInChildren<PlayerShooting>().enabled = false;

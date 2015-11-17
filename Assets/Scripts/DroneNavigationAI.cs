@@ -28,7 +28,7 @@ public class DroneNavigationAI : MonoBehaviour {
     PhotonPlayer DroneAI = new PhotonPlayer(false,-1,"DroneAI");
     bool playerDetected = false;
     float timeStampShootingRate = 0;
-    float ShootingRate = 0.35f;
+    float ShootingRate = 0.50f;
     public ParticleSystem muzzleFlash;
     public GameObject[] muzzleLightFlashGO;
     public Light muzzleLightFlash;

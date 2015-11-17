@@ -29,9 +29,8 @@ namespace UnitySampleAssets.Characters.FirstPerson
         [SerializeField] private CurveControlledBob _headBob = new CurveControlledBob();
         [SerializeField] private LerpControlledBob _jumpBob = new LerpControlledBob();
         [SerializeField] private float _stepInterval;
-
-        [SerializeField] private AudioClip[] _footstepSounds;
-                                             // an array of footstep sounds that will be randomly selected from.
+        [SerializeField] private AudioClip breathingFastSound; // the sound played when running 
+        [SerializeField] private AudioClip[] _footstepSounds; // an array of footstep sounds that will be randomly selected from.
 
         [SerializeField] private AudioClip _jumpSound; // the sound played when character leaves the ground.
         [SerializeField] private AudioClip _landSound; // the sound played when character touches back on ground.
@@ -41,7 +40,7 @@ namespace UnitySampleAssets.Characters.FirstPerson
 		[SerializeField] Animator animMainCam;
 		[SerializeField] Animator animEthan;
 		[SerializeField] Animator animHitBoxes;
-
+        private IEnumerator StaminaRegenCoroutine;
 		GUIManager guiMan;
         ///////////////// non exposed privates /////////////////////////
         private Camera _camera;
@@ -87,8 +86,9 @@ namespace UnitySampleAssets.Characters.FirstPerson
             //PNM.currentWeapon = weapons[0].GetComponent<Weapon>();
             //playerShooting.UpdateAmmoText();
             //playerShooting = GameObject.FindGameObjectWithTag("WeaponsCam").GetComponent<PlayerShooting>();
-            //Enable crosshair when spawning player
-            GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = true;
+            //Enable crosshair when spawning player if it isn't null which it might be from WinPrompt
+            if (GameObject.Find("Crosshair") != null)
+                GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = true;
             //Doesn't differentiate between other players
             //anim = GameObject.FindGameObjectWithTag("WeaponMain").GetComponent<Animator>();
 
@@ -107,8 +107,8 @@ namespace UnitySampleAssets.Characters.FirstPerson
             _stepCycle = 0f;
             _nextStep = _stepCycle/2f;
             _jumping = false;
-            
-			NM = GameObject.Find("NetworkManager").GetComponent<NetworkManager>(); 
+            gameObject.GetComponents<AudioSource>()[3].clip = breathingFastSound;
+            NM = GameObject.Find("NetworkManager").GetComponent<NetworkManager>(); 
 			_mouseLook.XSensitivity = PlayerPrefs.GetFloat ("xAxis");
 			_mouseLook.YSensitivity = PlayerPrefs.GetFloat ("yAxis");
 			_mouseLook.smooth = (PlayerPrefs.GetInt("smooth") != 0);
@@ -357,19 +357,23 @@ namespace UnitySampleAssets.Characters.FirstPerson
 			if(aim && !doOnce){
 				_isWalking = true; 
 				doOnce = true;
-                GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = false;
+                if(GameObject.Find("Crosshair") != null)
+                    GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = false;
 				_mouseLook.XSensitivity = mouseTempX - (mouseTempX * 0.45f);
 				_mouseLook.YSensitivity = mouseTempY - (mouseTempY  * 0.45f);
 
 				Debug.Log (_mouseLook.YSensitivity);
 				
 			}
-			//Return Mouse movement values to default
-			if(!aim){
-				doOnce = false;
-				_mouseLook.XSensitivity = PlayerPrefs.GetFloat ("xAxis");
-				_mouseLook.YSensitivity = PlayerPrefs.GetFloat ("yAxis");
-                GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = true;
+            //Return Mouse movement values to default
+            if (!aim)
+            {
+                doOnce = false;
+                _mouseLook.XSensitivity = PlayerPrefs.GetFloat("xAxis");
+                _mouseLook.YSensitivity = PlayerPrefs.GetFloat("yAxis");
+                if (GameObject.Find("Crosshair") != null) { 
+                    GameObject.Find("Crosshair").GetComponent<RawImage>().enabled = true;
+                }
 			}
 			//Player Movement Animation Logic
 			AnimationLogic(vertical, horizontal);
@@ -378,23 +382,41 @@ namespace UnitySampleAssets.Characters.FirstPerson
 			anim.SetBool("Sprint", !_isWalking);
 			anim.SetBool ("Aim", aim);
 
-
-			//Drain Stamina
-			if(!_isWalking){// && _characterController.velocity.x > 0.1f){
-				stamina = stamina-staminaDrain;
-				Debug.Log(stamina);
-			}
-			//Stamina Regen conditions
-
-			if(stamina <= 10)
-				StartCoroutine(StaminaRegen(5.0f));
-			else if(stamina > 10 && stamina < 50)
-				StartCoroutine(StaminaRegen(2.5f));
-			else if(stamina >= 50)
-				StartCoroutine(StaminaRegen(1.5f));
+            //Drain Stamina if we are sprinting and moving
+            if (!_isWalking && _characterController.velocity != Vector3.zero && stamina >= staminaDrain)
+            {// && _characterController.velocity.x > 0.1f){
+                stamina = stamina - staminaDrain;
+                useHeadBob = true;
+                
+                //Debug.Log(stamina);
+            }
+            else if(_isWalking && useHeadBob) {
+                //if sound not playing play it
+                if (!gameObject.GetComponents<AudioSource>()[3].isPlaying)
+                {
+                    gameObject.GetComponents<AudioSource>()[3].Play();
+                }
+                useHeadBob = false;
+                //gameObject.GetComponents<AudioSource>()[3].Stop();
+            }
+            //Stamina Regen conditions, regen only when they are not trying to run
+            if (stamina <= 10  && !Input.GetKey(KeyCode.LeftShift) && !gameObject.GetComponents<AudioSource>()[3].isPlaying) {
+                StaminaRegenCoroutine = StaminaRegen(3.0f);
+                StartCoroutine(StaminaRegenCoroutine);
+            }
+            else if (stamina > 10 && stamina < 50 && !Input.GetKey(KeyCode.LeftShift))
+            {
+                StaminaRegenCoroutine = StaminaRegen(2.5f);
+                StartCoroutine(StaminaRegenCoroutine);
+            }
+            else if (stamina >= 50 && stamina < 100 && !Input.GetKey(KeyCode.LeftShift))
+            {
+                StaminaRegenCoroutine = StaminaRegen(1.5f);
+                StartCoroutine(StaminaRegenCoroutine);
+            }
 #endif
             // set the desired speed to be walking or running
-			speed = walkSpeed;
+            speed = walkSpeed;
 
 			if (!_isWalking) {
 			
@@ -528,7 +550,7 @@ namespace UnitySampleAssets.Characters.FirstPerson
 		}
 		IEnumerator StaminaRegen(float waitTime){
 
-			yield return new WaitForSeconds(waitTime); 
+            yield return new WaitForSeconds(waitTime); 
 
 			if(_isWalking && stamina <= 100){
 				stamina = stamina + staminaRecover;

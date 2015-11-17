@@ -12707,7 +12707,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 168068, guid: 1d703e2c0ec63bc4cbfaa2e1e5b55e71, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1d703e2c0ec63bc4cbfaa2e1e5b55e71, type: 2}
@@ -23687,6 +23687,10 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1420592604}
   m_Mesh: {fileID: 4300738, guid: 8a2d23da643cb0d4a9ca6c6f1fffa66b, type: 3}
+--- !u!1 &1438817248 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 172248, guid: f1f12b01a444d6349b6bf59d13af7aef, type: 2}
+  m_PrefabInternal: {fileID: 856000597}
 --- !u!1 &1440252902
 GameObject:
   m_ObjectHideFlags: 0
@@ -27111,6 +27115,10 @@ Prefab:
       propertyPath: versionText
       value: 
       objectReference: {fileID: 1802017661}
+    - target: {fileID: 11481898, guid: 6fb74efd14916c1418d21ce312b82c1a, type: 2}
+      propertyPath: crosshair
+      value: 
+      objectReference: {fileID: 1438817248}
     - target: {fileID: 11481898, guid: 6fb74efd14916c1418d21ce312b82c1a, type: 2}
       propertyPath: optionsMenu
       value: 
