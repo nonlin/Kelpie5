@@ -4332,7 +4332,7 @@ MonoBehaviour:
       m_PostInfinity: 2
   useHeadBob: 0
   _headBob:
-    HorizontalBobRange: .400000006
+    HorizontalBobRange: .300000012
     VerticalBobRange: .300000012
     Bobcurve:
       serializedVersion: 2

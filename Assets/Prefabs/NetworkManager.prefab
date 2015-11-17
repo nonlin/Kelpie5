@@ -239,6 +239,7 @@ MonoBehaviour:
   spawning: 0
   joinedRoom: 0
   GameOver: 0
+  HitMarker: {fileID: 0}
 --- !u!114 &11483726
 MonoBehaviour:
   m_ObjectHideFlags: 1

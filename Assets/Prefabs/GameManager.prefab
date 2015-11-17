@@ -37,6 +37,7 @@ MonoBehaviour:
   timeLimit: 10
   killToWin: 1
   timeToWin: 0
+  crosshair: {fileID: 0}
   killLimitInput: {fileID: 0}
   toggleKillLimit: {fileID: 0}
   toggleTimeLimit: {fileID: 0}

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
 	bool doOnce = false;
     public bool killToWin;
     public bool timeToWin;
+    public GameObject crosshair;
 
 	[SerializeField] InputField killLimitInput;
     [SerializeField] Toggle toggleKillLimit;
@@ -126,11 +127,16 @@ public class GameManager : MonoBehaviour {
 	public void ShowOptions(){
 		NM.optionsMenu.SetActive (true);
 		optionsAnim.SetBool ("Show", true);
-	}
+        //Show Crosshair for color changing
+        crosshair.SetActive(true);
+        crosshair.GetComponent<RawImage>().enabled = true;
+    }
 
 	public void HideOptions(){
 
-		optionsAnim.SetBool ("Show", false);
+        //Hide crosshair
+        crosshair.GetComponent<RawImage>().enabled = false;
+        optionsAnim.SetBool ("Show", false);
 		NM.optionsMenu.SetActive (false);
         PlayerPrefs.Save();
 	}
@@ -181,6 +187,35 @@ public class GameManager : MonoBehaviour {
 
         timeToWin = optionChoice;
         killToWin = !optionChoice;
+    }
+
+    public void ColorPicker(int color)
+    {
+
+        if(crosshair != null) { 
+            switch (color) {
+
+                case 0:
+                    crosshair.GetComponent<RawImage>().color = Color.white;
+                    break;
+                case 1:
+                    crosshair.GetComponent<RawImage>().color = Color.red;
+                    break;
+                case 2:
+                    crosshair.GetComponent<RawImage>().color = Color.blue;
+                    break;
+                case 3:
+                    crosshair.GetComponent<RawImage>().color = Color.green;
+                    break;
+                case 4:
+                    crosshair.GetComponent<RawImage>().color = Color.black;
+                    break;
+                default:
+                    crosshair.GetComponent<RawImage>().color = Color.white;
+                    break;
+
+            }
+        }
     }
 
 	public void QuitGame(){

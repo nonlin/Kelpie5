@@ -38,13 +38,12 @@ public class PlayerShooting: MonoBehaviour {
 	bool enumDeclared = false;
 	int bulletsFired = 0;
     public Weapon WeaponStats;
- 
-	// Use this for initialization
-	void Start() {
+    private float hitMakerFadeDelay = 0.35f;
+    // Use this for initialization
+    void Start() {
 		
 		guiMan = GameObject.Find("NetworkManager").GetComponent < GUIManager > ();
 		NM = GameObject.Find("NetworkManager").GetComponent < NetworkManager > ();
-		
         //Check for children weapon scripts and use what is equiped to load that weapon's unique stats
         WeaponStats = GetComponentInChildren<Weapon>();
 		//To assign the each players own muzzle flash toggle and not someone elses. 
@@ -102,8 +101,9 @@ public class PlayerShooting: MonoBehaviour {
 				anim.SetBool("Fire", false);
 				muzzleLightFlash.enabled = false;
 			}
-
-		}
+            if (GameObject.Find("HitMarker").GetComponent<RawImage>().color.a > 0.0f)
+                GameObject.Find("HitMarker").GetComponent<RawImage>().CrossFadeAlpha(0.0f, hitMakerFadeDelay,false);
+        }
 
         if (Input.GetKeyDown(KeyCode.R) && !Input.GetButton("Fire1") && WeaponStats.clipSize < 30 && WeaponStats.clipAmount != 0 && !reloading)
         {
@@ -190,7 +190,12 @@ public class PlayerShooting: MonoBehaviour {
                         flyByTrue = false;
                         //Play hitmarker sound
                         gameObject.GetComponent<AudioSource>().Play();
-
+                        //Show Hit Marker
+                        Color opaque = GameObject.Find("HitMarker").GetComponent<RawImage>().color;
+                        opaque.a = 1.0f;
+                        GameObject.Find("HitMarker").GetComponent<RawImage>().color = opaque;
+                        //We still have to use CrossFade because even though we set its alpha to 1, for some reason it won't show unless we crossfade back, might be a unity bug. 
+                        GameObject.Find("HitMarker").GetComponent<RawImage>().CrossFadeAlpha(1.0f, 0.0f, true);
                         //If we hit the head colliderr change the damage
                         if (hits[i].collider.name == "Head")
                         {
