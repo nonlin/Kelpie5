@@ -2,6 +2,7 @@ using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour {
 
@@ -21,6 +22,9 @@ public class GameManager : MonoBehaviour {
     public bool killToWin;
     public bool timeToWin;
     public GameObject crosshair;
+    public GameObject ColorPickerPanel;
+    public Image ColorPickerImage;
+    public Image ColorPickerCursor;
 
 	[SerializeField] InputField killLimitInput;
     [SerializeField] Toggle toggleKillLimit;
@@ -37,8 +41,8 @@ public class GameManager : MonoBehaviour {
 			PlayerPrefs.SetInt("smooth", (false ? 1 : 0));
             PlayerPrefs.Save();
 		}
-
-		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager> ();
+        ColorPickerPanel.SetActive(false);
+        NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager> ();
         //Load Saved Settings when game is loaded, setting is on if not 0 (aka equal to 1)
 		yAxis_Text.text = PlayerPrefs.GetFloat("yAxis").ToString();
 		xAxis_Text.text = PlayerPrefs.GetFloat("xAxis").ToString();
@@ -74,6 +78,29 @@ public class GameManager : MonoBehaviour {
             setKillLimit["TTL"] = timeToWin ? 1 : 0;
 			PhotonNetwork.room.SetCustomProperties(setKillLimit);
 		}
+
+        if (ColorPickerPanel.GetActive() == true && Input.GetMouseButton(0)) {
+
+            Vector2 localPoint;
+            //Get the bounds of the image rect
+            Rect r = ColorPickerImage.rectTransform.rect;
+            //Set texture variable
+            Texture2D tex = ColorPickerImage.sprite.texture;
+            //Convert the screen point to local point of Image Rect and out to localPoint vector2D
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(ColorPickerImage.rectTransform, Input.mousePosition, Camera.main, out localPoint);
+            //Now shift points from bottom left localPoint to 0 all the way to the images max width and height 
+            int px = Mathf.Clamp(0, (int)(((localPoint.x - r.x) * tex.width) / r.width), tex.width);
+            int py = Mathf.Clamp(0, (int)(((localPoint.y - r.y) * tex.height) / r.height), tex.height);
+            
+            Color newCrossHairColor = tex.GetPixel(px, py);
+
+            if (px > 0 && px < tex.width && py > 0 && py < tex.height) {
+                ColorPickerCursor.transform.localPosition = localPoint;
+                crosshair.GetComponent<RawImage>().color = newCrossHairColor;
+            }
+          
+
+        }
 
 	}
 
@@ -216,6 +243,14 @@ public class GameManager : MonoBehaviour {
 
             }
         }
+    }
+
+    public void OpenColorPicker() {
+        ColorPickerPanel.SetActive(true);
+    }
+
+    public void CloseColorPicker() {
+        ColorPickerPanel.SetActive(false);
     }
 
 	public void QuitGame(){

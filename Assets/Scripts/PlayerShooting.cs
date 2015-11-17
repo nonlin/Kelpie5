@@ -34,6 +34,7 @@ public class PlayerShooting: MonoBehaviour {
 	float damage = 16f;
 	bool reloading = false;
 	public Text ammoText;
+    public GameObject AmmoPanel;
 	public Transform target;
 	bool enumDeclared = false;
 	int bulletsFired = 0;
@@ -48,8 +49,9 @@ public class PlayerShooting: MonoBehaviour {
         WeaponStats = GetComponentInChildren<Weapon>();
 		//To assign the each players own muzzle flash toggle and not someone elses. 
         AssignMuzzleLightSource();
-
-		ammoText = GameObject.FindGameObjectWithTag("Ammo").GetComponent < Text > ();
+        AmmoPanel = GameObject.FindGameObjectWithTag("AmmoPanel");
+        AmmoPanel.GetComponent<Image>().enabled = true;
+        ammoText = GameObject.FindGameObjectWithTag("Ammo").GetComponent < Text > ();
         anim = GetComponentInChildren<Animator>();
 		timeStamp = 0;
 		//Intilize Current Ammo then call it every time the ammo changes when shooting to update
@@ -293,12 +295,17 @@ public class PlayerShooting: MonoBehaviour {
 			return new WaitForSeconds(2.0f);
         WeaponStats.clipSize = WeaponStats.clipSizeMax;
         WeaponStats.clipAmount--;
-        ammoText.text = WeaponStats.clipAmount.ToString() + "/" + WeaponStats.clipSize.ToString();
-		reloading = false;
+        ammoText.text = AmmoToString();
+        reloading = false;
 		anim.SetBool("Reloading", false);
 
 	}
-	
+
+    public string AmmoToString() {
+
+        return WeaponStats.clipSize.ToString() + " | " + WeaponStats.clipAmount.ToString();
+    }
+
 	IEnumerator EmptyGun() {
 		
 		yield
@@ -346,9 +353,9 @@ public class PlayerShooting: MonoBehaviour {
 
 	public void UpdateAmmoText(){
 
-        if (ammoText != null) { 
-            
-            ammoText.text = WeaponStats.clipSize.ToString() + "/" + WeaponStats.clipAmount.ToString();
+        if (ammoText != null) {
+
+            ammoText.text = AmmoToString();
         }
 	}
 }

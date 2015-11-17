@@ -34,6 +34,7 @@ TagManager:
   - WeaponParts
   - Weapon
   - Crosshair
+  - AmmoPanel
   layers:
   - Default
   - TransparentFX
