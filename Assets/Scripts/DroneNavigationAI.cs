@@ -12,8 +12,10 @@ public class DroneNavigationAI : Photon.MonoBehaviour {
     PhotonView photonView;
     Vector3 realPosition;
     Quaternion realRotation;
-    public float realAgentVeloctiyX;
-    public float realAgentVeloctiyY;
+    private float realAgentVeloctiyX;
+    private float realAgentVeloctiyY;
+    public AudioClip FanBlowing;
+    public AudioClip FanSwitchingOff;
     bool initialLoad = true;
     //Weather we've reached the destination or not
     bool destination1 = false;
@@ -185,6 +187,7 @@ public class DroneNavigationAI : Photon.MonoBehaviour {
                 Debug.Log("<color=red>Death</color>");
                 droneDisabled = true;
                 DroneDetection.droneDisabled = true;
+                gameObject.GetComponent<AudioSource>().PlayOneShot(FanSwitchingOff);
                 //droneDetection.droneDisabled = true;
                 StartCoroutine(EnableDrone(10.0f));
                 //PhotonNetwork.Destroy(gameObject);

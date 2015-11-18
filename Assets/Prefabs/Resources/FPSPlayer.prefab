@@ -4196,7 +4196,7 @@ MonoBehaviour:
   clipSize: 30
   clipAmount: 3
   MaxRange: 10000
-  coolDown: .100000001
+  coolDown: .119999997
   scaleLimit: 2
   z: 45
   aimScaleLimit: 2
@@ -4217,7 +4217,7 @@ MonoBehaviour:
   Fire: {fileID: 8300000, guid: ce877c601ed2d8349a77196045e22c2c, type: 3}
   Reload: {fileID: 8300000, guid: 4911ed0d3cbf41c40bfc29ed1ead2841, type: 3}
   Empty: {fileID: 8300000, guid: d4bc06a9732617c43ad40b79daa9fdd4, type: 3}
-  damage: 1.79999995
+  damage: 9
   clipSizeMax: 12
   clipAmountMax: 3
   clipSize: 12

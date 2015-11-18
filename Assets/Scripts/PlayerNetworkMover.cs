@@ -625,6 +625,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			if(other.GetComponent<Ammo>().canGet){
 				Debug.Log ("<color=red>Picked Up Ammo</color>");
                 //Don't excede clip size limit
+                if(playerShooting.WeaponStats != null)
                 if (playerShooting.WeaponStats.clipAmount < playerShooting.WeaponStats.clipAmountMax)
                     playerShooting.WeaponStats.clipAmount++;
 				pickedUpAmmo++;

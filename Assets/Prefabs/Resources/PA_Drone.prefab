@@ -549,7 +549,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163132}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: .730000019, y: .200000003, z: .610000014}
@@ -839,8 +839,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4d0f3f7555fe745be14443f7fd9d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realAgentVeloctiyX: 0
-  realAgentVeloctiyY: 0
+  FanBlowing: {fileID: 8300000, guid: 375316b0ca21e0d45b34863ab27bb77d, type: 3}
+  FanSwitchingOff: {fileID: 8300000, guid: f9172c56971a9ea439b51bdf532a5c06, type: 3}
   DroneDetection: {fileID: 11415896}
   droneDisabled: 0
   health: 100
