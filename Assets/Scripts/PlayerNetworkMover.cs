@@ -64,14 +64,13 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[SerializeField] Animator animMainCam;
 	[SerializeField] Animator animEthan;
 	[SerializeField] Animator animHitBoxes;
-	PhotonView photonView;
+    PhotonView photonView;
 	private PlayerShooting playerShooting;
     public GameObject[] WeaponArray;
 	public Light muzzleLightFlash;
 	public GameObject[] muzzleLightFlashGO;
 	//ColliderControl colidcon;
 	[SerializeField] bool alive;
-	GameManager GMan;
 	NetworkManager NM;
     public UnityStandardAssets.ImageEffects.CameraMotionBlur cameraMotionBlur;
     public UnityStandardAssets.ImageEffects.DepthOfField depthOfField;
@@ -85,8 +84,8 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		PhotonNetwork.sendRate = 30;
-		PhotonNetwork.sendRateOnSerialize = 15;
+		PhotonNetwork.sendRate = 40;
+		PhotonNetwork.sendRateOnSerialize = 20;
         currentWeaponIndex = 0;
 		alive = true; 
 		photonView = GetComponent<PhotonView> ();
@@ -101,7 +100,6 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		anim = GetComponentInChildren<Animator> ();
 		//animEthan = transform.Find("char_ethan").GetComponent<Animator> ();
 		injuryAnim = GameObject.FindGameObjectWithTag ("InjuryEffect").GetComponent<Animator>();
-		GMan = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 		NM = GameObject.FindGameObjectWithTag ("NetworkManager").GetComponent<NetworkManager>();
 		playerShooting = GetComponentInChildren<PlayerShooting> ();
 
@@ -146,10 +144,12 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 			//So we find all body parts and if it matches our own we are good to change it so it can be ignored.
 			for(int i = 0; i < GameObject.FindGameObjectsWithTag("Body").Length; i++){
 
-				if(GameObject.FindGameObjectsWithTag("Body")[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID() ){
-					GameObject.FindGameObjectsWithTag("Body")[i].layer = 12;
-				}
-			}
+                if(GameObject.FindGameObjectsWithTag("Body")[i].GetComponentInParent<PlayerNetworkMover>() != null) { 
+				    if(GameObject.FindGameObjectsWithTag("Body")[i].GetComponentInParent<PlayerNetworkMover>().gameObject.GetInstanceID() == gameObject.GetInstanceID() ){
+					    GameObject.FindGameObjectsWithTag("Body")[i].layer = 12;
+				    }
+                }
+            }
 			//Now for the head
 			for(int i = 0; i < GameObject.FindGameObjectsWithTag("Head").Length; i++){
 				
@@ -157,6 +157,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 					GameObject.FindGameObjectsWithTag("Head")[i].layer = 12;
 				}
 			}
+            
 			//If player is ours have CC ignore body parts
 			Physics.IgnoreLayerCollision(0,12, true);
             InitPostProcessingEffects();

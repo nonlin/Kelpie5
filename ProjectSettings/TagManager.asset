@@ -35,6 +35,8 @@ TagManager:
   - Weapon
   - Crosshair
   - AmmoPanel
+  - Drone
+  - DroneRadius
   layers:
   - Default
   - TransparentFX

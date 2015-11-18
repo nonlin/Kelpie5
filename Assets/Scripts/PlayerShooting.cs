@@ -13,7 +13,8 @@ public class PlayerShooting: MonoBehaviour {
 	Animator anim;
 	bool doOnce = false;
 	public GameObject impactPrefab;
-	public GameObject bloodSplatPrefab;
+    public GameObject impactDronePrefab;
+    public GameObject bloodSplatPrefab;
 	GameObject currentSplat;
 	private float timeStamp;
 //	List < RaycastAllSort > raycastSort = new List < RaycastAllSort > ();
@@ -28,7 +29,6 @@ public class PlayerShooting: MonoBehaviour {
 	GameObject CurrentImpact;
 	//GameObject[] impacts;
 	NetworkManager NM;
-	int currentImpact = 0;
 	int maxImpacts = 30;
 	public bool shooting = false;
 	float damage = 16f;
@@ -185,9 +185,11 @@ public class PlayerShooting: MonoBehaviour {
             {
 
                 Quaternion hitRotation = Quaternion.FromToRotation(Vector3.up, hits[i].normal);
-                //Debug.Log("<color=red>Tag of Hit Object</color> " + hits[i].transform.tag + " " + hits[i].transform.name + " " + hits.Length);
+                Debug.Log("<color=red>Tag of Hit Object</color> " + hits[i].transform.tag + " " + hits[i].transform.name + " " + hits.Length);
                 //If they hit the FlyByRange first or second then we know we can check to see if they hit the player
-                if (i == 1 || i == 2 && (hits[0].collider.tag == "FlyByRange" || hits[1].collider.tag == "FlyByRange")) if (hits[i].collider.tag == "Body")
+                if (((i == 1 || i == 2) && (hits[0].collider.tag.CompareTo("FlyByRange") == 0 || hits[1].collider.tag.CompareTo("FlyByRange") == 0)) || (hits[i].collider.tag.CompareTo("DroneRadius") == 0 ||  hits[i].collider.tag.CompareTo("Drone") == 0))
+                { 
+                    if (hits[i].collider.tag.CompareTo("Body") == 0 || hits[i].collider.tag.CompareTo("Drone") == 0)
                     {
                         flyByTrue = false;
                         //Play hitmarker sound
@@ -199,38 +201,55 @@ public class PlayerShooting: MonoBehaviour {
                         //We still have to use CrossFade because even though we set its alpha to 1, for some reason it won't show unless we crossfade back, might be a unity bug. 
                         GameObject.Find("HitMarker").GetComponent<RawImage>().CrossFadeAlpha(1.0f, 0.0f, true);
                         //If we hit the head colliderr change the damage
-                        if (hits[i].collider.name == "Head")
+                        if (hits[i].collider.name.CompareTo("Head") == 0)
                         {
 
                             Debug.Log("<color=red>HeadShot!</color> " + hits[i].collider.name);
                             damage = 100f;
                         }
                         //If we hit the body change the damage
-                        if (hits[i].collider.name == "Torso")
+                        if (hits[i].collider.name.CompareTo("Torso") == 0)
                         {
 
                             damage = WeaponStats.damage;
                         }
-                        //Damage Through Walls
-                        if (decalHitCount >= 1 && hits[i].collider.name != "Head")
+                        //Damage Through Walls, so long as its not head, head always gives instant kill
+                        if (decalHitCount >= 1 && hits[i].collider.name.CompareTo("Head") == 1)
                         {
 
                             damage = WeaponStats.damage / 1.6f;
                         }
 
                         //Debug.Log("<color=red>Collider Tag</color> " + hits[i].collider.tag);
-                        Instantiate(bloodSplatPrefab, hits[i].point, hitRotation);
+                        if (hits[i].collider.name.CompareTo("Torso") == 0 || hits[i].collider.name.CompareTo("Head") == 0)
+                        {
+
+                            Instantiate(bloodSplatPrefab, hits[i].point, hitRotation);
+                        }
+                        else if (hits[i].collider.tag.CompareTo("Drone") == 0)
+                        {
+                            damage = WeaponStats.damage;
+                            Instantiate(impactDronePrefab, hits[i].point, hitRotation);
+                        }
+                        
                         //Tell all we shot a player and call the RPC function GetShot passing damage runs on person shooting
                         hits[i].transform.GetComponent<PhotonView>().RPC("GetShot", PhotonTargets.All, damage, PhotonNetwork.player);
-                        Debug.Log("<color=red>Target Health</color> " + hits[i].transform.GetComponent<PlayerNetworkMover>().GetHealth());
+                        if (hits[i].collider.tag.CompareTo("Drone") == 1)
+                        {
+                            Debug.Log("<color=red>Target Health</color> " + hits[i].transform.GetComponent<PlayerNetworkMover>().GetHealth());
+                        }
+                        else
+                        {
+                            //Debug.Log("<color=red>Target Health</color> " + hits[i].transform.GetComponent<DroneNavigationAI>().GetHealth());
+                        }
                     }
-
+                }
                 //Every time we add a decal add to the count, once count limit is reach we won't place any more decals
                 if (decalHitCount <= 1)
                 {
                     //Initial creation of bullet decals, once max limit of decals are made we have our pool
                     //We only make them when it hasn't hit a player body part or the FlyRange Collider
-                    if (hits[i].collider.tag != "FlyByRange" && hits[i].collider.tag != "Body" && impacts.Count < maxImpacts)
+                    if (hits[i].collider.tag != "FlyByRange" && hits[i].collider.tag != "Body" && hits[i].collider.tag.CompareTo("Drone") == 1 && hits[i].collider.tag.CompareTo("DroneRadius") == 1  && impacts.Count < maxImpacts)
                     {
 
                         CurrentImpact = (GameObject)Instantiate(impactPrefab, hits[i].point, hitRotation);
@@ -246,7 +265,7 @@ public class PlayerShooting: MonoBehaviour {
                         e = impacts.GetEnumerator();
                     }
                     //But now we still need know when to iterate through the list of impacts
-                    if (impacts.Count >= maxImpacts && hits[i].collider.tag != "FlyByRange" && hits[i].collider.tag != "Body")
+                    if (impacts.Count >= maxImpacts && hits[i].collider.tag != "FlyByRange" && hits[i].collider.tag != "Body" && hits[i].collider.tag.CompareTo("DroneRadius") == 1)
                     {
 
                         decalHitCount++;

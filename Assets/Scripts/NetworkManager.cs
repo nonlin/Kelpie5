@@ -49,8 +49,8 @@ public class NetworkManager : MonoBehaviour {
 	
 		photonView = GetComponent<PhotonView> ();//Initillze PhotonView
 		messages = new Queue<string> (messageCount);//Specify Size for garbage Collection 
-		PhotonNetwork.sendRate = 40;
-		PhotonNetwork.sendRateOnSerialize = 20;
+		PhotonNetwork.sendRate = 30;
+		PhotonNetwork.sendRateOnSerialize = 15;
 		PhotonNetwork.logLevel = PhotonLogLevel.Full;//So we see everything in output
 		//connect to Server with setup info and sets game version
 		PhotonNetwork.ConnectUsingSettings ("0.4");

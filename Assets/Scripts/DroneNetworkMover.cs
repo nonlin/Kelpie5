@@ -11,16 +11,16 @@ public class DroneNetworkMover : Photon.MonoBehaviour
     bool initialLoad = true;
     float smoothing = 10f;
     float health = 100f;
-
+    public DroneNavigationAI droneNav;
+    public DroneDetectionLogic droneDetection;
     //AudioSource audio;
     // Use this for initialization
     void Start()
     {
-
+        //droneNav = GameObject.FindGameObjectWithTag("Drone").GetComponent<DroneNavigationAI>();
         PhotonNetwork.sendRate = 30;
         PhotonNetwork.sendRateOnSerialize = 15;
-        photonView = GetComponent<PhotonView>();
-
+        photonView = gameObject.GetComponent<PhotonView>();
         if (photonView.isMine)
         {
 
@@ -93,5 +93,6 @@ public class DroneNetworkMover : Photon.MonoBehaviour
 
 
     }
+
 
 }
