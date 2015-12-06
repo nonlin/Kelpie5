@@ -1,2 +1,4 @@
 <map id="DroneNetworkMover" name="DroneNetworkMover">
+<area shape="rect" id="node8" href="$class_drone_navigation_a_i.html" title="{DroneNavigationAI\n|+ FanBlowing\l+ FanSwitchingOff\l+ droneDisabled\l+ health\l|+ GetShot()\l+ GetHealth()\l}" alt="" coords="116,392,244,528"/>
+<area shape="rect" id="node4" href="$class_drone_detection_logic.html" title="{DroneDetectionLogic\n|+ muzzleFlash\l+ muzzleLightFlashGO\l+ muzzleLightFlash\l+ muzzleFlashToggle\l+ impactPrefab\l+ bloodSplatPrefab\l+ shooting\l+ target\l+ droneDisabled\l|+ RaycastAllNonConvex()\l}" alt="" coords="200,133,371,328"/>
 </map>

@@ -239,7 +239,18 @@ public class NetworkManager : MonoBehaviour {
 		    player.GetComponentInChildren<PlayerShooting>().enabled = false;
         }
 		GameOver = true;
-	}
+        //Restart game in specified amount of time
+        StartCoroutine(RestartGame(8.0f));
+    }
+
+    IEnumerator RestartGame(float waitTime) {
+
+        Debug.Log("Restarting game");
+        yield return new WaitForSeconds(waitTime);
+        PhotonNetwork.Disconnect();
+        Application.LoadLevel(0);
+
+    }
 
 	void pingUpdate(){
 

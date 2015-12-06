@@ -52,6 +52,7 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 	[SerializeField] private AudioClip[] _footstepSounds;
 	[SerializeField] private AudioClip[] fleshImpactSounds;
 	[SerializeField] private AudioClip[] flyByShots;
+    [SerializeField] private AudioClip _deathSound;
 	private CharacterController _characterController;
 	private float _stepCycle = 0f;
 	private float _nextStep = 0f;
@@ -468,10 +469,12 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
                 }
 				//Spawn ammo on death
 				PhotonNetwork.Instantiate("Ammo_AK47",transform.position - new Vector3 (0,0.9f,0), Quaternion.Euler(1.5f,149f,95f),0);
-				//Finally destroy the game Object.
-				PhotonNetwork.Destroy(gameObject);
-					
-			}
+                //Play Death Sound
+                //GetComponent<PhotonView>().RPC("PlayDeathSound", PhotonTargets.All);
+                //Finally destroy the game Object when death sound is over
+                // StartCoroutine(DestroyAfterDeathSound(_deathSound.length));
+                PhotonNetwork.Destroy(gameObject);
+            }
 		}
 		//Play Hit Effect Animation for player getting hit. Without isMine would play for everyone. 
 		if (photonView.isMine) {
@@ -480,6 +483,12 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		}
 	}
 
+    IEnumerator DestroyAfterDeathSound(float timeToWait) {
+
+        yield return new WaitForSeconds(timeToWait);
+        PhotonNetwork.Destroy(gameObject);
+
+    }
 
 	[PunRPC]
 	public void ShootingSound(bool firing){
@@ -491,7 +500,13 @@ public class PlayerNetworkMover : Photon.MonoBehaviour {
 		}
 	}
 
-	[PunRPC]
+    [PunRPC]
+    public void PlayDeathSound()
+    {
+        audio0.PlayOneShot(_deathSound);
+    }
+
+    [PunRPC]
 	public void ReloadingSound(){
 
 		audio1.clip = currentWeapon.Reload;

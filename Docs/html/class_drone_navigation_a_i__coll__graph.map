@@ -1,2 +1,3 @@
 <map id="DroneNavigationAI" name="DroneNavigationAI">
+<area shape="rect" id="node4" href="$class_drone_detection_logic.html" title="{DroneDetectionLogic\n|+ muzzleFlash\l+ muzzleLightFlashGO\l+ muzzleLightFlash\l+ muzzleFlashToggle\l+ impactPrefab\l+ bloodSplatPrefab\l+ shooting\l+ target\l+ droneDisabled\l|+ RaycastAllNonConvex()\l}" alt="" coords="188,133,359,328"/>
 </map>

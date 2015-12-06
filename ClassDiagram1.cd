@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AKWeapon">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\AKWeapon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ammo">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASBAAAAACSAAAAAAAAAQAABAAAAAAAAAAAAIAAABAA=</HashCode>
+      <FileName>Assets\Scripts\Ammo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DroneNavigationAI">
+    <Position X="16.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAWEQAEgFCAAQxAAAEAARgAAAAAAgQAACwAABCAEAAo=</HashCode>
+      <FileName>Assets\Scripts\DroneNavigationAI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwQBACgCSBQCAAAQkQIFaBAEgAAUAQAAQAAAQCABlA=</HashCode>
+      <FileName>Assets\Scripts\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GUIManager">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAQAggAAACAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NetworkManager">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAWAwJCBQmAAGAABmAAAZKAEgCQCmCELEgCiBCEA6QE=</HashCode>
+      <FileName>Assets\Scripts\NetworkManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerNetworkMover">
+    <Position X="14" Y="0.5" Width="2" />
+    <NestedTypes>
+      <Delegate Name="PlayerNetworkMover.Respawn" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\PlayerNetworkMover.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="PlayerNetworkMover.SendMessage" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\Scripts\PlayerNetworkMover.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QYTlgrBo1CAFDIYAoQcoSYATBOBJgLwWReYABDIBwAo=</HashCode>
+      <FileName>Assets\Scripts\PlayerNetworkMover.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerShooting">
+    <Position X="4.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IIwAABAsCiIggASkIAAoAAAAABBAgAoSCQyAYQAAABA=</HashCode>
+      <FileName>Assets\Scripts\PlayerShooting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RemoveAfterTime">
+    <Position X="7.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAABAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\RemoveAfterTime.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotatingFanBlades">
+    <Position X="8.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\RotatingFanBlades.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Shotgun">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Shotgun.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Weapon">
+    <Position X="1.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQBAAACACAIiAAAAAIAAgAAAAQEAABICAAAAQAgAAA=</HashCode>
+      <FileName>Assets\Scripts\Weapon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnitySampleAssets.Characters.FirstPerson.MouseLook">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAECAAAAAQAIAAAAAAgAAAAgIAEIEEAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\MouseLook.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnitySampleAssets.Characters.FirstPerson.FirstPersonController">
+    <Position X="11.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>UQQEBDCgByNgAcSEgoUIiwkSMIAAGBYBEYKQVDkAIGI=</HashCode>
+      <FileName>Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\FirstPersonController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnitySampleAssets.Characters.FirstPerson.HeadBob">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAEQICAAACAAQAAAAAAAAAAAAAAABAAAACAAAQA=</HashCode>
+      <FileName>Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\HeadBob.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DroneDetectionLogic">
+    <Position X="20" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AA0EAAEICCAggBSEIAAIAAAAAABAAIISQwwAQAABABA=</HashCode>
+      <FileName>Assets\Scripts\DroneDetectionLogic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="10" />
+</ClassDiagram>

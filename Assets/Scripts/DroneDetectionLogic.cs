@@ -119,7 +119,7 @@ public class DroneDetectionLogic : MonoBehaviour {
                     {
                         flyByTrue = false;
                         //Play hitmarker sound
-                        gameObject.GetComponent<AudioSource>().Play();
+                        //gameObject.GetComponent<AudioSource>().Play();
 
                         //If we hit the head colliderr change the damage
                         if (hits[i].collider.name == "Head")
